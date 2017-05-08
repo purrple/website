@@ -18,7 +18,7 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
   # Shown in the home page
   subtitle = "Romain François - Consulting Datactive"
   brand = "<img src='/img/datactive.png' width='120'/>"
-  description = "A website built through Hugo and blogdown."
+  description = "Romain François - Consulting Datactive."
 
   # options for highlight.js (version, additional languages, and theme)
   highlightjsVersion = "9.11.0"
