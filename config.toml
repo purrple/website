@@ -1,40 +1,52 @@
 baseurl = "/"
 relativeurls = true
 languageCode = "en-us"
-title = "A Hugo website"
+title = "Romain François - Consulting Datactive"
 theme = "blackburn"
-googleAnalytics = ""
-disqusShortname = ""
+author = "Romain François"
+paginate = 10
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
 
-[[menu.main]]
-    name = "About"
-    url = "/about/"
-[[menu.main]]
-    name = "GitHub"
-    url = "https://github.com/rstudio/blogdown"
-[[menu.main]]
-    name = "Twitter"
-    url = "https://twitter.com/rstudio"
+[indexes]
+  tag = "tags"
+  topic = "topics"
 
 [params]
-    description = "A website built through Hugo and blogdown."
+  # Shown in the home page
+  subtitle = "Romain François - Consulting Datactive"
+  brand = "<img src='/img/datactive.png' width='120'/>"
+  description = "A website built through Hugo and blogdown."
 
-    # options for highlight.js (version, additional languages, and theme)
-    highlightjsVersion = "9.11.0"
-    highlightjsCDN = "//cdn.bootcss.com"
-    highlightjsLang = ["r", "yaml"]
-    highlightjsTheme = "github"
+  # options for highlight.js (version, additional languages, and theme)
+  highlightjsVersion = "9.11.0"
+  highlightjsCDN = "//cdn.bootcss.com"
+  highlightjsLang = ["r", "yaml"]
+  highlightjsTheme = "github"
 
-    MathJaxCDN = "//cdn.bootcss.com"
-    MathJaxVersion = "2.7.1"
+  MathJaxCDN = "//cdn.bootcss.com"
+  MathJaxVersion = "2.7.1"
 
-    [params.logo]
-    url = "logo.png"
-    width = 50
-    height = 50
-    alt = "Logo"
+[menu]  
+  [[menu.main]]
+      name = "Home"
+      pre = "<i class='fa fa-home fa-fw'></i>"
+      weight = 1
+      identifier = "home"
+      url = "/"
+  [[menu.main]]
+      name = "ThinkR"
+      pre = "<i class='fa fa-laptop fa-fw'></i>"
+      url = "http://www.thinkr.fr"
+
+[social]
+  # Link your social networking accouns to the side menu
+  # by entering your username or ID.
+  twitter = "romain_francois"
+  instagram = "romain_francois"
+  github = "romain_francois"
+  stackoverflow = "romain-francois"
+  linkedin = "romain-francois"
 
