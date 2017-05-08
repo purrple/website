@@ -17,7 +17,7 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 [params]
   # Shown in the home page
   subtitle = "Romain François - Consulting Datactive"
-  brand = "<img src='/img/datactive.png' width='120'/>"
+  brand = "<img src='/img/datactive.png' width='130'/>"
   description = "Romain François - Consulting Datactive."
 
   # options for highlight.js (version, additional languages, and theme)
@@ -37,13 +37,18 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
       identifier = "home"
       url = "/"
   [[menu.main]]
+    name = "Archive"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 3
+    identifier = "post"
+    url = "/post/"
+
+  [[menu.main]]
       name = "ThinkR"
       pre = "<i class='fa fa-laptop fa-fw'></i>"
       url = "http://www.thinkr.fr"
 
 [social]
-  # Link your social networking accouns to the side menu
-  # by entering your username or ID.
   twitter = "romain_francois"
   instagram = "romain_francois"
   github = "romain_francois"
