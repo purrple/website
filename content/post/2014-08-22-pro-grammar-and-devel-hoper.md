@@ -2,7 +2,7 @@
 title:  Pro Grammar and Devel Hoper
 author: "Romain FranÃ§ois"
 date:  2014-08-22
-tags: []
+
 ---
 
 <div class="post-content">
@@ -110,7 +110,7 @@ if( ! is(x, "bar") ){
 <pre><code>foo &lt;- function( character x ){  
    # do some characer stuff
 }
-foo &lt;- function( data.frame x)Â?{  
+foo &lt;- function( data.frame x)ï¿½?{  
    # do some data frame stuff
 }
 </code></pre>

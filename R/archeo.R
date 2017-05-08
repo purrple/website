@@ -50,7 +50,6 @@ retrieve_article <- function(link, title, date, origin, file){
     writeLines( paste("title: ", title ), con )
     writeLines( 'author: "Romain François"', con)
     writeLines( paste("date: ", date ), con )
-    writeLines( 'tags: []', con )
     writeLines( "---\n", con )
     writeLines( text, con = con )
     close(con)

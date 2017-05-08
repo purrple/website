@@ -2,7 +2,7 @@
 title:  Modernizing sugar in Rcpp11
 author: "Romain François"
 date:  2014-05-27
-tags: []
+
 ---
 
 <div class="post-content">

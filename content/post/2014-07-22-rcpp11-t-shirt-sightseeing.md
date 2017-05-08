@@ -2,7 +2,7 @@
 title:  Rcpp11 t-shirt sightseeing
 author: "Romain François"
 date:  2014-07-22
-tags: []
+
 ---
 
 <div class="post-content">

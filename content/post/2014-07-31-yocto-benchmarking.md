@@ -2,7 +2,7 @@
 title:  yocto benchmarking
 author: "Romain François"
 date:  2014-07-31
-tags: []
+
 ---
 
 <div class="post-content">

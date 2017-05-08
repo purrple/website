@@ -2,7 +2,7 @@
 title:  Mobile version of the graph gallery
 author: "Romain François"
 date:  2013-04-10
-tags: []
+
 ---
 
 <div class="entry-content">

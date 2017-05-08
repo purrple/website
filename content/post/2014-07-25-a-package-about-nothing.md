@@ -2,7 +2,7 @@
 title:  A package about nothing
 author: "Romain François"
 date:  2014-07-25
-tags: []
+
 ---
 
 <div class="post-content">

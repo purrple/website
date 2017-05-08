@@ -2,7 +2,7 @@
 title:  R Help tooltips
 author: "Romain François"
 date:  2013-03-24
-tags: []
+
 ---
 
 <div class="entry-content">

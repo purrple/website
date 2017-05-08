@@ -2,7 +2,7 @@
 title:  Simpler R help tooltips
 author: "Romain François"
 date:  2013-03-25
-tags: []
+
 ---
 
 <div class="entry-content">

@@ -2,7 +2,7 @@
 title:  dplyr tour. 3 next dates
 author: "Romain François"
 date:  2014-11-18
-tags: []
+
 ---
 
 <div class="post-content">

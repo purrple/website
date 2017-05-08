@@ -2,7 +2,7 @@
 title:  stricter arguments in Rcpp11/Rcpp14
 author: "Romain François"
 date:  2015-01-16
-tags: []
+
 ---
 
 <div class="post-content">

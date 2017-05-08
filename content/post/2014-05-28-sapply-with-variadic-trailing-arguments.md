@@ -1,8 +1,7 @@
 ---
-title:  sapply with variadic trailing arguments (...)
+title:  sapply with variadic trailing arguments
 author: "Romain François"
 date:  2014-05-28
-tags: []
 ---
 
 <div class="post-content">

@@ -2,7 +2,7 @@
 title:  Disambiguating Rcpp11 and Rcpp
 author: "Romain François"
 date:  2014-05-27
-tags: []
+
 ---
 
 <div class="post-content">

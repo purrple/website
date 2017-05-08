@@ -2,7 +2,7 @@
 title:  Web Hosted R Syntax Highlighter
 author: "Romain François"
 date:  2013-03-24
-tags: []
+
 ---
 
 <div class="entry-content">

@@ -2,7 +2,7 @@
 title:  A taste of functional programmming in Rcpp11
 author: "Romain François"
 date:  2014-05-23
-tags: []
+
 ---
 
 <div class="post-content">
