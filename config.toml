@@ -1,4 +1,4 @@
-baseurl = "/"
+baseurl = "https://romain.rbind.io"
 relativeurls = true
 languageCode = "en-us"
 title = "Romain François - Consulting Datactive"
@@ -16,10 +16,11 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 
 [params]
   # Shown in the home page
-  subtitle = "Romain François - Consulting Datactive"
+  subtitle = "Romain François"
   brand = "<img src='/img/datactive.png' width='130'/>"
-  description = "Romain François - Consulting Datactive."
-
+  description = "Consulting Datactive. R/C++ hero"
+  disqus = "romain-rbind-io"
+  
   # options for highlight.js (version, additional languages, and theme)
   highlightjsVersion = "9.11.0"
   highlightjsCDN = "//cdn.bootcss.com"
