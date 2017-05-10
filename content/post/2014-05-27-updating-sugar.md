@@ -6,9 +6,8 @@ date:  2014-05-27
 ---
 
 <div class="post-content">
-<p><img src="/web/20140531145511im_/http://blog.r-enthusiasts.com:80/content/images/2014/May/sugar.jpg" alt=""></p>
 
-<p>I'm in the process of <a href="https://web.archive.org/web/20140531145511/https://github.com/Rcpp11/Rcpp11/issues/183">modernizing the implementation</a> of sugar in <a href="https://web.archive.org/web/20140531145511/https://github.com/Rcpp11/Rcpp11">Rcpp11</a>. Previous work already improved performance of sugar by allowing sugar classes themselves to implement how to apply themselves into their target vector. For example the sugar class <a href="https://web.archive.org/web/20140531145511/https://github.com/Rcpp11/Rcpp11/blob/master/inst/include/Rcpp/sugar/functions/seq_along.h#L7"><code>SeqLen</code></a> leverages <a href="https://web.archive.org/web/20140531145511/http://www.cplusplus.com/reference/numeric/iota/"><code>std::iota</code></a> instead of a manual for loop. </p>
+<p>I'm in the process of <a href="https://github.com/Rcpp11/Rcpp11/issues/183">modernizing the implementation</a> of sugar in <a href="https://github.com/Rcpp11/Rcpp11">Rcpp11</a>. Previous work already improved performance of sugar by allowing sugar classes themselves to implement how to apply themselves into their target vector. For example the sugar class <a href="https://github.com/Rcpp11/Rcpp11/blob/master/inst/include/Rcpp/sugar/functions/seq_along.h#L7"><code>SeqLen</code></a> leverages <a href="http://www.cplusplus.com/reference/numeric/iota/"><code>std::iota</code></a> instead of a manual for loop. </p>
 
 <pre><code class="cpp">template &lt;typename Target&gt;  
 inline void apply( Target&amp; target ) const {  
@@ -95,7 +94,7 @@ using namespace Rcpp ;
 // [[export]]
 NumericVector test(NumericVector x){  
   auto square = []( double a ){ return a*a ; } ;
-  auto twice  = []( double a ){ return a*2 ; } ; 
+  auto twice  = []( double a ){ return a*2 ; } ;
 
   auto y = sapply( sapply(x, square), twice ) ;
   Rprintf( "type(y) = %s\n", DEMANGLE(decltype(y)) ) ;
@@ -152,5 +151,5 @@ auto y = sapply( sapply(x, square), twice ) ;
 
 <p>The composition based approach is still a work in progress, but I believe it will be yet another way to achieve performance improvements for the modernized version of sugar. </p>
 
-<p>We can also generalize the composition approach to several input vectors, via <a href="https://web.archive.org/web/20140531145511/http://blog.r-enthusiasts.com/2014/05/22/using-mapply-in-rcpp11/">mapply</a>. Consider the expression : <code>x + exp(y) + abs(sin(z))</code>. The challenge is to identify actual vectors we want to iterate over: <code>x</code>, <code>y</code> and <code>z</code> and generate the appropriate function composition. Should be fun. </p>
+<p>We can also generalize the composition approach to several input vectors, via <a href="http://blog.r-enthusiasts.com/2014/05/22/using-mapply-in-rcpp11/">mapply</a>. Consider the expression : <code>x + exp(y) + abs(sin(z))</code>. The challenge is to identify actual vectors we want to iterate over: <code>x</code>, <code>y</code> and <code>z</code> and generate the appropriate function composition. Should be fun. </p>
 </div>

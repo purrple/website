@@ -10,11 +10,11 @@ date:  2014-07-31
 
 <p><img src="/web/20150304070926im_/http://blog.r-enthusiasts.com:80/content/images/2014/Jul/bench.jpg" alt=""></p>
 
-<p>One of my take home message from useR was that we are going to have to do things in parallel. JJ set the motion with the <a href="https://web.archive.org/web/20150304070926/https://github.com/RcppCore/RcppParallel">RcppParallel</a> package. </p>
+<p>One of my take home message from useR was that we are going to have to do things in parallel. JJ set the motion with the <a href="https://github.com/RcppCore/RcppParallel">RcppParallel</a> package. </p>
 
-<p>The <a href="https://web.archive.org/web/20150304070926/http://gallery.rcpp.org/articles/parallel-vector-sum/">inceptive example</a> for <a href="https://web.archive.org/web/20150304070926/https://github.com/RcppCore/RcppParallel">RcppParallel</a> was about calculating the sum from a numeric vector. </p>
+<p>The <a href="http://gallery.rcpp.org/articles/parallel-vector-sum/">inceptive example</a> for <a href="https://github.com/RcppCore/RcppParallel">RcppParallel</a> was about calculating the sum from a numeric vector. </p>
 
-<p>The <a href="https://web.archive.org/web/20150304070926/http://gallery.rcpp.org/articles/parallel-vector-sum/">article</a> shows some nice global benchmark results. </p>
+<p>The <a href="http://gallery.rcpp.org/articles/parallel-vector-sum/">article</a> shows some nice global benchmark results. </p>
 
 <p>As I'm going to be doing a lot of that kind of work, I've spent some time developping a few tools for finer grained benchmarking, hence the title of this post, the idea is that I want to know which thread is doing what and when. </p>
 
@@ -36,7 +36,7 @@ date:  2014-07-31
 
 <p>I'm working on another representation that might make it easier to compare the versions. the idea is to represent how much of the data has been processed at a given point in time. All the information is in the data, I just have to tidy it a bit as now the data is more or less organised to facilitate the previous graphs. </p>
 
-<p>The code for these various versions is below. It uses current development version of <a href="https://web.archive.org/web/20150304070926/https://github.com/RcppCore/RcppParallel"><code>RcppParallel</code></a> and my little <a href="https://web.archive.org/web/20150304070926/https://github.com/romainfrancois/TimerPlot"><code>TimerPlot</code></a> package that does the graphs. </p>
+<p>The code for these various versions is below. It uses current development version of <a href="https://github.com/RcppCore/RcppParallel"><code>RcppParallel</code></a> and my little <a href="https://github.com/romainfrancois/TimerPlot"><code>TimerPlot</code></a> package that does the graphs. </p>
 
 <pre><code class="cpp">#include &lt;Rcpp.h&gt;
 #include &lt;Rcpp/Benchmark/Timer.h&gt;

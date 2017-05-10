@@ -6,7 +6,7 @@ date:  2014-07-25
 ---
 
 <div class="post-content">
-<p><a href="https://web.archive.org/web/20141010151932/https://github.com/romainfrancois/nothing">nothing</a> is a package about nothing. </p>
+<p><a href="https://github.com/romainfrancois/nothing">nothing</a> is a package about nothing. </p>
 
 <p><img src="https://web.archive.org/web/20141010151932im_/http://media.tumblr.com/tumblr_lkw5e6ANdS1qf7q1s.png" alt=""></p>
 

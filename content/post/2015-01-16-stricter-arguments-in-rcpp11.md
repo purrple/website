@@ -35,7 +35,7 @@ double foo( SEXP x_ ){
 }
 </code></pre>
 
-<p>Which is boring boiler plate code, so I've added the <code>Strict</code> class into <a href="https://web.archive.org/web/20150304070858/https://github.com/Rcpp11/Rcpp11"><code>Rcpp11</code></a> and <a href="https://web.archive.org/web/20150304070858/https://github.com/Rcpp11/Rcpp14"><code>Rcpp14</code></a>. The class is pretty simple, it has two things: </p>
+<p>Which is boring boiler plate code, so I've added the <code>Strict</code> class into <a href="https://github.com/Rcpp11/Rcpp11"><code>Rcpp11</code></a> and <a href="https://github.com/Rcpp11/Rcpp14"><code>Rcpp14</code></a>. The class is pretty simple, it has two things: </p>
 
 <ul>
 <li>a constructor taking a <code>SEXP</code>, which makes it a perfect candidate for an attributes generated function. The constructor stores the <code>SEXP</code> and checks if it is compatible using the appropriate <code>is&lt;&gt;</code> function, if not it throws an exception. </li>

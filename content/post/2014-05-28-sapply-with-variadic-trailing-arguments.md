@@ -5,7 +5,6 @@ date:  2014-05-28
 ---
 
 <div class="post-content">
-<p><img src="/web/20140531145516im_/http://blog.r-enthusiasts.com:80/content/images/2014/May/ellipsis-400x186.png" alt=""></p>
 
 <h3 id="motivation">Motivation</h3>
 
@@ -24,9 +23,9 @@ sapply( x, dnorm, 0, 4, FALSE )
 
 <h3 id="implementationinrcpp11">Implementation in Rcpp11</h3>
 
-<p><code>sapply</code> has been part of sugar for a long time, and is now very central <a href="https://web.archive.org/web/20140531145516/http://blog.r-enthusiasts.com/2014/05/27/updating-sugar/">to the modernized</a> version of sugar in the devel version of <a href="https://web.archive.org/web/20140531145516/https://github.com/Rcpp11/Rcpp11"><code>Rcpp11</code></a>, but until now we did not have a mechanism similar to R's ellipsis. </p>
+<p><code>sapply</code> has been part of sugar for a long time, and is now very central <a href="http://blog.r-enthusiasts.com/2014/05/27/updating-sugar/">to the modernized</a> version of sugar in the devel version of <a href="https://github.com/Rcpp11/Rcpp11"><code>Rcpp11</code></a>, but until now we did not have a mechanism similar to R's ellipsis. </p>
 
-<p><a href="https://web.archive.org/web/20140531145516/http://www.cplusplus.com/articles/EhvU7k9E/">variadic templates</a> and <a href="https://web.archive.org/web/20140531145516/http://www.cplusplus.com/reference/tuple/tuple/">std::tuple</a> give us the tools to <a href="https://web.archive.org/web/20140531145516/https://github.com/Rcpp11/Rcpp11/commit/a13fc9240f3ab9967fb7a8dfc7d2ac03c99e6786">implement the feature</a> in Rcpp11. </p>
+<p><a href="http://www.cplusplus.com/articles/EhvU7k9E/">variadic templates</a> and <a href="http://www.cplusplus.com/reference/tuple/tuple/">std::tuple</a> give us the tools to <a href="https://github.com/Rcpp11/Rcpp11/commit/a13fc9240f3ab9967fb7a8dfc7d2ac03c99e6786">implement the feature</a> in Rcpp11. </p>
 
 <pre><code class="cpp">#include &lt;Rcpp11&gt;
 using namespace Rcpp11 ;
@@ -55,7 +54,7 @@ public:
     typedef typename Rcpp::traits::index_sequence&lt;Args...&gt;::type Sequence ;
     typedef typename std::result_of&lt;Function(storage_type,Args...)&gt;::type fun_result_type ;
 
-    SapplyFunctionBinder( Function fun_, Args&amp;&amp;... args) : 
+    SapplyFunctionBinder( Function fun_, Args&amp;&amp;... args) :
         fun(fun_), tuple(std::forward&lt;Args&gt;(args)...){}
 
     inline fun_result_type operator()( storage_type x ) const {
@@ -63,7 +62,7 @@ public:
     }
 
 private:  
-    Function fun ; 
+    Function fun ;
     Tuple tuple ;
 
     template &lt;int... S&gt;
@@ -76,7 +75,7 @@ private:
 
 <h3 id="alternatives">Alternatives</h3>
 
-<p>Alternatively, this can be done with <a href="https://web.archive.org/web/20140531145516/http://www.cprogramming.com/c++11/c++11-lambda-closures.html">lambda functions</a> : </p>
+<p>Alternatively, this can be done with <a href="http://www.cprogramming.com/c++11/c++11-lambda-closures.html">lambda functions</a> : </p>
 
 <pre><code>NumericVector res = sapply( x, [](double a){  
     return ::Rf_dnorm4(a, 0.0, 4.0, false ) ;
@@ -91,7 +90,7 @@ NumericVector res = sapply( x, std::bind(::Rf_dnorm4, _1, 0.0, 4.0, false) ) ;
 
 <h3 id="comparisoncostoftheabstraction">Comparison. Cost of the abstraction</h3>
 
-<p>Let's compare these alternatives through <a href="https://web.archive.org/web/20140531145516/http://cran.r-project.org/web/packages/microbenchmark/index.html">microbenchmark</a>. </p>
+<p>Let's compare these alternatives through <a href="http://cran.r-project.org/web/packages/microbenchmark/index.html">microbenchmark</a>. </p>
 
 <pre><code class="cpp">#include &lt;Rcpp11&gt;
 using namespace Rcpp11 ;
@@ -120,7 +119,7 @@ NumericVector sapply_bind(NumericVector x){
 // [[Rcpp::export]]
 NumericVector sapply_loop(NumericVector x){  
     int n = x.size() ;
-    NumericVector res(n); 
+    NumericVector res(n);
     for( int i=0; i&lt;n; i++){
         res[i] = Rf_dnorm4( x[i], 0.0, 4.0, false ) ;    
     }

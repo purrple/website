@@ -6,7 +6,7 @@ date:  2014-05-23
 ---
 
 <div class="post-content">
-<p><a href="https://web.archive.org/web/20140531145459/https://github.com/kevinushey">@kevinushey</a> requested some <a href="https://web.archive.org/web/20140531145459/https://github.com/Rcpp11/Rcpp11/issues/140#issuecomment-43956758">functional programming</a> in <a href="https://web.archive.org/web/20140531145459/https://github.com/Rcpp11/Rcpp11">Rcpp11</a> and provided initial versions of <code>map</code> and <code>filter</code>. <code>map</code> is actually doing exactly the same thing as <code>mapply</code> so I added <code>map</code> as a synonym to <code>mapply</code> so that we can do (see <a href="https://web.archive.org/web/20140531145459/http://blog.r-enthusiasts.com/2014/05/22/using-mapply-in-rcpp11/">this previous post</a> for details): </p>
+<p><a href="https://github.com/kevinushey">@kevinushey</a> requested some <a href="https://github.com/Rcpp11/Rcpp11/issues/140#issuecomment-43956758">functional programming</a> in <a href="https://github.com/Rcpp11/Rcpp11">Rcpp11</a> and provided initial versions of <code>map</code> and <code>filter</code>. <code>map</code> is actually doing exactly the same thing as <code>mapply</code> so I added <code>map</code> as a synonym to <code>mapply</code> so that we can do (see <a href="http://blog.r-enthusiasts.com/2014/05/22/using-mapply-in-rcpp11/">this previous post</a> for details): </p>
 
 <pre><code class="cpp">// [[Rcpp::export]]
 NumericVector mapply_example(NumericVector x, NumericVector y, double z){
@@ -49,7 +49,7 @@ NumericVector filter_example_3(NumericVector x ){
 }
 </code></pre>
 
-<p>But since I've been spoiled by <a href="https://web.archive.org/web/20140531145459/https://github.com/smbache/magrittr"><code>magrittr</code></a> and <a href="https://web.archive.org/web/20140531145459/https://github.com/hadley/dplyr"><code>dplyr</code></a>, I've put in this alternative way to compose the two functions: </p>
+<p>But since I've been spoiled by <a href="https://github.com/smbache/magrittr"><code>magrittr</code></a> and <a href="https://github.com/hadley/dplyr"><code>dplyr</code></a>, I've put in this alternative way to compose the two functions: </p>
 
 <pre><code class="cpp">// [[Rcpp::export]]
 NumericVector filter_example_4(NumericVector x ){  

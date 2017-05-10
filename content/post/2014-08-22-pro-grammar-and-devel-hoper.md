@@ -9,14 +9,14 @@ date:  2014-08-22
 <p>I've been teasing about this post for some time now. </p>
 
 <blockquote class="twitter-tweet" lang="en">
-<p>My next blog post is "Pro Grammar and Devel Hoper". And this not just an empty pun. Stay tuned.</p>— Romain François (@romain_francois) <a href="https://web.archive.org/web/20150304070936/https://twitter.com/romain_francois/statuses/495948962533498880">August 3, 2014</a>
+<p>My next blog post is "Pro Grammar and Devel Hoper". And this not just an empty pun. Stay tuned.</p>— Romain François (@romain_francois) <a href="https://twitter.com/romain_francois/statuses/495948962533498880">August 3, 2014</a>
 </blockquote>
 
 <blockquote class="twitter-tweet" lang="en">
-<p><a href="https://web.archive.org/web/20150304070936/https://twitter.com/stefanbache">@stefanbache</a> another teaser. <a href="https://web.archive.org/web/20150304070936/https://t.co/i2ubfOyjIO">https://t.co/i2ubfOyjIO</a>iris &gt;&gt; filter( Sepal.Length &gt; 7 )iris |&gt; filter( Sepal.Length &gt; 7 )</p>— Romain François (@romain_francois) <a href="https://web.archive.org/web/20150304070936/https://twitter.com/romain_francois/statuses/496710333491601408">August 5, 2014</a>
+<p><a href="https://twitter.com/stefanbache">@stefanbache</a> another teaser. <a href="https://t.co/i2ubfOyjIO">https://t.co/i2ubfOyjIO</a>iris &gt;&gt; filter( Sepal.Length &gt; 7 )iris |&gt; filter( Sepal.Length &gt; 7 )</p>— Romain François (@romain_francois) <a href="https://twitter.com/romain_francois/statuses/496710333491601408">August 5, 2014</a>
 </blockquote>
 
-<script async src="//web.archive.org/web/20150304070936js_/http://platform.twitter.com/widgets.js" charset="utf-8"></script><p>So I'm going to try prove that this is not just for the pun, however proud of it I might be, and believe me I love it when a language plays tricks with my brain and a pun presents itself to me. This is valid for most of the languages I use daily, including <a href="https://web.archive.org/web/20150304070936/http://en.wikipedia.org/wiki/French_language">French</a>, that is described in Wikipedia as a <em>Romance language</em>,  <a href="https://web.archive.org/web/20150304070936/http://en.wikipedia.org/wiki/English_language">English</a> our current <em>lingua franca</em>, <a href="https://web.archive.org/web/20150304070936/http://en.wikipedia.org/wiki/C%2B%2B">C++</a> this weird high maintenance language that lets you accomplish amazing things once you've demonstrated that you can manage countless hours of head banging and investigate Sherlock class compiler error messages, and finally <a href="https://web.archive.org/web/20150304070936/http://www.r-project.org/">R</a>. </p>
+<script async src="//web.archive.org/web/20150304070936js_/http://platform.twitter.com/widgets.js" charset="utf-8"></script><p>So I'm going to try prove that this is not just for the pun, however proud of it I might be, and believe me I love it when a language plays tricks with my brain and a pun presents itself to me. This is valid for most of the languages I use daily, including <a href="http://en.wikipedia.org/wiki/French_language">French</a>, that is described in Wikipedia as a <em>Romance language</em>,  <a href="http://en.wikipedia.org/wiki/English_language">English</a> our current <em>lingua franca</em>, <a href="http://en.wikipedia.org/wiki/C%2B%2B">C++</a> this weird high maintenance language that lets you accomplish amazing things once you've demonstrated that you can manage countless hours of head banging and investigate Sherlock class compiler error messages, and finally <a href="http://www.r-project.org/">R</a>. </p>
 
 <p>There is no describing how much I love and care about R. Well first of all, I make a living out of selling R services, that's got to count for something right. But beyond that, I've been using R for more than 13 years now. It might seem a bit irrationnal to be addicted to such a quirky language especially given all the temptations around for better, faster, cleaner, whatever, languages out there. Sure I can play with these fancy languages, but for some reason I always come back to R, R makes me tick. </p>
 
@@ -28,7 +28,7 @@ date:  2014-08-22
 
 <iframe src="//web.archive.org/web/20150304070936if_/http://instagram.com/p/r2S9iVO05K/embed/" width="612" height="710" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
 
-<p>Anyway, the <a href="https://web.archive.org/web/20150304070936/https://github.com/wch/r-source/blob/trunk/src/main/gram.y">gram.y file</a> in which my name is, is perhaps one of the deepest component, it defines the grammar, the set of rules that make up the language. R's grammar is not that complicated and it has not changed much over the years. </p>
+<p>Anyway, the <a href="https://github.com/wch/r-source/blob/trunk/src/main/gram.y">gram.y file</a> in which my name is, is perhaps one of the deepest component, it defines the grammar, the set of rules that make up the language. R's grammar is not that complicated and it has not changed much over the years. </p>
 
 <p>It is one thing to add vocabulary, functions or verbs as the hipsters call them now ;) but messing with the grammar is a whole new dimension. </p>
 
@@ -49,9 +49,9 @@ date:  2014-08-22
 [20] "v" "w" "x" "y" "z"
 </code></pre>
 
-<p>This is what makes possible the latest storm in the R world, at least as I felt it at <a href="https://web.archive.org/web/20150304070936/http://user2014.stat.ucla.edu/">useR!2014</a>, the piping operators as introduced by <a href="https://web.archive.org/web/20150304070936/https://github.com/smbache/magrittr"><code>magrittr</code></a> and excessively promoted by <a href="https://web.archive.org/web/20150304070936/https://github.com/hadley/dplyr"><code>dplyr</code></a>. </p>
+<p>This is what makes possible the latest storm in the R world, at least as I felt it at <a href="http://user2014.stat.ucla.edu/">useR!2014</a>, the piping operators as introduced by <a href="https://github.com/smbache/magrittr"><code>magrittr</code></a> and excessively promoted by <a href="https://github.com/hadley/dplyr"><code>dplyr</code></a>. </p>
 
-<p>We've seen lots of <em>look how piping is awesome</em> in association with <code>dplyr</code> and again this is probably something I'm biased about, so I'll use a <code>dplyr</code> free piping example, taken from <a href="https://web.archive.org/web/20150304070936/https://twitter.com/stefanbache">@stefanbache</a>'s presentation in the <a href="https://web.archive.org/web/20150304070936/http://www.meetup.com/CopenhagenR-useR-Group/events/189230102/">CopenhagenR</a> meetup. </p>
+<p>We've seen lots of <em>look how piping is awesome</em> in association with <code>dplyr</code> and again this is probably something I'm biased about, so I'll use a <code>dplyr</code> free piping example, taken from <a href="https://twitter.com/stefanbache">@stefanbache</a>'s presentation in the <a href="http://www.meetup.com/CopenhagenR-useR-Group/events/189230102/">CopenhagenR</a> meetup. </p>
 
 <p>The example is about expressing a cooking recipe, something that appeals naturally to me as a pretentious frenchman. </p>
 
@@ -66,10 +66,10 @@ date:  2014-08-22
 <p>Fine, enough of blind admiration for now. I love piping and I truly think this is one of the most exciting recent R innovations, but I still stand by this. <code>%&gt;%</code> is ugly. </p>
 
 <blockquote class="twitter-tweet" lang="en">
-<p><a href="https://web.archive.org/web/20150304070936/https://twitter.com/hashtag/magrittr?src=hash">#magrittr</a> piping is so popular, Id vote for an extension to the <a href="https://web.archive.org/web/20150304070936/https://twitter.com/hashtag/rstats?src=hash">#rstats</a> grammar so that we can something less ugly than %&gt;%. |&gt; or &gt;&gt; ?</p>— Romain François (@romain_francois) <a href="https://web.archive.org/web/20150304070936/https://twitter.com/romain_francois/statuses/479279015833112578">June 18, 2014</a>
+<p><a href="https://twitter.com/hashtag/magrittr?src=hash">#magrittr</a> piping is so popular, Id vote for an extension to the <a href="https://twitter.com/hashtag/rstats?src=hash">#rstats</a> grammar so that we can something less ugly than %&gt;%. |&gt; or &gt;&gt; ?</p>— Romain François (@romain_francois) <a href="https://twitter.com/romain_francois/statuses/479279015833112578">June 18, 2014</a>
 </blockquote>
 
-<p>Since I have the skills for that sort of weird stuff, I've been playing with the grammar in <a href="https://web.archive.org/web/20150304070936/https://github.com/romainfrancois/r-source/tree/grammar">this branch</a> of a fork of <a href="https://web.archive.org/web/20150304070936/https://twitter.com/winston_chang">@winston_chang</a>'s read only mirror of the R source. In a less convoluted way: I've been messing with the grammar. </p>
+<p>Since I have the skills for that sort of weird stuff, I've been playing with the grammar in <a href="https://github.com/romainfrancois/r-source/tree/grammar">this branch</a> of a fork of <a href="https://twitter.com/winston_chang">@winston_chang</a>'s read only mirror of the R source. In a less convoluted way: I've been messing with the grammar. </p>
 
 <p>Change the grammar has been on my list of fantasies for some time, and this gave be enough incentive to actually look into it. And this is a pretty simple change, but I'll get into other stuff later. </p>
 
@@ -119,7 +119,7 @@ foo &lt;- function( data.frame x)�?{
 
 <p>Furthermore with the verbosity, the way we define classes in R, from various implementations (S4, ref classes, R6, ...) is trapped into the whole "everything is a function call" mantra. </p>
 
-<p>Most languages that started without OO and incorporated it later (e.g. php) had their grammar improved to deal with expressing classes. In R, we are stuck with coming up with new vocabulary. I strongly believe that we could come up with a much better way to express classes if we were willing to think about it. This is blurry to me still, but what about something like this, borrowing the <code>Person</code> class from <a href="https://web.archive.org/web/20150304070936/http://rpubs.com/wch/24456">Introduction to R6</a></p>
+<p>Most languages that started without OO and incorporated it later (e.g. php) had their grammar improved to deal with expressing classes. In R, we are stuck with coming up with new vocabulary. I strongly believe that we could come up with a much better way to express classes if we were willing to think about it. This is blurry to me still, but what about something like this, borrowing the <code>Person</code> class from <a href="http://rpubs.com/wch/24456">Introduction to R6</a></p>
 
 <pre><code>class Person {  
   character name = NA

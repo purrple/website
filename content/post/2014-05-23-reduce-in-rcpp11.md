@@ -6,7 +6,7 @@ date:  2014-05-23
 ---
 
 <div class="post-content">
-<p>And <a href="https://web.archive.org/web/20140528031555/https://github.com/Rcpp11/Rcpp11/commit/047e961f1e205b51a8e4f1766f8da3eb6ae07de8">now</a> for something completely difference, the <code>reduce</code> function, doing something similar to what the <code>Reduce</code> function does in R: </p>
+<p>And <a href="https://github.com/Rcpp11/Rcpp11/commit/047e961f1e205b51a8e4f1766f8da3eb6ae07de8">now</a> for something completely difference, the <code>reduce</code> function, doing something similar to what the <code>Reduce</code> function does in R: </p>
 
 <pre><code class="cpp">#include &lt;Rcpp.h&gt;
 using namespace Rcpp ;
