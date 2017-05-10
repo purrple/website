@@ -1,0 +1,28 @@
+---
+title:  Web Hosted R Syntax Highlighter
+author: "Romain François"
+date:  2013-03-24
+tags: ["highlight"]
+r_packages: ["highlight"]
+---
+
+*update* the feature described here is no longer available. 
+
+[highlight](http://highlight.r-enthusiasts.com/) uses simple
+jquery command to syntax highlight R code contained in any regular <code>&lt;pre&gt;</code> element.
+
+For example, this chunk of code, from the 
+[datasets::cars](http://help.r-enthusiasts.com/library/datasets/html/cars.html)
+
+```{r, eval=FALSE}
+require(stats)
+require(graphics)
+plot(cars, xlab = "Speed (mph)", ylab = "Stopping distance (ft)", las = 1)
+lines(lowess(cars$speed, cars$dist, f = 2/3, iter = 3), col = "red")
+title(main = "cars data")
+plot(cars, xlab = "Speed (mph)", ylab = "Stopping distance (ft)", las = 1, log = "xy")
+title(main = "cars data (logarithmic scales)")
+```
+
+More details is given at [highlights page](http://highlight.r-enthusiasts.com/)
+on how to use it on your own page.
