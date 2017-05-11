@@ -1,3 +1,6 @@
 [submodule "themes/blackburn"]
 	path = themes/blackburn
 	url = https://github.com/romainfrancois/blackburn.git
+[submodule "themes/hugo-lithium-theme"]
+	path = themes/hugo-lithium-theme
+	url = https://github.com/yihui/hugo-lithium-theme.git
