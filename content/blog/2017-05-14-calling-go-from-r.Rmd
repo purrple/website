@@ -5,7 +5,9 @@ date: '2017-05-14'
 slug: calling-go-from-r
 categories: []
 tags: ["R", "go"]
+banner: "img/banners/casablanca.jpg"
 ---
+
 
 Before we go any further, I should disclaim that I know almost nothing about `go`, 
 although to put this in perspective I did not know much about `C++` before

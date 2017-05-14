@@ -1,0 +1,9 @@
+weight: 3
+title: "dplyr"
+description: >
+  <ul class="list-style-none">
+    <li>Data Manipulation Grammar</li>
+    <li>Fast C++ internals</li>
+    <li>Part of tidyverse</li>
+  </ul>
+image: "img/carousel/deep-liar.png"

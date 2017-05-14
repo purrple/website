@@ -1,0 +1,8 @@
+weight: 4
+title: "Rcpp"
+description: >
+  <ul class="list-style-none">
+    <li>Seamless R and C++ Integration. </li>
+    <li>Foundation for many R packages. </li>
+  </ul>
+image: "img/carousel/Rcpp.png"
