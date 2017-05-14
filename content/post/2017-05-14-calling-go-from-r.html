@@ -1,0 +1,44 @@
+---
+title: Calling go from R
+author: Romain François
+date: '2017-05-14'
+slug: calling-go-from-r
+categories: []
+tags: ["R", "go"]
+---
+
+
+
+<p>Before we go any further, I should disclaim that I know almost nothing about <code>go</code>, although to put this in perspective I did not know much about <code>C++</code> before I started to work on <code>Rcpp</code>.</p>
+<p>Before I started to cook this recipe, I needed to check some ingredients: - <code>go</code> can make shared libraries (<code>.so</code>) - <code>R</code> can link to those</p>
+<p>Casual sunday browsing led me to tick the first box, with <a href="https://www.darkcoding.net/software/building-shared-libraries-in-go-part-1/">Building shared libraries in Go: Part 1</a> which is about calling <code>go</code> from <code>python</code>.</p>
+<p>The second box is automatically checked through some experience.</p>
+<pre class="go"><code>package main
+
+import &quot;C&quot;
+
+//export DoubleIt
+func DoubleIt(x int) int {
+        return x*2 ;
+}
+
+func main() {}</code></pre>
+<p>The code above (in file <code>doubler/main.go</code>) defines the go function <code>DoubleIt</code>. By importing the <code>&quot;C&quot;</code> package and exporting the <code>DoubleIt</code> symbol we make sure that we we will build a shared library we can call from <code>C</code>.</p>
+<pre><code>go build -o libdoubler.so -buildmode=c-shared ./doubler</code></pre>
+<p>We also need some <code>C</code> code that will act as a proxy between this shared library and the C R api can understand. I’ll skip over the details, if you have not seen this, it means that <code>Rcpp</code> has done a good job over the years.</p>
+<pre><code>#include &lt;R.h&gt;
+#include &lt;Rinternals.h&gt;
+
+extern int DoubleIt() ;
+
+SEXP godouble(SEXP x){
+  return Rf_ScalarInteger( DoubleIt( INTEGER(x)[0] ) ) ;
+}</code></pre>
+<p>So we define a <code>SEXP</code>roof function <code>godouble</code> that calls <code>DoubleIt</code>. We can <code>R CMD SHLIB</code> it:</p>
+<pre><code>$ R CMD SHLIB -L. -ldoubler rgo.c
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c rgo.c -o rgo.o
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o rgo.so rgo.o -L. -ldoubler -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation</code></pre>
+<p>And then we can finally call it from <code>R</code>:</p>
+<pre><code>$ Rscript -e &#39;dyn.load(&quot;rgo.so&quot;); .Call(&quot;godouble&quot;, 21L)&#39;
+[1] 42</code></pre>
+<p>This is the beginning of a beautiful friendship <img src="/img/casablanca.jpg" /></p>
