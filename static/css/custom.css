@@ -35,3 +35,11 @@
   opacity: 0.8;
   filter: alpha(opacity=80);
 }
+
+.bar {
+  height: 1000px;
+}
+
+.bar .lead a {
+  color: white ;
+}

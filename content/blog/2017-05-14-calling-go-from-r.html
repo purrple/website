@@ -42,4 +42,8 @@ clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -si
 <p>And then we can finally call it from <code>R</code>:</p>
 <pre><code>$ Rscript -e &#39;dyn.load(&quot;rgo.so&quot;); .Call(&quot;godouble&quot;, 21L)&#39;
 [1] 42</code></pre>
-<p>This is the beginning of a beautiful friendship <img src="/img/casablanca.jpg" /></p>
+<p>This is the beginning of a beautiful friendship</p>
+<div class="figure">
+<img src="/img/casablanca.jpg" />
+
+</div>

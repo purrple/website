@@ -1,0 +1,61 @@
+---
+title: 'Trump: a package to segfault your R session'
+author: Romain François
+date: '2016-11-16'
+slug: trump-a-package-to-segfault-your-r-session
+categories: []
+tags:
+  - pkg
+  - R
+banner: "img/banners/trump.jpg"
+---
+
+
+
+<p>The United States elected Donald Trump as their president for some reason.</p>
+<p>As a tribute, I made the <a href="https://github.com/romainfrancois/trump">trump</a> package. When you load the package, your R session crashes instantly.</p>
+<p>I probably won’t ever release this stupidity to CRAN, so if for some reason you want to install it, you can install it from github.</p>
+<pre class="r"><code>devtools::install_github(&quot;romainfrancois/trump&quot;)</code></pre>
+<p>Here is what happens when you load <code>trump</code> :</p>
+<pre><code>&gt; require(trump)
+Loading required package: trump
+
+ *** caught illegal operation ***
+address 0x100807fb4, cause &#39;illegal opcode&#39;
+
+Traceback:
+ 1: .C(&quot;trump&quot;)
+ 2: fun(libname, pkgname)
+ 3: doTryCatch(return(expr), name, parentenv, handler)
+ 4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+ 5: tryCatchList(expr, classes, parentenv, handlers)
+ 6: tryCatch(fun(libname, pkgname), error = identity)
+ 7: runHook(&quot;.onAttach&quot;, ns, dirname(nspath), nsname)
+ 8: attachNamespace(ns, pos = pos, deps)
+ 9: doTryCatch(return(expr), name, parentenv, handler)
+10: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+11: tryCatchList(expr, classes, parentenv, handlers)
+12: tryCatch(expr, error = function(e) {    call &lt;- conditionCall(e)    if (!is.null(call)) {        if (identical(call[[1L]], quote(doTryCatch)))             call &lt;- sys.call(-4L)        dcall &lt;- deparse(call)[1L]        prefix &lt;- paste(&quot;Error in&quot;, dcall, &quot;: &quot;)        LONG &lt;- 75L        msg &lt;- conditionMessage(e)        sm &lt;- strsplit(msg, &quot;\n&quot;)[[1L]]        w &lt;- 14L + nchar(dcall, type = &quot;w&quot;) + nchar(sm[1L], type = &quot;w&quot;)        if (is.na(w))             w &lt;- 14L + nchar(dcall, type = &quot;b&quot;) + nchar(sm[1L],                 type = &quot;b&quot;)        if (w &gt; LONG)             prefix &lt;- paste0(prefix, &quot;\n  &quot;)    }    else prefix &lt;- &quot;Error : &quot;    msg &lt;- paste0(prefix, conditionMessage(e), &quot;\n&quot;)    .Internal(seterrmessage(msg[1L]))    if (!silent &amp;&amp; identical(getOption(&quot;show.error.messages&quot;),         TRUE)) {        cat(msg, file = stderr())        .Internal(printDeferredWarnings())    }    invisible(structure(msg, class = &quot;try-error&quot;, condition = e))})
+13: try({    attr(package, &quot;LibPath&quot;) &lt;- which.lib.loc    ns &lt;- loadNamespace(package, lib.loc)    env &lt;- attachNamespace(ns, pos = pos, deps)})
+14: library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,     warn.conflicts = warn.conflicts, quietly = quietly)
+15: doTryCatch(return(expr), name, parentenv, handler)
+16: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+17: tryCatchList(expr, classes, parentenv, handlers)
+18: tryCatch(library(package, lib.loc = lib.loc, character.only = TRUE,     logical.return = TRUE, warn.conflicts = warn.conflicts, quietly = quietly),     error = function(e) e)
+19: require(trump)
+
+Possible actions:
+1: abort (with core dump, if enabled)
+2: normal R exit
+3: exit R without saving workspace
+4: exit R saving workspace
+Selection:</code></pre>
+<p>And here is what happens in Rstudio:</p>
+<div class="figure">
+<img src="https://github.com/romainfrancois/trump/raw/master/images/trump.png" />
+
+</div>
+<p>I achieved this with C code in the one-liner file <code>src/trump.c</code> that I found in this <a href="http://stackoverflow.com/questions/18986351/what-is-the-simplest-standard-conform-way-to-produce-a-segfault-in-c">stack overflow thread</a></p>
+<pre class="c"><code>void trump() { *(int*)0=0; }</code></pre>
+<pre><code>## clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c c1e935c9de311.c -o c1e935c9de311.o
+## clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o c1e935c9de311.so c1e935c9de311.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation</code></pre>
