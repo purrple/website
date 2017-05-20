@@ -43,3 +43,9 @@
 .bar .lead a {
   color: white ;
 }
+
+#heading-breadcrumbs {
+  background: none;
+  padding: 20px 0;
+  margin-bottom: 40px;
+}
