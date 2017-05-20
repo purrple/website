@@ -2,8 +2,15 @@ weight: 3
 title: "dplyr"
 description: >
   <ul class="list-style-none">
-    <li>Data Manipulation Grammar</li>
-    <li>Fast C++ internals</li>
-    <li>Part of tidyverse</li>
+    <li>Data manipulation grammar package from 
+      <a href="http://hadley.nz">Hadley Wickham</a> and part
+      of the <a href="http://tidyverse.org">tidyverse</a>. 
+    </li>
+    <li>
+      I participated in the development of the C++ internals 
+      of the package. 
+    </li>
   </ul>
+  
+  
 image: "img/carousel/deep-liar.png"

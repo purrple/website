@@ -2,7 +2,10 @@ weight: 4
 title: "Rcpp"
 description: >
   <ul class="list-style-none">
-    <li>Seamless R and C++ Integration. </li>
+    <li>Seamless R and C++ Integration package maintained by 
+      the <a href="http://www.rcpp.org">Rcpp Core Team</a>
+    </li>
     <li>Foundation for many R packages. </li>
+    <li>I am one of the historical authors of Rcpp</li>
   </ul>
 image: "img/carousel/Rcpp.png"
