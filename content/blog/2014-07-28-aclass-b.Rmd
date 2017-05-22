@@ -1,0 +1,69 @@
+---
+title:  a:class <- b
+author: "Romain François"
+date:  2014-07-28
+tags: ["R", "grammar", "beepr"]
+banner: "img/banners/static.png"
+---
+
+Usually in strongly typed languages, like C++, the type of a variable comes before the variable, e.g.:
+
+```
+int x = 23 ;  
+```
+
+So  `x` is declared of type `int` and assign the value `23`.
+
+Now, some languages do things differently, e.g. in julia:
+
+```
+x::Int8 = 1000  
+```
+
+or go :
+
+```
+var i int = 1 ;  
+```
+
+So here is a curious thing we can do with R:
+
+```{r eval=FALSE}
+`:<-` <- function(x, y, value){
+    cl <- deparse(substitute(y))
+    target <- deparse(substitute(x))
+    if( !is(value, cl) ) {
+        beepr::beep(7)
+        stop(sprintf("incompatible, expecting %s", cl ) )
+    }
+    assign( target, value, parent.frame() )
+}
+```
+
+The idea is that we can do something like this:
+
+```
+x  :integer <- 3L  
+x  :integer <- "foo"  
+```
+
+It does not work if `x` does not already exist, which makes this kind of useless:
+
+```{r eval=FALSE}
+> x :integer <;- 3
+Erreur dans x:integer <- 3 : objet 'x' introuvable  
+```
+
+However, if `x` already exist, it does:
+
+```
+> x <- NULL
+> x :integer <- 3L
+> x
+[1] 3
+> x :integer <- "foo"
+Erreur dans `:<-`(`*tmp*`, integer, value = "foo") :  
+  incompatible, expecting integer
+```
+
+This is not particularly useful. For it to be more useful, we would need the R grammar to recognize `a:b <- c` and do something meaningful with it.
