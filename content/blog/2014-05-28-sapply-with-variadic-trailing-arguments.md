@@ -2,19 +2,20 @@
 title:  sapply with variadic trailing arguments
 author: "Romain François"
 date:  2014-05-28
+tags: ["Rcpp11"]
+banner: "img/banners/cplusplus.png"
 ---
 
-<div class="post-content">
 
 <h3 id="motivation">Motivation</h3>
 
-<p>In R, we can pass further arguments to <code>sapply</code>. The arguments are then passed the function to be applied over. </p>
+In R, we can pass further arguments to <code>sapply</code>. The arguments are then passed the function to be applied over. 
 
 <pre><code>x &lt;- seq(-3, 3, by=.2 )  
 sapply( x, dnorm, 0, 4, FALSE )  
 </code></pre>
 
-<p>Conceptually this does something like: </p>
+Conceptually this does something like: 
 
 <pre><code>sapply( x, function(.){  
     dnorm(.,0,4,FALSE)
@@ -23,9 +24,9 @@ sapply( x, dnorm, 0, 4, FALSE )
 
 <h3 id="implementationinrcpp11">Implementation in Rcpp11</h3>
 
-<p><code>sapply</code> has been part of sugar for a long time, and is now very central <a href="http://blog.r-enthusiasts.com/2014/05/27/updating-sugar/">to the modernized</a> version of sugar in the devel version of <a href="https://github.com/Rcpp11/Rcpp11"><code>Rcpp11</code></a>, but until now we did not have a mechanism similar to R's ellipsis. </p>
+<code>sapply</code> has been part of sugar for a long time, and is now very central <a href="http://blog.r-enthusiasts.com/2014/05/27/updating-sugar/">to the modernized</a> version of sugar in the devel version of <a href="https://github.com/Rcpp11/Rcpp11"><code>Rcpp11</code></a>, but until now we did not have a mechanism similar to R's ellipsis. 
 
-<p><a href="http://www.cplusplus.com/articles/EhvU7k9E/">variadic templates</a> and <a href="http://www.cplusplus.com/reference/tuple/tuple/">std::tuple</a> give us the tools to <a href="https://github.com/Rcpp11/Rcpp11/commit/a13fc9240f3ab9967fb7a8dfc7d2ac03c99e6786">implement the feature</a> in Rcpp11. </p>
+<a href="http://www.cplusplus.com/articles/EhvU7k9E/">variadic templates</a> and <a href="http://www.cplusplus.com/reference/tuple/tuple/">std::tuple</a> give us the tools to <a href="https://github.com/Rcpp11/Rcpp11/commit/a13fc9240f3ab9967fb7a8dfc7d2ac03c99e6786">implement the feature</a> in Rcpp11. 
 
 <pre><code class="cpp">#include &lt;Rcpp11&gt;
 using namespace Rcpp11 ;
@@ -44,7 +45,7 @@ NumericVector bazinga(NumericVector x){
 
 <h3 id="details">Details</h3>
 
-<p>For the details, further arguments are tied together into a functor object <code>SapplyFunctionBinder</code> wrapping both the underlying function to be called <code>::Rf_dnorm4</code> and the data as <code>std::tuple&lt;double,double,bool&gt;</code>. </p>
+For the details, further arguments are tied together into a functor object <code>SapplyFunctionBinder</code> wrapping both the underlying function to be called <code>::Rf_dnorm4</code> and the data as <code>std::tuple&lt;double,double,bool&gt;</code>. 
 
 <pre><code class="cpp">template &lt;int RTYPE, typename Function, typename... Args &gt;  
 class SapplyFunctionBinder {  
@@ -75,14 +76,14 @@ private:
 
 <h3 id="alternatives">Alternatives</h3>
 
-<p>Alternatively, this can be done with <a href="http://www.cprogramming.com/c++11/c++11-lambda-closures.html">lambda functions</a> : </p>
+Alternatively, this can be done with <a href="http://www.cprogramming.com/c++11/c++11-lambda-closures.html">lambda functions</a> : 
 
 <pre><code>NumericVector res = sapply( x, [](double a){  
     return ::Rf_dnorm4(a, 0.0, 4.0, false ) ;
 } ) ;
 </code></pre>
 
-<p>We could also bind the function with <code>std::bind</code> : </p>
+We could also bind the function with <code>std::bind</code> : 
 
 <pre><code>using namespace std::placeholders ;  
 NumericVector res = sapply( x, std::bind(::Rf_dnorm4, _1, 0.0, 4.0, false) ) ;  
@@ -90,7 +91,7 @@ NumericVector res = sapply( x, std::bind(::Rf_dnorm4, _1, 0.0, 4.0, false) ) ;
 
 <h3 id="comparisoncostoftheabstraction">Comparison. Cost of the abstraction</h3>
 
-<p>Let's compare these alternatives through <a href="http://cran.r-project.org/web/packages/microbenchmark/index.html">microbenchmark</a>. </p>
+Let's compare these alternatives through <a href="http://cran.r-project.org/web/packages/microbenchmark/index.html">microbenchmark</a>. 
 
 <pre><code class="cpp">#include &lt;Rcpp11&gt;
 using namespace Rcpp11 ;
@@ -127,7 +128,7 @@ NumericVector sapply_loop(NumericVector x){
 }
 </code></pre>
 
-<p>Here are the results. </p>
+Here are the results. 
 
 <pre><code>$ Rcpp11Script /tmp/test.cpp
 
@@ -146,14 +147,14 @@ Unit: milliseconds
      sapply_loop(x) 20.81417 20.92458 22.13156 22.84175 31.48991   100
 </code></pre>
 
-<p>All 4 solutions give pretty identical performance. This is abstraction we did not have to pay for. In comparisons, a direct call to the vectorised R function <code>dnorm</code> </p>
+All 4 solutions give pretty identical performance. This is abstraction we did not have to pay for. In comparisons, a direct call to the vectorised R function <code>dnorm</code> 
 
 <pre><code>R_direct &lt;- function(x){  
     dnorm(x, 0, 4, FALSE)
 }
 </code></pre>
 
-<p>yields: </p>
+yields: 
 
 <pre><code>&gt; microbenchmark(sapply_variadic(x), sapply_lambda(x),
 +     sapply_bind(x), sapply_loop(x), R_direct(x))
@@ -166,12 +167,12 @@ Unit: milliseconds
         R_direct(x) 33.73723 33.89319 35.06729 36.05020 43.95266   100
 </code></pre>
 
-<p>I also intended to test the versio using R's sapply. </p>
+I also intended to test the versio using R's sapply. 
 
 <pre><code>sapply_R &lt;- function(x){  
     sapply(x, dnorm, 0, 4, FALSE )
 }
 </code></pre>
 
-<p>But ... life's too short and I killed it. </p>
-</div>
+But ... life's too short and I killed it. 
+
