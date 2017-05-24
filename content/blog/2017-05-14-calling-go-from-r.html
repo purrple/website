@@ -5,7 +5,7 @@ date: '2017-05-14'
 slug: calling-go-from-r
 categories: []
 tags: ["R", "go"]
-banner: "img/banners/casablanca.jpg"
+banner: "img/banners/go.png"
 ---
 
 
@@ -42,8 +42,7 @@ clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -si
 <p>And then we can finally call it from <code>R</code>:</p>
 <pre><code>$ Rscript -e &#39;dyn.load(&quot;rgo.so&quot;); .Call(&quot;godouble&quot;, 21L)&#39;
 [1] 42</code></pre>
-<p>This is the beginning of a beautiful friendship</p>
-<div class="figure">
-<img src="/img/casablanca.jpg" />
-
-</div>
+<blockquote>
+This is the beginning of a beautiful friendship
+</blockquote>
+<p><img src="/img/casablanca.jpg" width="100%" /></p>

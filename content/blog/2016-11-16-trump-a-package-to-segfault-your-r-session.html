@@ -3,10 +3,8 @@ title: 'Trump: a package to segfault your R session'
 author: Romain François
 date: '2016-11-16'
 slug: trump-a-package-to-segfault-your-r-session
-categories: []
-tags:
-  - pkg
-  - R
+packages: ["trump"]
+tags: ["useless", "pkg", "R"]
 banner: "img/banners/trump.jpg"
 ---
 
@@ -51,11 +49,6 @@ Possible actions:
 4: exit R saving workspace
 Selection:</code></pre>
 <p>And here is what happens in Rstudio:</p>
-<div class="figure">
-<img src="https://github.com/romainfrancois/trump/raw/master/images/trump.png" />
-
-</div>
+<p><img src="https://github.com/romainfrancois/trump/raw/master/images/trump.png" width = "100%" /></p>
 <p>I achieved this with C code in the one-liner file <code>src/trump.c</code> that I found in this <a href="http://stackoverflow.com/questions/18986351/what-is-the-simplest-standard-conform-way-to-produce-a-segfault-in-c">stack overflow thread</a></p>
 <pre class="c"><code>void trump() { *(int*)0=0; }</code></pre>
-<pre><code>## clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c c1e935c9de311.c -o c1e935c9de311.o
-## clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o c1e935c9de311.so c1e935c9de311.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation</code></pre>

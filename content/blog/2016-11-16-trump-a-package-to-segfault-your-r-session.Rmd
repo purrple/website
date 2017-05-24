@@ -3,20 +3,18 @@ title: 'Trump: a package to segfault your R session'
 author: Romain François
 date: '2016-11-16'
 slug: trump-a-package-to-segfault-your-r-session
-categories: []
-tags:
-  - pkg
-  - R
+packages: ["trump"]
+tags: ["useless", "pkg", "R"]
 banner: "img/banners/trump.jpg"
 ---
 
-The United States elected Donald Trump as their president for some reason. 
+The United States elected Donald Trump as their president for some reason.
 
-As a tribute, I made the [trump](https://github.com/romainfrancois/trump) package. 
-When you load the package, your R session crashes instantly. 
+As a tribute, I made the [trump](https://github.com/romainfrancois/trump) package.
+When you load the package, your R session crashes instantly.
 
-I probably won't ever release this stupidity to CRAN, so if for some reason you want to 
-install it, you can install it from github. 
+I probably won't ever release this stupidity to CRAN, so if for some reason you want to
+install it, you can install it from github.
 
 ```{r, eval=FALSE}
 devtools::install_github("romainfrancois/trump")
@@ -60,15 +58,14 @@ Possible actions:
 Selection:
 ```
 
-And here is what happens in Rstudio: 
+And here is what happens in Rstudio:
 
-![](https://github.com/romainfrancois/trump/raw/master/images/trump.png)
+<img src="https://github.com/romainfrancois/trump/raw/master/images/trump.png" width = "100%" />
 
 
-I achieved this with C code in the one-liner file `src/trump.c` that I found in this 
+I achieved this with C code in the one-liner file `src/trump.c` that I found in this
 [stack overflow thread](http://stackoverflow.com/questions/18986351/what-is-the-simplest-standard-conform-way-to-produce-a-segfault-in-c)
 
-```{c}
+```{c eval=FALSE}
 void trump() { *(int*)0=0; }
 ```
-

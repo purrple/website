@@ -25,7 +25,7 @@
   color: white ;
 }
 
-.navbar ul.nav > li > a {
+.navbar .nav > li > a {
   text-transform: none;
   text-decoration: none ;
 }
@@ -48,4 +48,60 @@
   background: none;
   padding: 20px 0;
   margin-bottom: 40px;
+}
+
+.navbar {
+  background: #f5f5f5;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.navbar ul.nav > li > a {
+  text-transform: none  ;
+  text-decoration: none ;
+}
+
+#heading-breadcrumbs {
+  margin-bottom: 0px ;
+  text-transform: none ;
+}
+
+#heading-breadcrumbs h1 {
+  text-transform: none ;
+}
+
+pre {
+  border: none ;
+  background-color: #eee ;
+  padding: 30px ;
+  font-size: 16px ;
+}
+
+body {
+  font-size: 16px ;
+}
+
+.post-taxonomy-tag {
+  padding: 5px;
+  color: #986dbd ;
+}
+
+#post-content {
+    margin-top: 50px ;
+}
+
+#blog-listing-medium .post h2 {
+  text-transform: none ;
+  font-weight: normal ;
+}
+
+#blog-listing-medium .post h2 a {
+  border-bottom: 1px solid #ddd;
+}
+
+#blog-listing-medium .post {
+  margin-bottom: 10px ;
+}
+
+.year-summary {
+  margin-top: 40px ;
 }

@@ -5,7 +5,7 @@ date: '2017-05-14'
 slug: calling-go-from-r
 categories: []
 tags: ["R", "go"]
-banner: "img/banners/casablanca.jpg"
+banner: "img/banners/go.png"
 ---
 
 
@@ -74,6 +74,8 @@ $ Rscript -e 'dyn.load("rgo.so"); .Call("godouble", 21L)'
 [1] 42
 ```
 
-This is the beginning of a beautiful friendship
+<blockquote>
+  This is the beginning of a beautiful friendship
+</blockquote>
 
-![](/img/casablanca.jpg)
+<img src="/img/casablanca.jpg" width="100%" />

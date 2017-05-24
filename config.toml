@@ -25,16 +25,22 @@ paginate = 10
     url  = "/blog/"
     weight = 2
 
+[[menu.main]]
+    name = ""
+    url = "https://github.com/rbind/romain"
+    weight = 4
+    icon = "github"
+
 #[[menu.main]]
 #    name = "FAQ"
 #    identifier = "faq"
 #    url  = "/faq/"
 #    weight = 3
 #
-[[menu.main]]
-    name = "Contact"
-    url  = "/contact/"
-    weight = 4
+#[[menu.main]]
+#    name = "Contact"
+#    url  = "/contact/"
+#    weight = 4
 
 [params]
     viewMorePostLink = "/blog/"
@@ -73,7 +79,7 @@ paginate = 10
     copyright = "Copyright (c) 2017, Romain Francois; all rights reserved."
 
     # Format dates with Go's time formatting
-    date_format = "January 2, 2006"
+    date_format = "2006/01/02"
 
     logo = "img/logo.png"
     address = """
