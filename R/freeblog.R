@@ -37,7 +37,8 @@ download_post <- function(url){
     html_attr("src")
   
   iframes <- html %>% 
-    html_nodes("div.post-content iframe")
+    html_nodes("div.post-content iframe") %>% 
+    html_attr("src")
   
   data_frame( 
     title = title, 

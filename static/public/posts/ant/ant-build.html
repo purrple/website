@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>build.xml</title>
+<style type="text/css"><!--
+pre{
+	font-size:xx-small !important ;
+}
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #a19d9d;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #ff0000;
+}
+.syntax-INVALID {
+  background: #000000;
+  color: #ffff00;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #33cc00;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #6633ff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ffc000;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="syntax-KEYWORD3">&lt;?</span><span class="syntax-KEYWORD3">xml</span><span class="syntax-KEYWORD3"> </span><span class="syntax-KEYWORD3">version=&quot;1.0&quot;?</span><span class="syntax-KEYWORD3">&gt;</span>
+<span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">project</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">default</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">test</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+
+<span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">test</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-set</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">rhome</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">code</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">R.home()</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-set</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">rversion</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">code</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">version$version.string</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-run</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">code</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">rjavaversion</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">=</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">packageDescription(</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">'rJava',</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">fields='Version'</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">)</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-set</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">rjavahome</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">code</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">system.file(</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">package</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">=</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">'rJava'</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">)</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-set</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">rjavaversion</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">code</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">rjavaversion</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+ 
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">echo</span><span class="syntax-MARKUP">&gt;</span>
+    R home        : ${rhome}
+    R version     : ${rversion}
+    rJava home    : ${rjavahome}
+    rJava version : ${rjavaversion}
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">echo</span><span class="syntax-MARKUP">&gt;</span>
+
+<span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP">&gt;</span>
+
+<span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">project</span><span class="syntax-MARKUP">&gt;</span>
+
+</span></pre>
+</body>
+</html>
+

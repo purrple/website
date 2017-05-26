@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>raster.R</title>
+</head>
+<body bgcolor="#ffffff">
+
+
+
+<pre><font color="#000000"><font color="#ff0000">require</font><font color="#000000"><strong>(</strong></font> RImageJ<font color="#000000"><strong>)</strong></font>
+logo <font color="#000000"><strong>&lt;-</strong></font> <font color="#ff0000">system.file</font><font color="#000000"><strong>(</strong></font> <font color="#6666ff">&quot;</font><font color="#6666ff">images</font><font color="#6666ff">&quot;</font>, <font color="#6666ff">&quot;</font><font color="#6666ff">R.jpg</font><font color="#6666ff">&quot;</font>, package <font color="#000000"><strong>=</strong></font> <font color="#6666ff">&quot;</font><font color="#6666ff">RImageJ</font><font color="#6666ff">&quot;</font> <font color="#000000"><strong>)</strong></font>
+image <font color="#000000"><strong>=</strong></font> IJ<font color="#000000"><strong>$</strong></font><font color="#ff0000">openImage</font><font color="#000000"><strong>(</strong></font> logo <font color="#000000"><strong>)</strong></font>
+<font color="#ff0000">plot</font><font color="#000000"><strong>(</strong></font><font color="#006699"><strong>c</strong></font><font color="#000000"><strong>(</strong></font><font color="#ff0000">100</font>, <font color="#ff0000">250</font><font color="#000000"><strong>)</strong></font>, <font color="#006699"><strong>c</strong></font><font color="#000000"><strong>(</strong></font><font color="#ff0000">300</font>, <font color="#ff0000">450</font><font color="#000000"><strong>)</strong></font>, type <font color="#000000"><strong>=</strong></font> <font color="#6666ff">&quot;</font><font color="#6666ff">n</font><font color="#6666ff">&quot;</font>, xlab<font color="#000000"><strong>=</strong></font><font color="#6666ff">&quot;</font><font color="#6666ff">&quot;</font>, ylab<font color="#000000"><strong>=</strong></font><font color="#6666ff">&quot;</font><font color="#6666ff">&quot;</font><font color="#000000"><strong>)</strong></font>
+<font color="#ff0000">raster</font><font color="#000000"><strong>(</strong></font>image, <font color="#ff0000">100</font>, <font color="#ff0000">300</font>, <font color="#ff0000">150</font>, <font color="#ff0000">350</font>, interpolate<font color="#000000"><strong>=</strong></font><font color="#cc00cc">FALSE</font><font color="#000000"><strong>)</strong></font>
+<font color="#ff0000">raster</font><font color="#000000"><strong>(</strong></font>image, <font color="#ff0000">100</font>, <font color="#ff0000">400</font>, <font color="#ff0000">150</font>, <font color="#ff0000">450</font><font color="#000000"><strong>)</strong></font>
+<font color="#ff0000">raster</font><font color="#000000"><strong>(</strong></font>image, <font color="#ff0000">200</font>, <font color="#ff0000">300</font>, <font color="#ff0000">200</font> <font color="#000000"><strong>+</strong></font> <font color="#ff0000">xinch</font><font color="#000000"><strong>(</strong></font>.5<font color="#000000"><strong>)</strong></font>, <font color="#ff0000">300</font> <font color="#000000"><strong>+</strong></font> <font color="#ff0000">yinch</font><font color="#000000"><strong>(</strong></font>.3<font color="#000000"><strong>)</strong></font>,
+       interpolate<font color="#000000"><strong>=</strong></font><font color="#cc00cc">FALSE</font><font color="#000000"><strong>)</strong></font>
+<font color="#ff0000">raster</font><font color="#000000"><strong>(</strong></font>image, <font color="#ff0000">200</font>, <font color="#ff0000">400</font>, <font color="#ff0000">250</font>, <font color="#ff0000">450</font>, angle<font color="#000000"><strong>=</strong></font><font color="#ff0000">15</font>, interpolate<font color="#000000"><strong>=</strong></font><font color="#cc00cc">FALSE</font><font color="#000000"><strong>)</strong></font>
+
+</font></pre>
+</body>
+</html>
+

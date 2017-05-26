@@ -1,0 +1,182 @@
+<html>
+<head>
+<title>build.xml</title>
+<style type="text/css"><!--
+
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #a19d9d;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #ff0000;
+}
+.syntax-INVALID {
+  background: #000000;
+  color: #ffff00;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #33cc00;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #6633ff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ffc000;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">project</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">Hello</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">Java</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">World</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">basedir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">.</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">default</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">all</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">&gt;</span>
+
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">target.dir</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">value</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">../inst/java</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">javadoc.dir</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">value</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">../inst/javadoc</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">junit.reports.dir</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">value</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">../inst/reports</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">junit.results.dir</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">value</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">../inst/results</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">JUNIT_JAR</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">value</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">lib/junit-4.7.jar</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">clean</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">delete</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">bin</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">delete</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">binjunit</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">delete</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${javadoc.dir}</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">delete</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${junit.reports.dir}</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">delete</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${junit.results.dir}</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP">&gt;</span> 
+    
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">init</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">depends</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">clean</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">mkdir</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${junit.reports.dir}</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">mkdir</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${junit.results.dir}</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">mkdir</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">bin</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">mkdir</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">binjunit</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">mkdir</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${javadoc.dir}</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">compile</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">depends</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">init</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">javac</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">srcdir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">src</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">destdir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">bin</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">javadoc</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">javadoc</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">access</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">public</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">destdir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${javadoc.dir}</span><span class="syntax-LITERAL1">&quot;</span>
+<span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">author</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">true</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">version</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">true</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">use</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">true</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span>
+<span class="syntax-MARKUP">  </span><span class="syntax-MARKUP">  </span><span class="syntax-MARKUP">  </span><span class="syntax-MARKUP">windowtitle</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">helloJavaWorld</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">-</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">Java</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">API</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+        
+       <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">fileset</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">src</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">defaultexcludes</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">yes</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+            <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">include</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">**/*.java</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+        <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">fileset</span><span class="syntax-MARKUP">&gt;</span>
+          
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">javadoc</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">build</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">depends</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">compile,javadoc</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">jar</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">jarfile</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${target.dir}/hellojavaworld.jar</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+      <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">fileset</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">bin</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">jar</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">path</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">id</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">junit_classpath</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">pathelement</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">location</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${JUNIT_JAR}</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">pathelement</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">location</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${target.dir}/hellojavaworld.jar</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">path</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">compile-testcases</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">depends</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">build</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">javac</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">srcdir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">junit</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">destdir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">binjunit</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+      <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">classpath</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">refid</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">junit_classpath</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">javac</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">build-testcases</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">depends</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">compile-testcases</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">jar</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">jarfile</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${target.dir}/hellojavaworld-tests.jar</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+      <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">fileset</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">binjunit</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">jar</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">path</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">id</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">junit_run_classpath</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">pathelement</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">location</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${JUNIT_JAR}</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">pathelement</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">location</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${target.dir}/hellojavaworld.jar</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">pathelement</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">location</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${target.dir}/hellojavaworld-tests.jar</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">path</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">test</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">depends</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">build,build-testcases</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">junit</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">fork</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">true</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">forkmode</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">once</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">haltonfailure</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">false</span><span class="syntax-LITERAL1">&quot;</span>
+<span class="syntax-MARKUP">  </span><span class="syntax-MARKUP">  </span><span class="syntax-MARKUP">  </span><span class="syntax-MARKUP">  </span><span class="syntax-MARKUP">haltonerror</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">false</span><span class="syntax-LITERAL1">&quot;</span>
+<span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">failureproperty</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">tests.failures</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">errorproperty</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">tests.errors</span><span class="syntax-LITERAL1">&quot;</span>
+<span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">includeantruntime</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">true</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">showoutput</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">true</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">printsummary</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">true</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+     
+     <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">classpath</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">refid</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">junit_run_classpath</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+     <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">formatter</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">type</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">xml</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+
+     <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">batchtest</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">fork</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">yes</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">todir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${junit.results.dir}</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+         <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">fileset</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">junit</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+             <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">include</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">**/*_Test.java</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+         <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">fileset</span><span class="syntax-MARKUP">&gt;</span>
+     <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">batchtest</span><span class="syntax-MARKUP">&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">junit</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">report</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">depends</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">test</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+   <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">junitreport</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">todir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${junit.reports.dir}</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+      <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">fileset</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">dir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${junit.results.dir}</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+        <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">include</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">TEST-*.xml</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+      <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">fileset</span><span class="syntax-MARKUP">&gt;</span>
+      <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">report</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">format</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">frames</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">todir</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">${junit.reports.dir}/html</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+    <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">junitreport</span><span class="syntax-MARKUP">&gt;</span>
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP">&gt;</span>
+  
+  <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">all</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">depends</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">report</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+  
+<span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">project</span><span class="syntax-MARKUP">&gt;</span>
+
+</span></pre>
+</body>
+</html>
+

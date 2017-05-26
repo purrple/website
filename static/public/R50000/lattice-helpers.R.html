@@ -1,0 +1,116 @@
+<html>
+<head>
+<title>rsvnlog-graph.R</title>
+<style type="text/css"><!--
+body{font-size: x-small !important ;} 
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #a19d9d;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #ff0000;
+}
+.syntax-INVALID {
+  background: #000000;
+  color: #ffff00;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #33cc00;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #6633ff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ffc000;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">this</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">fills</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">y</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">with</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">0</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">for</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">x</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">that</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">are</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">not</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">in</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">the</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">range</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">of</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">dates</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">(</span><span class="syntax-COMMENT3">thanks</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">to</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">Duncan</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">Murdoch</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">for</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">the</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">suggestion</span><span class="syntax-COMMENT3">)</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-LABEL">@param</span><span class="syntax-LABEL"> </span><span class="syntax-FUNCTION">x</span><span class="syntax-FUNCTION"> </span><span class="syntax-COMMENT3">dates</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-LABEL">@param</span><span class="syntax-LABEL"> </span><span class="syntax-FUNCTION">y</span><span class="syntax-FUNCTION"> </span><span class="syntax-COMMENT3">numbers</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-LABEL">@param</span><span class="syntax-LABEL"> </span><span class="syntax-FUNCTION">start</span><span class="syntax-FUNCTION"> </span><span class="syntax-COMMENT3">start</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">date</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">in</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">the</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">extended</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">date</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">vector</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-LABEL">@param</span><span class="syntax-LABEL"> </span><span class="syntax-FUNCTION">end</span><span class="syntax-FUNCTION"> </span><span class="syntax-COMMENT3">end</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">date</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">in</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">the</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">extended</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">date</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">vector</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-LABEL">@param</span><span class="syntax-LABEL"> </span><span class="syntax-FUNCTION">by</span><span class="syntax-FUNCTION"> </span><span class="syntax-COMMENT3">see</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">?seq.Date</span>
+panel.loess.fill <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">function</span><span class="syntax-OPERATOR">(</span>x, y, by <span class="syntax-OPERATOR">=</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">day</span><span class="syntax-LITERAL1">&quot;</span>, start <span class="syntax-OPERATOR">=</span> <span class="syntax-FUNCTION">min</span><span class="syntax-OPERATOR">(</span>x<span class="syntax-OPERATOR">)</span>, end <span class="syntax-OPERATOR">=</span> <span class="syntax-FUNCTION">max</span><span class="syntax-OPERATOR">(</span>x<span class="syntax-OPERATOR">)</span>, ...<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+    xx <span class="syntax-OPERATOR">&lt;-</span> seq.<span class="syntax-FUNCTION">Date</span><span class="syntax-OPERATOR">(</span> start, end, by<span class="syntax-OPERATOR">=</span> by <span class="syntax-OPERATOR">)</span>
+    yy <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">numeric</span><span class="syntax-OPERATOR">(</span> <span class="syntax-FUNCTION">length</span><span class="syntax-OPERATOR">(</span>xx<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>
+    not.zero <span class="syntax-OPERATOR">&lt;-</span> xx <span class="syntax-OPERATOR">%</span><span class="syntax-OPERATOR">in</span><span class="syntax-OPERATOR">%</span> x
+    <span class="syntax-FUNCTION">if</span><span class="syntax-OPERATOR">(</span> <span class="syntax-FUNCTION">any</span><span class="syntax-OPERATOR">(</span> not.zero <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span> yy<span class="syntax-OPERATOR">[</span> not.zero <span class="syntax-OPERATOR">]</span> <span class="syntax-OPERATOR">&lt;-</span> y
+    loess.out <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">loess</span><span class="syntax-OPERATOR">(</span> as.<span class="syntax-FUNCTION">numeric</span><span class="syntax-OPERATOR">(</span>yy<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">~</span> as.<span class="syntax-FUNCTION">numeric</span><span class="syntax-OPERATOR">(</span>xx<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>
+    panel.<span class="syntax-FUNCTION">lines</span><span class="syntax-OPERATOR">(</span> xx, <span class="syntax-FUNCTION">predict</span><span class="syntax-OPERATOR">(</span> loess.out<span class="syntax-OPERATOR">)</span>, ... <span class="syntax-OPERATOR">)</span>
+<span class="syntax-OPERATOR">}</span>
+
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">this</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">draws</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">a</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">vertical</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">line</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">for</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">each</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">year</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">between</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">start</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">and</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">end</span>
+<span class="syntax-COMMENT3">#'</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-LABEL">@param</span><span class="syntax-LABEL"> </span><span class="syntax-FUNCTION">start</span><span class="syntax-FUNCTION"> </span><span class="syntax-COMMENT3">first</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">year</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-LABEL">@param</span><span class="syntax-LABEL"> </span><span class="syntax-FUNCTION">end</span><span class="syntax-FUNCTION"> </span><span class="syntax-COMMENT3">end</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">last</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">year</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-LABEL">@param</span><span class="syntax-LABEL"> </span><span class="syntax-FUNCTION">col</span><span class="syntax-FUNCTION"> </span><span class="syntax-COMMENT3">passed</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">to</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">panel.abline</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-LABEL">@param</span><span class="syntax-LABEL"> </span><span class="syntax-FUNCTION">lwd</span><span class="syntax-FUNCTION"> </span><span class="syntax-COMMENT3">passed</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">to</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">panel.abline</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-LABEL">@param</span><span class="syntax-LABEL"> </span><span class="syntax-FUNCTION">...</span><span class="syntax-FUNCTION"> </span><span class="syntax-COMMENT3">further</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">parameters</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">for</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">panel.abline</span>
+panel.yearlines <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">function</span><span class="syntax-OPERATOR">(</span> 
+    start <span class="syntax-OPERATOR">=</span> <span class="syntax-DIGIT">1998</span>, end <span class="syntax-OPERATOR">=</span> <span class="syntax-DIGIT">2010</span>, 
+    lwd <span class="syntax-OPERATOR">=</span> <span class="syntax-DIGIT">0</span>.<span class="syntax-DIGIT">5</span>, col <span class="syntax-OPERATOR">=</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">gray</span><span class="syntax-LITERAL1">&quot;</span>, ... <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+    
+    firstday <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">function</span><span class="syntax-OPERATOR">(</span> year <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+        as.<span class="syntax-FUNCTION">Date</span><span class="syntax-OPERATOR">(</span> <span class="syntax-FUNCTION">sprintf</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">%d-01-01</span><span class="syntax-LITERAL1">&quot;</span>, year <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>
+    <span class="syntax-OPERATOR">}</span>
+    years <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">firstday</span><span class="syntax-OPERATOR">(</span> seq.<span class="syntax-FUNCTION">int</span><span class="syntax-OPERATOR">(</span> start, end <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>
+    panel.<span class="syntax-FUNCTION">abline</span><span class="syntax-OPERATOR">(</span> v <span class="syntax-OPERATOR">=</span> years, col <span class="syntax-OPERATOR">=</span> col, lwd <span class="syntax-OPERATOR">=</span> lwd, ... <span class="syntax-OPERATOR">)</span>
+<span class="syntax-OPERATOR">}</span>
+
+</span></pre>
+</body>
+</html>
+

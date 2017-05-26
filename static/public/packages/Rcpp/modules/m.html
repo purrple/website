@@ -1,0 +1,77 @@
+<html>
+<head>
+<style type="text/css">
+.number{
+	color: rgb(21,20,181) ;
+}
+
+.functioncall{
+	color: red ;
+}
+
+.string{
+	color: rgb(153,153,255) ;
+}
+
+.keyword{
+	font-weight: bolder ;
+	color: black;
+}
+
+.argument{
+	color: rgb( 177,63,5) ;
+}
+
+.comment{
+	color: rgb( 204,204,204) ;
+}
+
+.roxygencomment{
+	color: rgb(0,151,255);
+}
+
+.formalargs{
+	color: rgb(18,182,18);
+}
+
+.eqformalargs{
+	color: rgb(18,182,18);
+}
+
+.assignement{
+	font-weight: bolder;
+	color: rgb(55,55,98);
+}
+
+.package{
+	color: rgb(150,182,37);
+}
+
+.slot{
+	font-style:italic;
+}
+
+.symbol{
+	color: black ;
+}
+
+.prompt{
+	color: black ;
+}
+
+</style>
+</head>
+<body>
+<pre>
+<span class="comment"># grab the module</span>
+<span class="symbol">yada</span> <span class="assignement"><-</span> <span class="functioncall">Module</span><span class="keyword">(</span> <span class="string">"yada"</span> <span class="keyword">)</span>
+
+<span class="comment"># create a new World object</span>
+<span class="symbol">w</span> <span class="assignement"><-</span> <span class="functioncall">new</span><span class="keyword">(</span> <span class="symbol">yada</span><span class="keyword">$</span><span class="symbol">World</span> <span class="keyword">)</span>
+
+<span class="comment"># use it</span>
+<span class="symbol">w</span><span class="keyword">$</span><span class="functioncall">set</span><span class="keyword">(</span> <span class="string">"hello world"</span> <span class="keyword">)</span>
+<span class="symbol">w</span><span class="keyword">$</span><span class="functioncall">greet</span><span class="keyword">(</span><span class="keyword">)</span>
+</pre>
+</body>
+</html>

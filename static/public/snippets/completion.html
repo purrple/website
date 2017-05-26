@@ -1,0 +1,107 @@
+<html>
+<head>
+<style type="text/css">
+pre{
+	font-size:xx-small !important; 
+}
+.number{
+	color: rgb(21,20,181) ;
+}
+
+.functioncall{
+	color: red ;
+}
+
+.string{
+	color: rgb(153,153,255) ;
+}
+
+.keyword{
+	font-weight: bolder ;
+	color: black;
+}
+
+.argument{
+	color: rgb( 177,63,5) ;
+}
+
+.comment{
+	color: rgb( 204,204,204) ;
+}
+
+.roxygencomment{
+	color: rgb(0,151,255);
+}
+
+.formalargs{
+	color: rgb(18,182,18);
+}
+
+.eqformalargs{
+	color: rgb(18,182,18);
+}
+
+.assignement{
+	font-weight: bolder;
+	color: rgb(55,55,98);
+}
+
+.package{
+	color: rgb(150,182,37);
+}
+
+.slot{
+	font-style:italic;
+}
+
+.symbol{
+	color: black ;
+}
+
+.prompt{
+	color: black ;
+}
+
+</style>
+</head>
+<body>
+<pre>
+<span class="comment"># This program is free software: you can redistribute it and/or modify</span>
+<span class="comment"># it under the terms of the GNU General Public License as published by</span>
+<span class="comment"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="comment"># (at your option) any later version.</span>
+<span class="comment"># </span>
+<span class="comment"># This program is distributed in the hope that it will be useful,</span>
+<span class="comment"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="comment"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="comment"># GNU General Public License for more details.</span>
+<span class="comment"># </span>
+<span class="comment"># You should have received a copy of the GNU General Public License</span>
+<span class="comment"># along with this program.  If not, see <http://www.gnu.org/licenses/>.</span>
+
+<span class="symbol">names.jobjRef</span> <span class="assignement"><-</span> <span class="keyword">function</span><span class="keyword">(</span> <span class="formalargs">o</span> <span class="keyword">)</span><span class="keyword">{</span>
+        <span class="symbol">cl</span> <span class="assignement"><-</span> <span class="keyword">if</span> <span class="keyword">(</span><span class="functioncall">inherits</span><span class="keyword">(</span><span class="symbol">o</span><span class="keyword">,</span> <span class="string">"jobjRef"</span><span class="keyword">)</span> <span class="keyword">||</span> <span class="functioncall">inherits</span><span class="keyword">(</span><span class="symbol">o</span><span class="keyword">,</span> <span class="string">"jarrayRef"</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">{</span>
+                <span class="functioncall">.jcall</span><span class="keyword">(</span><span class="symbol">o</span><span class="keyword">,</span> <span class="string">"Ljava/lang/Class;"</span><span class="keyword">,</span> <span class="string">"getClass"</span><span class="keyword">)</span>
+        <span class="keyword">}</span> <span class="keyword">else</span> <span class="keyword">{</span>
+                <span class="functioncall">.jfindClass</span><span class="keyword">(</span><span class="functioncall">as.character</span><span class="keyword">(</span><span class="symbol">o</span><span class="keyword">)</span><span class="keyword">)</span>
+        <span class="keyword">}</span>
+        <span class="symbol">fields</span> <span class="assignement"><-</span> <span class="functioncall">.jcall</span><span class="keyword">(</span><span class="symbol">cl</span><span class="keyword">,</span> <span class="string">"[Ljava/lang/reflect/Field;"</span><span class="keyword">,</span> <span class="string">"getFields"</span><span class="keyword">)</span>
+        <span class="symbol">fieldnames</span> <span class="assignement"><-</span> <span class="functioncall">sapply</span><span class="keyword">(</span> <span class="symbol">fields</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">f</span><span class="keyword">)</span><span class="keyword">{</span>
+                <span class="functioncall">.jcall</span><span class="keyword">(</span> <span class="symbol">f</span><span class="keyword">,</span> <span class="string">"Ljava/lang/String;"</span><span class="keyword">,</span> <span class="string">"getName"</span><span class="keyword">)</span>
+        <span class="keyword">}</span> <span class="keyword">)</span>
+
+        <span class="symbol">methodz</span> <span class="assignement"><-</span> <span class="functioncall">.jcall</span><span class="keyword">(</span><span class="symbol">cl</span><span class="keyword">,</span> <span class="string">"[Ljava/lang/reflect/Method;"</span><span class="keyword">,</span> <span class="string">"getMethods"</span><span class="keyword">)</span>
+        <span class="symbol">methodnames</span> <span class="assignement"><-</span> <span class="functioncall">sapply</span><span class="keyword">(</span> <span class="symbol">methodz</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">m</span><span class="keyword">)</span><span class="keyword">{</span>
+                <span class="functioncall">.jcall</span><span class="keyword">(</span> <span class="symbol">m</span><span class="keyword">,</span> <span class="string">"Ljava/lang/String;"</span><span class="keyword">,</span> <span class="string">"getName"</span><span class="keyword">)</span>
+        <span class="keyword">}</span> <span class="keyword">)</span>
+        <span class="symbol">nargs</span>  <span class="assignement"><-</span> <span class="functioncall">sapply</span><span class="keyword">(</span> <span class="symbol">methodz</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">m</span><span class="keyword">)</span><span class="keyword">{</span>
+                <span class="functioncall">length</span><span class="keyword">(</span> <span class="functioncall">.jcall</span><span class="keyword">(</span> <span class="symbol">m</span><span class="keyword">,</span> <span class="string">"[Ljava/lang/Class;"</span><span class="keyword">,</span> <span class="string">"getParameterTypes"</span> <span class="keyword">)</span> <span class="keyword">)</span>
+        <span class="keyword">}</span> <span class="keyword">)</span>
+        <span class="symbol">methodnames</span> <span class="assignement"><-</span> <span class="functioncall">paste</span><span class="keyword">(</span>
+                <span class="symbol">methodnames</span><span class="keyword">,</span>
+                <span class="functioncall">ifelse</span><span class="keyword">(</span> <span class="symbol">nargs</span> == <span class="number">0</span> <span class="keyword">,</span> <span class="string">"()"</span><span class="keyword">,</span> <span class="string">"( "</span> <span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span> <span class="argument">=</span> <span class="string">""</span> <span class="keyword">)</span>
+        <span class="functioncall">c</span><span class="keyword">(</span> <span class="symbol">fieldnames</span><span class="keyword">,</span> <span class="symbol">methodnames</span> <span class="keyword">)</span>
+<span class="keyword">}</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<html>
+<head>
+<style type="text/css">
+
+.number{
+	color: rgb(21,20,181) ;
+}
+
+.functioncall{
+	color: red ;
+}
+
+.string{
+	color: rgb(153,153,255) ;
+}
+
+.keyword{
+	font-weight: bolder ;
+	color: black;
+}
+
+.argument{
+	color: rgb( 177,63,5) ;
+}
+
+.comment{
+	color: rgb( 204,204,204) ;
+}
+
+.roxygencomment{
+	color: rgb(0,151,255);
+}
+
+.formalargs{
+	color: rgb(18,182,18);
+}
+
+.eqformalargs{
+	color: rgb(18,182,18);
+}
+
+.assignement{
+	font-weight: bolder;
+	color: rgb(55,55,98);
+}
+
+.package{
+	color: rgb(150,182,37);
+}
+
+.slot{
+	font-style:italic;
+}
+
+.symbol{
+	color: black ;
+}
+
+.prompt{
+	color: black ;
+}
+
+</style>
+</head>
+<body>
+<pre>
+
+<span class="symbol">repo</span>  <span class="assignement"><-</span> <span class="functioncall">contrib.url</span><span class="keyword">(</span><span class="functioncall">getOption</span><span class="keyword">(</span><span class="string">"repos"</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="symbol">index</span> <span class="assignement"><-</span> <span class="functioncall">sub</span><span class="keyword">(</span> <span class="string">"src/contrib"</span><span class="keyword">,</span> <span class="string">"web/packages/index.html"</span><span class="keyword">,</span> <span class="symbol">repo</span> <span class="keyword">)</span>
+<span class="symbol">html</span>  <span class="assignement"><-</span> <span class="functioncall">readLines</span><span class="keyword">(</span> <span class="symbol">index</span> <span class="keyword">)</span>
+<span class="symbol">html</span>  <span class="assignement"><-</span> <span class="functioncall">grep</span><span class="keyword">(</span> <span class="string">"./../web/packages/"</span><span class="keyword">,</span> <span class="symbol">html</span><span class="keyword">,</span> <span class="argument">value</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span>
+<span class="symbol">data</span>  <span class="assignement"><-</span> <span class="functioncall">sub</span><span class="keyword">(</span> <span class="string">'^.*index.html">(.*?)</a></td><td>(.*?)$'</span><span class="keyword">,</span>
+        <span class="string">"\\1 @@ \\2"</span><span class="keyword">,</span> <span class="symbol">html</span><span class="keyword">,</span> <span class="argument">perl</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span>
+<span class="symbol">data</span>  <span class="assignement"><-</span> <span class="functioncall">sub</span><span class="keyword">(</span> <span class="string">'<.*?>'</span><span class="keyword">,</span> <span class="string">''</span><span class="keyword">,</span> <span class="symbol">data</span> <span class="keyword">)</span>
+<span class="symbol">packages</span> <span class="assignement"><-</span> <span class="functioncall">do.call</span><span class="keyword">(</span> <span class="symbol">rbind</span><span class="keyword">,</span> <span class="functioncall">strsplit</span><span class="keyword">(</span> <span class="symbol">data</span><span class="keyword">,</span> <span class="string">" @@ "</span> <span class="keyword">)</span> <span class="keyword">)</span>
+<span class="functioncall">head</span><span class="keyword">(</span> <span class="symbol">packages</span><span class="keyword">,</span> <span class="number">20</span> <span class="keyword">)</span>
+</pre>
+</body>
+</html>

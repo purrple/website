@@ -1,0 +1,112 @@
+<html>
+<head>
+<title>fastlm.cpp</title>
+<style type="text/css"><!--
+
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #cc0000;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #9966ff;
+}
+.syntax-INVALID {
+  background: #ffffcc;
+  color: #ff0066;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #0099ff;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #66ccff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ff00cc;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+.gutter {
+  background: #dfdede;
+  color: #000000;
+  border-right: 2px solid black ;
+  margin-right: 5px ;
+}
+.gutterH {
+  background: #dfdede;
+  color: #990066;
+  border-right: 2px solid black ; 
+  margin-right: 5px ;
+}
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="gutter">   1 </span><span class="syntax-KEYWORD2">#</span><span class="syntax-MARKUP">include</span> <span class="syntax-LITERAL1">&lt;</span><span class="syntax-LITERAL1">RcppArmadillo.h</span><span class="syntax-LITERAL1">&gt;</span>
+<span class="gutter">   2 </span>
+<span class="gutter">   3 </span><span class="syntax-KEYWORD2">extern</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">C</span><span class="syntax-LITERAL1">&quot;</span> SEXP <span class="syntax-FUNCTION">fastLm</span><span class="syntax-OPERATOR">(</span>SEXP ys<span class="syntax-OPERATOR">,</span> SEXP Xs<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">{</span>
+<span class="gutter">   4 </span>    Rcpp<span class="syntax-OPERATOR">::</span>NumericVector <span class="syntax-FUNCTION">yr</span><span class="syntax-OPERATOR">(</span>ys<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">;</span>         <span class="syntax-COMMENT1">//</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">creates</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">Rcpp</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">vector</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">from</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">SEXP</span>
+<span class="gutterH">   5 </span>    Rcpp<span class="syntax-OPERATOR">::</span>NumericMatrix <span class="syntax-FUNCTION">Xr</span><span class="syntax-OPERATOR">(</span>Xs<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">;</span>         <span class="syntax-COMMENT1">//</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">creates</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">Rcpp</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">matrix</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">from</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">SEXP</span>
+<span class="gutter">   6 </span>    <span class="syntax-KEYWORD3">int</span> n <span class="syntax-OPERATOR">=</span> Xr<span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">nrow</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> k <span class="syntax-OPERATOR">=</span> Xr<span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">ncol</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">;</span>
+<span class="gutter">   7 </span>
+<span class="gutter">   8 </span>    arma<span class="syntax-OPERATOR">::</span>mat <span class="syntax-FUNCTION">X</span><span class="syntax-OPERATOR">(</span>Xr<span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">begin</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> n<span class="syntax-OPERATOR">,</span> k<span class="syntax-OPERATOR">,</span> <span class="syntax-LITERAL2">false</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">;</span>       <span class="syntax-COMMENT1">//</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">reuses</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">memory</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">and</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">avoids</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">extra</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">copy</span>
+<span class="gutter">   9 </span>    arma<span class="syntax-OPERATOR">::</span>colvec <span class="syntax-FUNCTION">y</span><span class="syntax-OPERATOR">(</span>yr<span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">begin</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> yr<span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">size</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> <span class="syntax-LITERAL2">false</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">;</span>
+<span class="gutterH">  10 </span>
+<span class="gutter">  11 </span>    arma<span class="syntax-OPERATOR">::</span>colvec coef <span class="syntax-OPERATOR">=</span> arma<span class="syntax-OPERATOR">::</span><span class="syntax-FUNCTION">solve</span><span class="syntax-OPERATOR">(</span>X<span class="syntax-OPERATOR">,</span> y<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">;</span>      <span class="syntax-COMMENT1">//</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">fit</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">model</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">y</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">~</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">X</span>
+<span class="gutter">  12 </span>    arma<span class="syntax-OPERATOR">::</span>colvec res <span class="syntax-OPERATOR">=</span> y <span class="syntax-OPERATOR">-</span> X<span class="syntax-OPERATOR">*</span>coef<span class="syntax-OPERATOR">;</span>      <span class="syntax-COMMENT1">//</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">residuals</span>
+<span class="gutter">  13 </span>
+<span class="gutter">  14 </span>    <span class="syntax-KEYWORD3">double</span> s2 <span class="syntax-OPERATOR">=</span> std<span class="syntax-OPERATOR">::</span><span class="syntax-FUNCTION">inner_product</span><span class="syntax-OPERATOR">(</span>res<span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">begin</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> res<span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">end</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> res<span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">begin</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> <span class="syntax-KEYWORD3">double</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">/</span><span class="syntax-OPERATOR">(</span>n <span class="syntax-OPERATOR">-</span> k<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">;</span>
+<span class="gutterH">  15 </span>                        <span class="syntax-COMMENT1">//</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">std.errors</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">of</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">coefficients</span>
+<span class="gutter">  16 </span>    arma<span class="syntax-OPERATOR">::</span>colvec <span class="syntax-LITERAL2">stderr</span> <span class="syntax-OPERATOR">=</span> arma<span class="syntax-OPERATOR">::</span><span class="syntax-FUNCTION">sqrt</span><span class="syntax-OPERATOR">(</span>s2 <span class="syntax-OPERATOR">*</span> arma<span class="syntax-OPERATOR">::</span><span class="syntax-FUNCTION">diagvec</span><span class="syntax-OPERATOR">(</span> arma<span class="syntax-OPERATOR">::</span><span class="syntax-FUNCTION">inv</span><span class="syntax-OPERATOR">(</span>arma<span class="syntax-OPERATOR">::</span><span class="syntax-FUNCTION">trans</span><span class="syntax-OPERATOR">(</span>X<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">*</span>X<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">;</span>    
+<span class="gutter">  17 </span>
+<span class="gutter">  18 </span>    <span class="syntax-KEYWORD1">return</span> Rcpp<span class="syntax-OPERATOR">::</span>List<span class="syntax-OPERATOR">::</span><span class="syntax-FUNCTION">create</span><span class="syntax-OPERATOR">(</span>Rcpp<span class="syntax-OPERATOR">::</span><span class="syntax-FUNCTION">Named</span><span class="syntax-OPERATOR">(</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">coefficients</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">=</span> coef<span class="syntax-OPERATOR">,</span>
+<span class="gutter">  19 </span>                  Rcpp<span class="syntax-OPERATOR">::</span><span class="syntax-FUNCTION">Named</span><span class="syntax-OPERATOR">(</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">stderr</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">)</span>       <span class="syntax-OPERATOR">=</span> <span class="syntax-LITERAL2">stderr</span><span class="syntax-OPERATOR">,</span>
+<span class="gutterH">  20 </span>                  Rcpp<span class="syntax-OPERATOR">::</span><span class="syntax-FUNCTION">Named</span><span class="syntax-OPERATOR">(</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">df</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">)</span>           <span class="syntax-OPERATOR">=</span> n <span class="syntax-OPERATOR">-</span> k
+<span class="gutter">  21 </span>                  <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">;</span>
+<span class="gutter">  22 </span><span class="syntax-OPERATOR">}</span>
+<span class="gutter">  23 </span>
+</span></pre>
+</body>
+</html>
+

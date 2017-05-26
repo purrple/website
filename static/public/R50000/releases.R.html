@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>releases.R</title>
+<style type="text/css"><!--
+body{
+	font-size: x-small !important ;
+}
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #a19d9d;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #ff0000;
+}
+.syntax-INVALID {
+  background: #000000;
+  color: #ffff00;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #33cc00;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #6633ff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ffc000;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="syntax-COMMENT1">#</span><span class="syntax-COMMENT1">!/bin/env</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">Rscript</span><span class="syntax-COMMENT1"> </span>
+
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">grabs</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">version</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">number</span><span class="syntax-COMMENT3">,</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">release</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">dates</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">and</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">size</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">of</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">the</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">R</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">distribution</span>
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">for</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">each</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">archive</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">on</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">CRAN</span>
+releaseDate <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">function</span><span class="syntax-OPERATOR">(</span> 
+    urls <span class="syntax-OPERATOR">=</span> <span class="syntax-FUNCTION">sprintf</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">http://cran.r-project.org/src/base/R-%d/</span><span class="syntax-LITERAL1">&quot;</span>, <span class="syntax-DIGIT">0</span><span class="syntax-OPERATOR">:</span><span class="syntax-DIGIT">2</span> <span class="syntax-OPERATOR">)</span>, 
+    pattern <span class="syntax-OPERATOR">=</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+    
+    rx <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-LITERAL1">'</span><span class="syntax-LITERAL1">^.*(R-.*?gz).*?right&quot;&gt;([^\\s&gt;]*?)\\s.*?right&quot;&gt;\\s?([^&gt;]*?)&lt;.*$</span><span class="syntax-LITERAL1">'</span>
+    data <span class="syntax-OPERATOR">&lt;-</span> do.<span class="syntax-FUNCTION">call</span><span class="syntax-OPERATOR">(</span> rbind, <span class="syntax-FUNCTION">lapply</span><span class="syntax-OPERATOR">(</span> urls, <span class="syntax-FUNCTION">function</span><span class="syntax-OPERATOR">(</span> url <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+        txt <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">grep</span><span class="syntax-OPERATOR">(</span> rx, <span class="syntax-FUNCTION">readLines</span><span class="syntax-OPERATOR">(</span> url <span class="syntax-OPERATOR">)</span>, value <span class="syntax-OPERATOR">=</span> TRUE, perl <span class="syntax-OPERATOR">=</span> TRUE <span class="syntax-OPERATOR">)</span>
+        parts <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">sub</span><span class="syntax-OPERATOR">(</span> rx, <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">\\1--\\2--\\3</span><span class="syntax-LITERAL1">&quot;</span>, txt, perl <span class="syntax-OPERATOR">=</span> TRUE <span class="syntax-OPERATOR">)</span>
+        do.<span class="syntax-FUNCTION">call</span><span class="syntax-OPERATOR">(</span> rbind, <span class="syntax-FUNCTION">strsplit</span><span class="syntax-OPERATOR">(</span> parts, <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">--</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>
+    <span class="syntax-OPERATOR">}</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>
+    <span class="syntax-FUNCTION">colnames</span><span class="syntax-OPERATOR">(</span> data <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">c</span><span class="syntax-OPERATOR">(</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">version</span><span class="syntax-LITERAL1">&quot;</span>, <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">date</span><span class="syntax-LITERAL1">&quot;</span>, <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">size</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">)</span>
+    data <span class="syntax-OPERATOR">&lt;-</span> data<span class="syntax-OPERATOR">[</span> <span class="syntax-OPERATOR">!</span> <span class="syntax-FUNCTION">grepl</span><span class="syntax-OPERATOR">(</span><span class="syntax-LITERAL1">'</span><span class="syntax-LITERAL1">recommended</span><span class="syntax-LITERAL1">'</span>, data<span class="syntax-OPERATOR">[</span>,<span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">version</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">]</span> <span class="syntax-OPERATOR">)</span>,  <span class="syntax-OPERATOR">]</span> 
+    
+    data <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">within</span><span class="syntax-OPERATOR">(</span> as.data.<span class="syntax-FUNCTION">frame</span><span class="syntax-OPERATOR">(</span> data <span class="syntax-OPERATOR">)</span>, <span class="syntax-OPERATOR">{</span>
+        version <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">sub</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">^R-(.*?)\\.t.*$</span><span class="syntax-LITERAL1">&quot;</span>, <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">\\1</span><span class="syntax-LITERAL1">&quot;</span>, version <span class="syntax-OPERATOR">)</span>
+        date    <span class="syntax-OPERATOR">&lt;-</span> as.<span class="syntax-FUNCTION">Date</span><span class="syntax-OPERATOR">(</span> date, format <span class="syntax-OPERATOR">=</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">%d-%b-%Y</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span>
+        size    <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">local</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">{</span>
+            K <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">grepl</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">K$</span><span class="syntax-LITERAL1">&quot;</span>, size<span class="syntax-OPERATOR">)</span>
+            x <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">numeric</span><span class="syntax-OPERATOR">(</span> <span class="syntax-FUNCTION">length</span><span class="syntax-OPERATOR">(</span> size <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>
+            x<span class="syntax-OPERATOR">[</span> K <span class="syntax-OPERATOR">]</span>  <span class="syntax-OPERATOR">&lt;-</span> as.<span class="syntax-FUNCTION">numeric</span><span class="syntax-OPERATOR">(</span><span class="syntax-FUNCTION">sub</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">K</span><span class="syntax-LITERAL1">&quot;</span>, <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">&quot;</span>, size<span class="syntax-OPERATOR">[</span>K<span class="syntax-OPERATOR">]</span> <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">/</span> <span class="syntax-DIGIT">1024</span>
+            x<span class="syntax-OPERATOR">[</span> <span class="syntax-OPERATOR">!</span>K <span class="syntax-OPERATOR">]</span> <span class="syntax-OPERATOR">&lt;-</span> as.<span class="syntax-FUNCTION">numeric</span><span class="syntax-OPERATOR">(</span><span class="syntax-FUNCTION">sub</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">M</span><span class="syntax-LITERAL1">&quot;</span>, <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">&quot;</span>, size<span class="syntax-OPERATOR">[</span><span class="syntax-OPERATOR">!</span>K<span class="syntax-OPERATOR">]</span> <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">)</span>
+            x
+        <span class="syntax-OPERATOR">}</span> <span class="syntax-OPERATOR">)</span>
+    <span class="syntax-OPERATOR">}</span> <span class="syntax-OPERATOR">)</span>
+    data<span class="syntax-OPERATOR">[</span> <span class="syntax-FUNCTION">grepl</span><span class="syntax-OPERATOR">(</span> pattern, data<span class="syntax-OPERATOR">$</span>version <span class="syntax-OPERATOR">)</span>, <span class="syntax-OPERATOR">]</span>
+<span class="syntax-OPERATOR">}</span>
+releases <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">releaseDate</span><span class="syntax-OPERATOR">(</span> pattern <span class="syntax-OPERATOR">=</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">0$</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span>
+
+<span class="syntax-COMMENT3">#'</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">helper</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">function</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">to</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">draw</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">R</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">releases</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">on</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">the</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">top</span><span class="syntax-COMMENT3"> </span><span class="syntax-COMMENT3">axis</span>
+axis.releases <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-FUNCTION">function</span><span class="syntax-OPERATOR">(</span>side, ...<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">{</span>
+    <span class="syntax-FUNCTION">switch</span><span class="syntax-OPERATOR">(</span>side,
+        top <span class="syntax-OPERATOR">=</span> <span class="syntax-OPERATOR">{</span>
+            dates <span class="syntax-OPERATOR">&lt;-</span> releases<span class="syntax-OPERATOR">$</span>date
+            version <span class="syntax-OPERATOR">&lt;-</span> releases<span class="syntax-OPERATOR">$</span>version
+            panel.<span class="syntax-FUNCTION">axis</span><span class="syntax-OPERATOR">(</span>side <span class="syntax-OPERATOR">=</span> side, outside <span class="syntax-OPERATOR">=</span> TRUE,
+                       at <span class="syntax-OPERATOR">=</span> dates, labels <span class="syntax-OPERATOR">=</span> version, rot <span class="syntax-OPERATOR">=</span> <span class="syntax-DIGIT">45</span><span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">}</span>,
+        axis.<span class="syntax-FUNCTION">default</span><span class="syntax-OPERATOR">(</span>side <span class="syntax-OPERATOR">=</span> side, ...<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>
+<span class="syntax-OPERATOR">}</span>
+
+</span></pre>
+</body>
+</html>
+

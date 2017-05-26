@@ -1,0 +1,77 @@
+<html>
+<head>
+<style type="text/css">
+.number{
+	color: rgb(21,20,181) ;
+}
+
+.functioncall{
+	color: red ;
+}
+
+.string{
+	color: rgb(153,153,255) ;
+}
+
+.keyword{
+	font-weight: bolder ;
+	color: black;
+}
+
+.argument{
+	color: rgb( 177,63,5) ;
+}
+
+.comment{
+	color: rgb( 204,204,204) ;
+}
+
+.roxygencomment{
+	color: rgb(0,151,255);
+}
+
+.formalargs{
+	color: rgb(18,182,18);
+}
+
+.eqformalargs{
+	color: rgb(18,182,18);
+}
+
+.assignement{
+	font-weight: bolder;
+	color: rgb(55,55,98);
+}
+
+.package{
+	color: rgb(150,182,37);
+}
+
+.slot{
+	font-style:italic;
+}
+
+.symbol{
+	color: black ;
+}
+
+.prompt{
+	color: black ;
+}
+
+.line{
+    color: gray ;   
+}
+</style>
+</head>
+<body>
+<pre>
+<span class="functioncall">dir.create</span><span class="keyword">(</span> <span class="string">"photos"</span> <span class="keyword">)</span>
+<span class="symbol">photos</span> <span class="assignement">&lt;-</span> <span class="functioncall">facebook</span><span class="keyword">(</span> <span class="string">"me/photos"</span> <span class="keyword">)</span>
+<span class="functioncall">sapply</span><span class="keyword">(</span> <span class="symbol">photos</span><span class="keyword">$</span><span class="symbol">data</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">x</span><span class="keyword">)</span><span class="keyword">{</span>
+    <span class="symbol">url</span> <span class="assignement">&lt;-</span> <span class="symbol">x</span><span class="keyword">$</span><span class="symbol">source</span>
+    <span class="functioncall">download.file</span><span class="keyword">(</span> <span class="symbol">url</span><span class="keyword">,</span> <span class="functioncall">file.path</span><span class="keyword">(</span> <span class="string">"photos"</span><span class="keyword">,</span> <span class="functioncall">basename</span><span class="keyword">(</span><span class="symbol">url</span><span class="keyword">)</span> <span class="keyword">)</span> <span class="keyword">)</span>
+<span class="keyword">}</span><span class="keyword">)</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<html>
+<head>
+<style type="text/css">
+.pre{ font-size: small; }
+.number{
+	color: rgb(21,20,181) ;
+}
+
+.functioncall{
+	color: red ;
+}
+
+.string{
+	color: rgb(153,153,255) ;
+}
+
+.keyword{
+	font-weight: bolder ;
+	color: black;
+}
+
+.argument{
+	color: rgb( 177,63,5) ;
+}
+
+.comment{
+	color: rgb( 204,204,204) ;
+}
+
+.roxygencomment{
+	color: rgb(0,151,255);
+}
+
+.formalargs{
+	color: rgb(18,182,18);
+}
+
+.eqformalargs{
+	color: rgb(18,182,18);
+}
+
+.assignement{
+	font-weight: bolder;
+	color: rgb(55,55,98);
+}
+
+.package{
+	color: rgb(150,182,37);
+}
+
+.slot{
+	font-style:italic;
+}
+
+.symbol{
+	color: black ;
+}
+
+.prompt{
+	color: black ;
+}
+
+</style>
+</head>
+<body>
+<pre>
+<span class="symbol">download_Rcpp_releases</span> <span class="assignement"><-</span> <span class="keyword">function</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">{</span>
+    <span class="comment"># download archived versions</span>
+    <span class="symbol">url</span> <span class="assignement"><-</span> <span class="string">"http://cran.r-project.org/src/contrib/Archive/Rcpp/"</span>
+    <span class="symbol">rx</span> <span class="assignement"><-</span> <span class="string">'^.*(Rcpp_.*?gz).*?right">([^\\s>]*?)\\s.*?right">\\s?([^>]*?)<.*$'</span>
+    <span class="symbol">lines</span> <span class="assignement"><-</span> <span class="functioncall">readLines</span><span class="keyword">(</span> <span class="symbol">url</span> <span class="keyword">)</span>
+    <span class="symbol">archives</span> <span class="assignement"><-</span> <span class="functioncall">gsub</span><span class="keyword">(</span> <span class="symbol">rx</span><span class="keyword">,</span> <span class="string">"\\1"</span><span class="keyword">,</span> <span class="functioncall">grep</span><span class="keyword">(</span> <span class="symbol">rx</span><span class="keyword">,</span> <span class="symbol">lines</span><span class="keyword">,</span> <span class="argument">value</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span> <span class="keyword">)</span>
+    <span class="functioncall">sapply</span><span class="keyword">(</span> <span class="symbol">archives</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">.</span><span class="keyword">)</span> <span class="functioncall">download.file</span><span class="keyword">(</span><span class="functioncall">sprintf</span><span class="keyword">(</span> <span class="string">"%s%s"</span> <span class="keyword">,</span> <span class="symbol">url</span><span class="keyword">,</span> <span class="symbol">.</span><span class="keyword">)</span><span class="keyword">,</span><span class="symbol">.</span><span class="keyword">)</span> <span class="keyword">)</span>
+
+    <span class="comment"># download the last version</span>
+    <span class="functioncall">download.file</span><span class="keyword">(</span>
+        <span class="string">"http://cran.r-project.org/src/contrib/Rcpp_0.8.9.tar.gz"</span><span class="keyword">,</span>
+        <span class="string">"Rcpp_0.8.9.tar.gz"</span> <span class="keyword">)</span>
+
+    <span class="functioncall">invisible</span><span class="keyword">(</span>NULL<span class="keyword">)</span>
+<span class="keyword">}</span>
+</pre>
+</body>
+</html>

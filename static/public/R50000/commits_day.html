@@ -1,0 +1,91 @@
+<html>
+<head>
+<title>rsvnlog-graph.R</title>
+<style type="text/css"><!--
+body{ font-size: x-small !important ; }
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #a19d9d;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #ff0000;
+}
+.syntax-INVALID {
+  background: #000000;
+  color: #ffff00;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #33cc00;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #6633ff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ffc000;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="syntax-FUNCTION">png</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">commits_day.png</span><span class="syntax-LITERAL1">&quot;</span>, width <span class="syntax-OPERATOR">=</span> <span class="syntax-DIGIT">1000</span>, height<span class="syntax-OPERATOR">=</span> <span class="syntax-DIGIT">700</span> <span class="syntax-OPERATOR">)</span> 
+<span class="syntax-FUNCTION">print</span><span class="syntax-OPERATOR">(</span> <span class="syntax-FUNCTION">xyplot</span><span class="syntax-OPERATOR">(</span> commits <span class="syntax-OPERATOR">~</span> date , data <span class="syntax-OPERATOR">=</span> daydata, ylab <span class="syntax-OPERATOR">=</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">commits</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">/</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">day</span><span class="syntax-LITERAL1">&quot;</span>,
+    panel <span class="syntax-OPERATOR">=</span> <span class="syntax-FUNCTION">function</span><span class="syntax-OPERATOR">(</span>x, y, ...<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+        panel.<span class="syntax-FUNCTION">yearlines</span><span class="syntax-OPERATOR">(</span> <span class="syntax-OPERATOR">)</span>
+        panel.<span class="syntax-FUNCTION">abline</span><span class="syntax-OPERATOR">(</span> h <span class="syntax-OPERATOR">=</span> <span class="syntax-FUNCTION">seq</span><span class="syntax-OPERATOR">(</span> <span class="syntax-DIGIT">0</span>, <span class="syntax-DIGIT">50</span>, by <span class="syntax-OPERATOR">=</span> <span class="syntax-DIGIT">5</span><span class="syntax-OPERATOR">)</span>, lwd <span class="syntax-OPERATOR">=</span> .<span class="syntax-DIGIT">5</span>, col <span class="syntax-OPERATOR">=</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">gray</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span>
+        panel.loess.<span class="syntax-FUNCTION">fill</span><span class="syntax-OPERATOR">(</span> x, y, lwd <span class="syntax-OPERATOR">=</span> <span class="syntax-DIGIT">5</span>, col <span class="syntax-OPERATOR">=</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">black</span><span class="syntax-LITERAL1">&quot;</span>, ... <span class="syntax-OPERATOR">)</span>
+        panel.<span class="syntax-FUNCTION">xyplot</span><span class="syntax-OPERATOR">(</span> x, y, pch <span class="syntax-OPERATOR">=</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">+</span><span class="syntax-LITERAL1">&quot;</span>, ... <span class="syntax-OPERATOR">)</span>
+    <span class="syntax-OPERATOR">}</span>, ylim <span class="syntax-OPERATOR">=</span> <span class="syntax-FUNCTION">c</span><span class="syntax-OPERATOR">(</span><span class="syntax-DIGIT">0</span>, <span class="syntax-DIGIT">30</span><span class="syntax-OPERATOR">)</span>, axis <span class="syntax-OPERATOR">=</span> axis.releases <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>
+dev.<span class="syntax-FUNCTION">off</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>
+ 
+</span></pre>
+</body>
+</html>
+

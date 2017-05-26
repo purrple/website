@@ -1,0 +1,118 @@
+<html>
+<head>
+<style type="text/css">
+pre{
+    font-size: small ;
+}
+.number{
+	color: rgb(21,20,181) ;
+}
+
+.functioncall{
+	color: red ;
+}
+
+.string{
+	color: rgb(153,153,255) ;
+}
+
+.keyword{
+	font-weight: bolder ;
+	color: black;
+}
+
+.argument{
+	color: rgb( 177,63,5) ;
+}
+
+.comment{
+	color: rgb( 204,204,204) ;
+}
+
+.roxygencomment{
+	color: rgb(0,151,255);
+}
+
+.formalargs{
+	color: rgb(18,182,18);
+}
+
+.eqformalargs{
+	color: rgb(18,182,18);
+}
+
+.assignement{
+	font-weight: bolder;
+	color: rgb(55,55,98);
+}
+
+.package{
+	color: rgb(150,182,37);
+}
+
+.slot{
+	font-style:italic;
+}
+
+.symbol{
+	color: black ;
+}
+
+.prompt{
+	color: black ;
+}
+
+</style>
+</head>
+<body>
+<pre>
+<span class="symbol">circles</span> <span class="assignement"><-</span> <span class="keyword">function</span><span class="keyword">(</span>
+    <span class="formalargs">image</span> <span class="eqformalargs">=</span> <span class="string">"goldengate.png"</span><span class="keyword">,</span>
+    <span class="formalargs">n</span> <span class="eqformalargs">=</span> <span class="number">100</span><span class="keyword">,</span> <span class="formalargs">N</span> <span class="eqformalargs">=</span> <span class="number">100</span><span class="keyword">,</span>
+    <span class="formalargs">alpha</span> <span class="eqformalargs">=</span> <span class="number">.1</span><span class="keyword">,</span>
+    <span class="formalargs">show.image</span> <span class="eqformalargs">=</span> <span class="number">FALSE</span> <span class="keyword">)</span><span class="keyword">{</span>
+
+    <span class="symbol">im</span> <span class="assignement"><-</span> <span class="functioncall">readPNG</span><span class="keyword">(</span> <span class="symbol">image</span> <span class="keyword">)</span>
+    <span class="symbol">im.raster</span> <span class="assignement"><-</span> <span class="functioncall">structure</span><span class="keyword">(</span>
+        <span class="functioncall">rgb</span><span class="keyword">(</span>  <span class="symbol">im</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span><span class="keyword">,</span>  <span class="symbol">im</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">]</span><span class="keyword">,</span>  <span class="symbol">im</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">3</span><span class="keyword">]</span> <span class="keyword">)</span><span class="keyword">,</span>
+        <span class="argument">dim</span> <span class="argument">=</span> <span class="functioncall">dim</span><span class="keyword">(</span><span class="symbol">im</span><span class="keyword">)</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">:</span><span class="number">2</span><span class="keyword">]</span>
+    <span class="keyword">)</span>
+
+    <span class="keyword">if</span><span class="keyword">(</span> <span class="symbol">show.image</span> <span class="keyword">)</span><span class="keyword">{</span>
+        <span class="functioncall">grid.raster</span><span class="keyword">(</span> <span class="symbol">im.raster</span> <span class="keyword">)</span>
+    <span class="keyword">}</span>
+
+    <span class="symbol">xx</span><span class="symbol"></span> <span class="assignement"><-</span> <span class="functioncall">rep</span><span class="keyword">(</span> <span class="functioncall">seq</span><span class="keyword">(</span> <span class="number">0</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">,</span> <span class="argument">length.out</span> <span class="argument">=</span> <span class="functioncall">ncol</span><span class="keyword">(</span><span class="symbol">im.raster</span><span class="keyword">)</span> <span class="keyword">)</span><span class="keyword">,</span> <span class="argument">each</span> <span class="argument">=</span> <span class="functioncall">nrow</span><span class="keyword">(</span><span class="symbol">im.raster</span><span class="keyword">)</span> <span class="keyword">)</span>
+    <span class="symbol">yy</span> <span class="assignement"><-</span> <span class="functioncall">rep</span><span class="keyword">(</span> <span class="functioncall">seq</span><span class="keyword">(</span> <span class="number">0</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">,</span> <span class="argument">length.out</span> <span class="argument">=</span> <span class="functioncall">nrow</span><span class="keyword">(</span><span class="symbol">im.raster</span><span class="keyword">)</span> <span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall">ncol</span><span class="keyword">(</span><span class="symbol">im.raster</span><span class="keyword">)</span> <span class="keyword">)</span>
+
+    <span class="keyword">for</span><span class="keyword">(</span> <span class="symbol">i</span> <span class="keyword">in</span> <span class="number">1</span><span class="keyword">:</span><span class="symbol">N</span> <span class="keyword">)</span> <span class="keyword">{</span>
+        <span class="symbol">npoints</span> <span class="assignement"><-</span> <span class="functioncall">max</span><span class="keyword">(</span> <span class="number">2</span><span class="keyword">,</span> <span class="functioncall">round</span><span class="keyword">(</span> <span class="functioncall">runif</span><span class="keyword">(</span> <span class="number">1</span><span class="keyword">,</span> <span class="argument">max</span> <span class="argument">=</span> <span class="symbol">n</span> <span class="keyword">)</span> <span class="keyword">)</span> <span class="keyword">)</span>
+        <span class="symbol">d</span> <span class="assignement"><-</span> <span class="functioncall">data.frame</span><span class="keyword">(</span> <span class="argument">x</span> <span class="argument">=</span> <span class="functioncall">runif</span><span class="keyword">(</span><span class="symbol">npoints</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">y</span> <span class="argument">=</span> <span class="functioncall">runif</span><span class="keyword">(</span><span class="symbol">npoints</span><span class="keyword">)</span> <span class="keyword">)</span>
+        <span class="symbol">dists</span> <span class="assignement"><-</span> <span class="functioncall">as.matrix</span><span class="keyword">(</span><span class="functioncall">dist</span><span class="keyword">(</span><span class="symbol">d</span><span class="keyword">)</span><span class="keyword">)</span>
+        <span class="symbol">d</span><span class="keyword">$</span><span class="symbol">r</span> <span class="assignement"><-</span> <span class="functioncall">apply</span><span class="keyword">(</span> <span class="symbol">dists</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">.</span><span class="keyword">)</span> <span class="functioncall">min</span><span class="keyword">(</span><span class="symbol">.</span><span class="keyword">[</span><span class="symbol">.</span><span class="keyword">></span><span class="number">0</span><span class="keyword">]</span><span class="keyword">)</span> <span class="keyword">/</span> <span class="number">2.1</span> <span class="keyword">)</span>
+        <span class="symbol">d</span><span class="keyword">$</span><span class="symbol">col</span> <span class="assignement"><-</span> <span class="functioncall">sapply</span><span class="keyword">(</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall">nrow</span><span class="keyword">(</span><span class="symbol">d</span><span class="keyword">)</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">i</span><span class="keyword">)</span><span class="keyword">{</span>
+            <span class="symbol">dists</span> <span class="assignement"><-</span> <span class="functioncall">sqrt</span><span class="keyword">(</span>
+                <span class="keyword">(</span> <span class="symbol">d</span><span class="keyword">[</span><span class="symbol">i</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span> <span class="keyword">-</span> <span class="symbol">xx</span> <span class="keyword">)</span> <span class="keyword">^</span> <span class="number">2</span> <span class="keyword">+</span>
+                <span class="keyword">(</span> <span class="number">1</span> <span class="keyword">-</span> <span class="symbol">d</span><span class="keyword">[</span><span class="symbol">i</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">]</span> <span class="keyword">-</span> <span class="symbol">yy</span> <span class="keyword">)</span> <span class="keyword">^</span> <span class="number">2</span>
+            <span class="keyword">)</span>
+            <span class="symbol">idx</span> <span class="assignement"><-</span> <span class="functioncall">which</span><span class="keyword">(</span> <span class="symbol">dists</span> <span class="keyword"><</span> <span class="symbol">d</span><span class="keyword">[</span><span class="symbol">i</span><span class="keyword">,</span><span class="number">3</span><span class="keyword">]</span> <span class="keyword">)</span>
+            <span class="keyword">if</span><span class="keyword">(</span> <span class="functioncall">length</span><span class="keyword">(</span><span class="symbol">idx</span><span class="keyword">)</span> <span class="keyword">)</span><span class="keyword">{</span>
+                <span class="symbol">cols</span> <span class="assignement"><-</span> <span class="functioncall">apply</span><span class="keyword">(</span> <span class="functioncall">col2rgb</span><span class="keyword">(</span> <span class="symbol">im.raster</span><span class="keyword">[</span> <span class="symbol">idx</span> <span class="keyword">]</span> <span class="keyword">)</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">,</span> <span class="symbol">mean</span> <span class="keyword">)</span>
+                <span class="functioncall">rgb</span><span class="keyword">(</span> <span class="symbol">cols</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">]</span><span class="keyword">,</span> <span class="symbol">cols</span><span class="keyword">[</span><span class="number">2</span><span class="keyword">]</span><span class="keyword">,</span> <span class="symbol">cols</span><span class="keyword">[</span><span class="number">3</span><span class="keyword">]</span><span class="keyword">,</span> <span class="argument">maxColorValue</span> <span class="argument">=</span> <span class="number">255</span> <span class="keyword">)</span>
+            <span class="keyword">}</span> <span class="keyword">else</span> <span class="keyword">{</span>
+                <span class="functioncall">rgb</span><span class="keyword">(</span> <span class="number">0</span><span class="keyword">,</span> <span class="number">0</span><span class="keyword">,</span> <span class="number">0</span> <span class="keyword">)</span>
+            <span class="keyword">}</span>
+        <span class="keyword">}</span> <span class="keyword">)</span>
+
+        <span class="functioncall">grid.circle</span><span class="keyword">(</span> <span class="symbol">d</span><span class="keyword">$</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">d</span><span class="keyword">$</span><span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">d</span><span class="keyword">$</span><span class="symbol">r</span><span class="keyword">,</span> <span class="argument">gp</span> <span class="argument">=</span> <span class="functioncall">gpar</span><span class="keyword">(</span> <span class="argument">fill</span> <span class="argument">=</span> <span class="symbol">d</span><span class="keyword">$</span><span class="symbol">col</span><span class="keyword">,</span> <span class="argument">alpha</span> <span class="argument">=</span> <span class="symbol">alpha</span><span class="keyword">)</span> <span class="keyword">)</span>
+
+    <span class="keyword">}</span>
+<span class="keyword">}</span>
+
+<span class="functioncall">png</span><span class="keyword">(</span> <span class="string">"goldengate-circles.png"</span><span class="keyword">,</span> <span class="argument">width</span> <span class="argument">=</span> <span class="number">800</span><span class="keyword">,</span> <span class="argument">height</span> <span class="argument">=</span> <span class="number">600</span> <span class="keyword">)</span>
+<span class="functioncall">grid.newpage</span><span class="keyword">(</span><span class="keyword">)</span>
+<span class="functioncall">circles</span><span class="keyword">(</span> <span class="string">"goldengate.png"</span><span class="keyword">,</span> <span class="number">200</span><span class="keyword">,</span> <span class="number">200</span><span class="keyword">,</span> <span class="number">.2</span> <span class="keyword">)</span>
+<span class="functioncall">dev.off</span><span class="keyword">(</span><span class="keyword">)</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<html>
+<head>
+<title>build.xml</title>
+<style type="text/css"><!--
+pre{
+	font-size: xx-small !important ; 
+}
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #a19d9d;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #ff0000;
+}
+.syntax-INVALID {
+  background: #000000;
+  color: #ffff00;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #33cc00;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #6633ff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ffc000;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="syntax-KEYWORD3">&lt;?</span><span class="syntax-KEYWORD3">xml</span><span class="syntax-KEYWORD3"> </span><span class="syntax-KEYWORD3">version=&quot;1.0&quot;?</span><span class="syntax-KEYWORD3">&gt;</span>
+<span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">project</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">default</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">test</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+
+<span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">name</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">test</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>
+
+ <span class="syntax-COMMENT1">&lt;!--</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">set</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">r.home</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">property</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">--&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-set</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">rhome</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">code</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">R.home()</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+ 
+ <span class="syntax-COMMENT1">&lt;!--</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">set</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">rversion</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">property</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">--&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-set</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">rversion</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span>version$version.string<span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">r-set</span><span class="syntax-MARKUP">&gt;</span>
+
+ <span class="syntax-COMMENT1">&lt;!--</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">run</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">some</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">code,</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">use</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">CDATA</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">since</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">we</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">need</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">&quot;&lt;&quot;</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">sign</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">--&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-run</span><span class="syntax-MARKUP">&gt;</span><span class="syntax-KEYWORD2">&lt;![CDATA[</span>
+<span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">rjavahome</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">&lt;-</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">system.file(</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">package</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">=</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">'rJava'</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">)</span>
+<span class="syntax-COMMENT2"> </span><span class="syntax-KEYWORD2">]]&gt;</span><span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">r-run</span><span class="syntax-MARKUP">&gt;</span>
+ 
+ <span class="syntax-COMMENT1">&lt;!--</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">grab</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">property</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">--&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-set</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">rjavahome</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">code</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">rjavahome</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">&gt;</span>
+ 
+ <span class="syntax-COMMENT1">&lt;!--</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">&lt;r-set&gt;</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">can</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">also</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">use</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">CDATA</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">--&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-set</span><span class="syntax-MARKUP"> </span><span class="syntax-MARKUP">property</span><span class="syntax-MARKUP">=</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">rjavaversion</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-MARKUP">&gt;</span><span class="syntax-KEYWORD2">&lt;![CDATA[</span>
+<span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">require(</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">utils</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">)</span>
+<span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">packageDescription(</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">'rJava',</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">fields='Version'</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">)</span>
+<span class="syntax-COMMENT2"> </span><span class="syntax-KEYWORD2">]]&gt;</span><span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">r-set</span><span class="syntax-MARKUP">&gt;</span> 
+ 
+ <span class="syntax-COMMENT1">&lt;!--</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">write</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">on</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">output</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">stream</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">--&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-run</span><span class="syntax-MARKUP">&gt;</span>
+ cat( &quot;hello &quot; )
+ cat( &quot;world\n&quot;, file = stderr() )
+ print( stats::rnorm( 20 ) )
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">r-run</span><span class="syntax-MARKUP">&gt;</span>
+ 
+ <span class="syntax-COMMENT1">&lt;!--</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">using</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">project</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">variable</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">--&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-run</span><span class="syntax-MARKUP">&gt;</span>
+ project$setProperty( &quot;alphabet&quot;, paste( letters, collapse = &quot;&quot; ) )
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">r-run</span><span class="syntax-MARKUP">&gt;</span>
+ 
+ <span class="syntax-COMMENT1">&lt;!--</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">using</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">self</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">variable</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">--&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">r-run</span><span class="syntax-MARKUP">&gt;</span><span class="syntax-KEYWORD2">&lt;![CDATA[</span>
+<span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">cat(</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">&quot;target</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">name</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">:</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">&quot;,</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">self$getOwningTarget()$getName(),</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">&quot;\n&quot;</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">)</span>
+<span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">location</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">&lt;-</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">self$getLocation()</span>
+<span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">cat(</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">&quot;location</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">of</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">this</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">task</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">:</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">&quot;,</span><span class="syntax-COMMENT2"> </span>
+<span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">location$getFileName(),</span><span class="syntax-COMMENT2"> </span>
+<span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">&quot;</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">(line</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">&quot;,location$getLineNumber(),&quot;)\n&quot;,</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">sep</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">=</span><span class="syntax-COMMENT2"> </span><span class="syntax-COMMENT2">&quot;&quot;)</span>
+<span class="syntax-COMMENT2"> </span><span class="syntax-KEYWORD2">]]&gt;</span><span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">r-run</span><span class="syntax-MARKUP">&gt;</span>
+ 
+ 
+ <span class="syntax-COMMENT1">&lt;!--</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">display</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">results</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">--&gt;</span>
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">echo</span><span class="syntax-MARKUP">&gt;</span>
+    R home        : ${rhome}
+    R version     : ${rversion}
+    rJava home    : ${rjavahome}
+    rJava version : ${rjavaversion}
+    alphabet      : ${alphabet}
+ <span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">echo</span><span class="syntax-MARKUP">&gt;</span>
+
+<span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">target</span><span class="syntax-MARKUP">&gt;</span>
+
+<span class="syntax-MARKUP">&lt;</span><span class="syntax-MARKUP">/</span><span class="syntax-MARKUP">project</span><span class="syntax-MARKUP">&gt;</span>
+
+</span></pre>
+</body>
+</html>
+

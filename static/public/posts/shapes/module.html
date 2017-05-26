@@ -1,0 +1,102 @@
+<html>
+<head>
+<title>play.cpp</title>
+<style type="text/css"><!--
+
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #cc0000;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #9966ff;
+}
+.syntax-INVALID {
+  background: #ffffcc;
+  color: #ff0066;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #0099ff;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #66ccff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ff00cc;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="syntax-FUNCTION">RCPP_MODULE</span><span class="syntax-OPERATOR">(</span>play<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+    
+    class_<span class="syntax-OPERATOR">&lt;</span>Point<span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">Point</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span>constructor<span class="syntax-OPERATOR">&lt;</span><span class="syntax-KEYWORD3">double</span><span class="syntax-OPERATOR">,</span><span class="syntax-KEYWORD3">double</span><span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">field</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">x</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>Point<span class="syntax-OPERATOR">::</span>x<span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">field</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">y</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>Point<span class="syntax-OPERATOR">::</span>y<span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">;</span>
+    class_<span class="syntax-OPERATOR">&lt;</span>Shape<span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">Shape</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span>constructor<span class="syntax-OPERATOR">&lt;</span>Point<span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">method</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">area</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>Shape<span class="syntax-OPERATOR">::</span>area <span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">method</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">contains</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>Shape<span class="syntax-OPERATOR">::</span>contains <span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">;</span>
+    class_<span class="syntax-OPERATOR">&lt;</span>Circle<span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">Circle</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span>derives<span class="syntax-OPERATOR">&lt;</span>Shape<span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">Shape</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span>constructor<span class="syntax-OPERATOR">&lt;</span>Point<span class="syntax-OPERATOR">,</span><span class="syntax-KEYWORD3">double</span><span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">field</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">r</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>Circle<span class="syntax-OPERATOR">::</span>radius <span class="syntax-OPERATOR">)</span> 
+    <span class="syntax-OPERATOR">;</span> 
+    class_<span class="syntax-OPERATOR">&lt;</span>Rectangle<span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">Rectangle</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span>derives<span class="syntax-OPERATOR">&lt;</span>Shape<span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">Shape</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span>constructor<span class="syntax-OPERATOR">&lt;</span>Point<span class="syntax-OPERATOR">,</span><span class="syntax-KEYWORD3">double</span><span class="syntax-OPERATOR">,</span><span class="syntax-KEYWORD3">double</span><span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">field</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">h</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>Rectangle<span class="syntax-OPERATOR">::</span>height <span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">field</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">w</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>Rectangle<span class="syntax-OPERATOR">::</span>width <span class="syntax-OPERATOR">)</span>
+    <span class="syntax-OPERATOR">;</span> 
+        
+<span class="syntax-OPERATOR">}</span><span class="syntax-OPERATOR">;</span>
+</span></pre>
+</body>
+</html>
+

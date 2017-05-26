@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>play.R</title>
+<style type="text/css"><!--
+
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #cc0000;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #9966ff;
+}
+.syntax-INVALID {
+  background: #ffffcc;
+  color: #ff0066;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #0099ff;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #66ccff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ff00cc;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="syntax-FUNCTION">require</span><span class="syntax-OPERATOR">(</span> play <span class="syntax-OPERATOR">)</span> 
+
+origin <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-KEYWORD4">new</span><span class="syntax-OPERATOR">(</span> Point, <span class="syntax-DIGIT">0</span>, <span class="syntax-DIGIT">0</span> <span class="syntax-OPERATOR">)</span>
+
+pie <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-KEYWORD4">new</span><span class="syntax-OPERATOR">(</span> Circle, origin, <span class="syntax-DIGIT">3</span> <span class="syntax-OPERATOR">)</span>
+pie<span class="syntax-OPERATOR">$</span><span class="syntax-FUNCTION">area</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>
+pie<span class="syntax-OPERATOR">$</span><span class="syntax-FUNCTION">contains</span><span class="syntax-OPERATOR">(</span> <span class="syntax-KEYWORD4">new</span><span class="syntax-OPERATOR">(</span> Point, <span class="syntax-DIGIT">1</span>, <span class="syntax-DIGIT">2</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>
+
+rec <span class="syntax-OPERATOR">&lt;-</span> <span class="syntax-KEYWORD4">new</span><span class="syntax-OPERATOR">(</span> Rectangle, origin, <span class="syntax-DIGIT">2</span>, <span class="syntax-DIGIT">3</span> <span class="syntax-OPERATOR">)</span>
+rec<span class="syntax-OPERATOR">$</span><span class="syntax-FUNCTION">area</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>
+rec<span class="syntax-OPERATOR">$</span><span class="syntax-FUNCTION">contains</span><span class="syntax-OPERATOR">(</span> <span class="syntax-KEYWORD4">new</span><span class="syntax-OPERATOR">(</span> Point, <span class="syntax-DIGIT">1</span>, <span class="syntax-DIGIT">2</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>
+
+</span></pre>
+</body>
+</html>
+

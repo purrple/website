@@ -1,0 +1,197 @@
+<html>
+<head>
+<style type="text/css">
+.pre{ font-size: small; }
+.number{
+	color: rgb(21,20,181) ;
+}
+
+.functioncall{
+	color: red ;
+}
+
+.string{
+	color: rgb(153,153,255) ;
+}
+
+.keyword{
+	font-weight: bolder ;
+	color: black;
+}
+
+.argument{
+	color: rgb( 177,63,5) ;
+}
+
+.comment{
+	color: rgb( 204,204,204) ;
+}
+
+.roxygencomment{
+	color: rgb(0,151,255);
+}
+
+.formalargs{
+	color: rgb(18,182,18);
+}
+
+.eqformalargs{
+	color: rgb(18,182,18);
+}
+
+.assignement{
+	font-weight: bolder;
+	color: rgb(55,55,98);
+}
+
+.package{
+	color: rgb(150,182,37);
+}
+
+.slot{
+	font-style:italic;
+}
+
+.symbol{
+	color: black ;
+}
+
+.prompt{
+	color: black ;
+}
+
+</style>
+</head>
+<body>
+<pre>
+
+<span class="symbol">download_Rcpp_releases</span> <span class="assignement"><-</span> <span class="keyword">function</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">{</span>
+    <span class="comment"># download archived versions</span>
+    <span class="symbol">url</span> <span class="assignement"><-</span> <span class="string">"http://cran.r-project.org/src/contrib/Archive/Rcpp/"</span>
+    <span class="symbol">rx</span> <span class="assignement"><-</span> <span class="string">'^.*(Rcpp_.*?gz).*?right">([^\\s>]*?)\\s.*?right">\\s?([^>]*?)<.*$'</span>
+    <span class="symbol">lines</span> <span class="assignement"><-</span> <span class="functioncall">readLines</span><span class="keyword">(</span> <span class="symbol">url</span> <span class="keyword">)</span>
+    <span class="symbol">archives</span> <span class="assignement"><-</span> <span class="functioncall">gsub</span><span class="keyword">(</span> <span class="symbol">rx</span><span class="keyword">,</span> <span class="string">"\\1"</span><span class="keyword">,</span> <span class="functioncall">grep</span><span class="keyword">(</span> <span class="symbol">rx</span><span class="keyword">,</span> <span class="symbol">lines</span><span class="keyword">,</span> <span class="argument">value</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span> <span class="keyword">)</span>
+    <span class="functioncall">sapply</span><span class="keyword">(</span> <span class="symbol">archives</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">.</span><span class="keyword">)</span> <span class="functioncall">download.file</span><span class="keyword">(</span><span class="functioncall">sprintf</span><span class="keyword">(</span> <span class="string">"%s%s"</span> <span class="keyword">,</span> <span class="symbol">url</span><span class="keyword">,</span> <span class="symbol">.</span><span class="keyword">)</span><span class="keyword">,</span><span class="symbol">.</span><span class="keyword">)</span> <span class="keyword">)</span>
+
+    <span class="comment"># download the last version</span>
+    <span class="functioncall">download.file</span><span class="keyword">(</span>
+        <span class="string">"http://cran.r-project.org/src/contrib/Rcpp_0.8.9.tar.gz"</span><span class="keyword">,</span>
+        <span class="string">"Rcpp_0.8.9.tar.gz"</span> <span class="keyword">)</span>
+
+    <span class="functioncall">invisible</span><span class="keyword">(</span>NULL<span class="keyword">)</span>
+<span class="keyword">}</span>
+<span class="comment"># uncomment to download</span>
+<span class="comment"># download_Rcpp_releases()</span>
+
+<span class="symbol">getFiles</span> <span class="assignement"><-</span> <span class="keyword">function</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">{</span>
+    <span class="symbol">headers</span> <span class="assignement"><-</span> <span class="functioncall">sapply</span><span class="keyword">(</span>
+        <span class="functioncall">list.files</span><span class="keyword">(</span> <span class="string">"Rcpp/inst/include"</span><span class="keyword">,</span> <span class="argument">pattern</span> <span class="argument">=</span> <span class="string">".h$"</span><span class="keyword">,</span> <span class="argument">recursive</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">full</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span><span class="keyword">,</span>
+        <span class="symbol">readLines</span> <span class="keyword">)</span>
+
+    <span class="symbol">impl</span> <span class="assignement"><-</span> <span class="functioncall">sapply</span><span class="keyword">(</span>
+        <span class="functioncall">list.files</span><span class="keyword">(</span> <span class="string">"Rcpp/src"</span><span class="keyword">,</span> <span class="argument">pattern</span> <span class="argument">=</span> <span class="string">".c(pp)?$"</span><span class="keyword">,</span> <span class="argument">recursive</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">full</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span><span class="keyword">,</span>
+        <span class="symbol">readLines</span> <span class="keyword">)</span>
+
+    <span class="symbol">Rd</span> <span class="assignement"><-</span> <span class="functioncall">sapply</span><span class="keyword">(</span>
+        <span class="functioncall">list.files</span><span class="keyword">(</span> <span class="string">"Rcpp/man"</span><span class="keyword">,</span> <span class="argument">pattern</span> <span class="argument">=</span> <span class="string">".Rd$"</span><span class="keyword">,</span> <span class="argument">recursive</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">full</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span><span class="keyword">,</span>
+        <span class="symbol">readLines</span> <span class="keyword">)</span>
+
+    <span class="symbol">R</span> <span class="assignement"><-</span> <span class="functioncall">sapply</span><span class="keyword">(</span>
+        <span class="functioncall">list.files</span><span class="keyword">(</span> <span class="string">"Rcpp/R"</span><span class="keyword">,</span> <span class="argument">pattern</span> <span class="argument">=</span> <span class="string">".R$"</span><span class="keyword">,</span> <span class="argument">recursive</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">full</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span><span class="keyword">,</span>
+        <span class="symbol">readLines</span> <span class="keyword">)</span>
+
+    <span class="symbol">unit.tests</span> <span class="assignement"><-</span> <span class="keyword">if</span><span class="keyword">(</span> <span class="functioncall">file.exists</span><span class="keyword">(</span> <span class="string">"Rcpp/inst/unitTests"</span> <span class="keyword">)</span> <span class="keyword">)</span><span class="keyword">{</span>
+        <span class="functioncall">sapply</span><span class="keyword">(</span>
+        <span class="functioncall">list.files</span><span class="keyword">(</span> <span class="string">"Rcpp/inst/unitTests"</span><span class="keyword">,</span> <span class="argument">pattern</span> <span class="argument">=</span> <span class="string">"(.R|.cpp)$"</span><span class="keyword">,</span> <span class="argument">recursive</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">full</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span><span class="keyword">,</span>
+        <span class="symbol">readLines</span> <span class="keyword">)</span>
+    <span class="keyword">}</span>
+
+    <span class="symbol">Rnw</span><span class="symbol"></span> <span class="assignement"><-</span> <span class="functioncall">sapply</span><span class="keyword">(</span>
+        <span class="functioncall">list.files</span><span class="keyword">(</span> <span class="string">"Rcpp/inst/doc"</span><span class="keyword">,</span> <span class="argument">pattern</span> <span class="argument">=</span> <span class="string">".Rnw$"</span><span class="keyword">,</span> <span class="argument">recursive</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">full</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span><span class="keyword">,</span>
+        <span class="symbol">readLines</span> <span class="keyword">)</span>
+
+    <span class="functioncall">c</span><span class="keyword">(</span> <span class="symbol">headers</span><span class="keyword">,</span> <span class="symbol">impl</span><span class="keyword">,</span> <span class="symbol">Rd</span><span class="keyword">,</span> <span class="symbol">R</span><span class="keyword">,</span> <span class="symbol">unit.tests</span> <span class="keyword">)</span>
+<span class="keyword">}</span>
+
+<span class="symbol">archives</span> <span class="assignement"><-</span> <span class="functioncall">list.files</span><span class="keyword">(</span> <span class="argument">pattern</span> <span class="argument">=</span> <span class="string">"tar.gz$"</span> <span class="keyword">)</span>
+<span class="symbol">version</span> <span class="assignement"><-</span> <span class="functioncall">sub</span><span class="keyword">(</span> <span class="string">"^.*_(.*)[.]tar.*$"</span><span class="keyword">,</span> <span class="string">"\\1"</span><span class="keyword">,</span> <span class="symbol">archives</span> <span class="keyword">)</span>
+<span class="symbol">rx</span> <span class="assignement"><-</span> <span class="string">"(.*)[.](.*)[.](.*)$"</span>
+<span class="symbol">major</span> <span class="assignement"><-</span> <span class="functioncall">as.numeric</span><span class="keyword">(</span> <span class="functioncall">sub</span><span class="keyword">(</span> <span class="symbol">rx</span><span class="keyword">,</span> <span class="string">"\\1"</span><span class="keyword">,</span> <span class="symbol">version</span> <span class="keyword">)</span> <span class="keyword">)</span>
+<span class="symbol">minor</span> <span class="assignement"><-</span> <span class="functioncall">as.numeric</span><span class="keyword">(</span> <span class="functioncall">sub</span><span class="keyword">(</span> <span class="symbol">rx</span><span class="keyword">,</span> <span class="string">"\\2"</span><span class="keyword">,</span> <span class="symbol">version</span> <span class="keyword">)</span> <span class="keyword">)</span>
+<span class="symbol">release</span> <span class="assignement"><-</span> <span class="functioncall">as.numeric</span><span class="keyword">(</span> <span class="functioncall">sub</span><span class="keyword">(</span> <span class="symbol">rx</span><span class="keyword">,</span> <span class="string">"\\3"</span><span class="keyword">,</span> <span class="symbol">version</span> <span class="keyword">)</span> <span class="keyword">)</span>
+<span class="symbol">number</span> <span class="assignement"><-</span> <span class="symbol">major</span> <span class="keyword">*</span> <span class="number">10000</span> <span class="keyword">+</span> <span class="symbol">minor</span> <span class="keyword">*</span> <span class="number">100</span> <span class="keyword">+</span> <span class="symbol">release</span>
+
+<span class="symbol">nlines</span> <span class="assignement"><-</span> <span class="functioncall">sapply</span><span class="keyword">(</span> <span class="symbol">archives</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">x</span><span class="keyword">)</span><span class="keyword">{</span>
+    <span class="functioncall">system</span><span class="keyword">(</span> <span class="functioncall">sprintf</span><span class="keyword">(</span> <span class="string">"tar zxf %s"</span><span class="keyword">,</span> <span class="symbol">x</span> <span class="keyword">)</span> <span class="keyword">)</span>
+
+    <span class="symbol">allfiles</span> <span class="assignement"><-</span> <span class="functioncall">getFiles</span><span class="keyword">(</span><span class="keyword">)</span>
+
+    <span class="symbol">res</span> <span class="assignement"><-</span> <span class="functioncall">sum</span><span class="keyword">(</span> <span class="functioncall">sapply</span><span class="keyword">(</span> <span class="symbol">allfiles</span><span class="keyword">,</span> <span class="symbol">length</span> <span class="keyword">)</span> <span class="keyword">)</span>
+    <span class="functioncall">unlink</span><span class="keyword">(</span> <span class="string">"Rcpp"</span><span class="keyword">,</span> <span class="argument">recursive</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span>
+    <span class="symbol">res</span>
+<span class="keyword">}</span><span class="keyword">)</span>
+<span class="functioncall">names</span><span class="keyword">(</span><span class="symbol">nlines</span><span class="keyword">)</span> <span class="assignement"><-</span> <span class="symbol">version</span>
+
+<span class="symbol">releaseDate</span> <span class="assignement"><-</span> <span class="keyword">function</span><span class="keyword">(</span>
+    <span class="formalargs">urls</span> <span class="eqformalargs">=</span> <span class="string">"http://cran.r-project.org/src/contrib/Archive/Rcpp/"</span><span class="keyword">,</span>
+    <span class="formalargs">pattern</span> <span class="eqformalargs">=</span> <span class="string">""</span> <span class="keyword">)</span><span class="keyword">{</span>
+
+    <span class="symbol">rx</span> <span class="assignement"><-</span> <span class="string">'^.*(Rcpp_.*?gz).*?right">([^\\s>]*?)\\s.*?right">\\s?([^>]*?)<.*$'</span>
+    <span class="symbol">data</span> <span class="assignement"><-</span> <span class="functioncall">do.call</span><span class="keyword">(</span> <span class="symbol">rbind</span><span class="keyword">,</span> <span class="functioncall">lapply</span><span class="keyword">(</span> <span class="symbol">urls</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span> <span class="formalargs">url</span> <span class="keyword">)</span><span class="keyword">{</span>
+        <span class="symbol">txt</span> <span class="assignement"><-</span> <span class="functioncall">grep</span><span class="keyword">(</span> <span class="symbol">rx</span><span class="keyword">,</span> <span class="functioncall">readLines</span><span class="keyword">(</span> <span class="symbol">url</span> <span class="keyword">)</span><span class="keyword">,</span> <span class="argument">value</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">perl</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span>
+        <span class="symbol">parts</span> <span class="assignement"><-</span> <span class="functioncall">sub</span><span class="keyword">(</span> <span class="symbol">rx</span><span class="keyword">,</span> <span class="string">"\\1--\\2--\\3"</span><span class="keyword">,</span> <span class="symbol">txt</span><span class="keyword">,</span> <span class="argument">perl</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span>
+        <span class="functioncall">do.call</span><span class="keyword">(</span> <span class="symbol">rbind</span><span class="keyword">,</span> <span class="functioncall">strsplit</span><span class="keyword">(</span> <span class="symbol">parts</span><span class="keyword">,</span> <span class="string">"--"</span> <span class="keyword">)</span> <span class="keyword">)</span>
+    <span class="keyword">}</span> <span class="keyword">)</span> <span class="keyword">)</span>
+    <span class="functioncall">colnames</span><span class="keyword">(</span> <span class="symbol">data</span> <span class="keyword">)</span> <span class="assignement"><-</span> <span class="functioncall">c</span><span class="keyword">(</span><span class="string">"version"</span><span class="keyword">,</span> <span class="string">"date"</span><span class="keyword">,</span> <span class="string">"size"</span><span class="keyword">)</span>
+
+    <span class="symbol">data</span> <span class="assignement"><-</span> <span class="functioncall">within</span><span class="keyword">(</span> <span class="functioncall">as.data.frame</span><span class="keyword">(</span> <span class="symbol">data</span> <span class="keyword">)</span><span class="keyword">,</span> <span class="keyword">{</span>
+        <span class="symbol">version</span> <span class="assignement"><-</span> <span class="functioncall">sub</span><span class="keyword">(</span> <span class="string">"^Rcpp_(.*)[.]tar[.]gz.*$"</span><span class="keyword">,</span> <span class="string">"\\1"</span><span class="keyword">,</span> <span class="symbol">version</span> <span class="keyword">)</span>
+        <span class="symbol">date</span>    <span class="assignement"><-</span> <span class="functioncall">as.Date</span><span class="keyword">(</span> <span class="symbol">date</span><span class="keyword">,</span> <span class="argument">format</span> <span class="argument">=</span> <span class="string">"%d-%b-%Y"</span> <span class="keyword">)</span>
+        <span class="symbol">size</span>    <span class="assignement"><-</span> <span class="functioncall">local</span><span class="keyword">(</span><span class="keyword">{</span>
+            <span class="symbol">K</span> <span class="assignement"><-</span> <span class="functioncall">grepl</span><span class="keyword">(</span> <span class="string">"K$"</span><span class="keyword">,</span> <span class="symbol">size</span><span class="keyword">)</span>
+            <span class="symbol">x</span> <span class="assignement"><-</span> <span class="functioncall">numeric</span><span class="keyword">(</span> <span class="functioncall">length</span><span class="keyword">(</span> <span class="symbol">size</span> <span class="keyword">)</span> <span class="keyword">)</span>
+            <span class="symbol">x</span><span class="keyword">[</span> <span class="symbol">K</span> <span class="keyword">]</span>  <span class="assignement"><-</span> <span class="functioncall">as.numeric</span><span class="keyword">(</span><span class="functioncall">sub</span><span class="keyword">(</span> <span class="string">"K"</span><span class="keyword">,</span> <span class="string">""</span><span class="keyword">,</span> <span class="symbol">size</span><span class="keyword">[</span><span class="symbol">K</span><span class="keyword">]</span> <span class="keyword">)</span><span class="keyword">)</span> <span class="keyword">/</span> <span class="number">1024</span>
+            <span class="symbol">x</span><span class="keyword">[</span> <span class="keyword">!</span><span class="symbol">K</span> <span class="keyword">]</span> <span class="assignement"><-</span> <span class="functioncall">as.numeric</span><span class="keyword">(</span><span class="functioncall">sub</span><span class="keyword">(</span> <span class="string">"M"</span><span class="keyword">,</span> <span class="string">""</span><span class="keyword">,</span> <span class="symbol">size</span><span class="keyword">[</span><span class="keyword">!</span><span class="symbol">K</span><span class="keyword">]</span> <span class="keyword">)</span><span class="keyword">)</span>
+            <span class="symbol">x</span>
+        <span class="keyword">}</span> <span class="keyword">)</span>
+    <span class="keyword">}</span> <span class="keyword">)</span>
+    <span class="symbol">data</span><span class="keyword">[</span> <span class="functioncall">grepl</span><span class="keyword">(</span> <span class="symbol">pattern</span><span class="keyword">,</span> <span class="symbol">data</span><span class="keyword">$</span><span class="symbol">version</span> <span class="keyword">)</span><span class="keyword">,</span> <span class="keyword">]</span>
+<span class="keyword">}</span>
+<span class="symbol">lct</span> <span class="assignement"><-</span> <span class="functioncall">Sys.getlocale</span><span class="keyword">(</span><span class="string">"LC_TIME"</span><span class="keyword">)</span><span class="keyword">;</span> <span class="functioncall">Sys.setlocale</span><span class="keyword">(</span><span class="string">"LC_TIME"</span><span class="keyword">,</span> <span class="string">"C"</span><span class="keyword">)</span>
+<span class="symbol">releases</span> <span class="assignement"><-</span> <span class="functioncall">rbind</span><span class="keyword">(</span>
+        <span class="functioncall">releaseDate</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">,</span>
+        <span class="functioncall">data.frame</span><span class="keyword">(</span> <span class="argument">version</span> <span class="argument">=</span> <span class="string">"0.8.9"</span><span class="keyword">,</span> <span class="argument">date</span> <span class="argument">=</span> <span class="functioncall">as.Date</span><span class="keyword">(</span> <span class="string">"2010-11-28"</span> <span class="keyword">)</span><span class="keyword">,</span> <span class="argument">size</span> <span class="argument">=</span> <span class="number">1.9</span> <span class="keyword">)</span>
+        <span class="keyword">)</span>
+<span class="symbol">dates</span> <span class="assignement"><-</span> <span class="symbol">releases</span><span class="keyword">$</span><span class="symbol">date</span>
+
+<span class="functioncall">require</span><span class="keyword">(</span> <span class="symbol">png</span> <span class="keyword">)</span>
+<span class="functioncall">png</span><span class="keyword">(</span> <span class="string">"nlines_rcpp.png"</span><span class="keyword">,</span> <span class="argument">width</span> <span class="argument">=</span> <span class="number">1000</span><span class="keyword">,</span> <span class="argument">height</span> <span class="argument">=</span> <span class="number">700</span> <span class="keyword">)</span>
+<span class="symbol">im</span> <span class="assignement"><-</span> <span class="functioncall">readPNG</span><span class="keyword">(</span> <span class="string">"sugar.png"</span><span class="keyword">,</span> <span class="argument">native</span> <span class="argument">=</span> <span class="number">TRUE</span> <span class="keyword">)</span>
+
+<span class="functioncall">plot</span><span class="keyword">(</span> <span class="symbol">dates</span><span class="keyword">,</span> <span class="symbol">nlines</span><span class="keyword">,</span> <span class="argument">type</span> <span class="argument">=</span> <span class="string">"l"</span><span class="keyword">,</span> <span class="argument">axes</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">lwd</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">,</span> <span class="argument">col</span> <span class="argument">=</span> <span class="string">"black"</span><span class="keyword">,</span>
+    <span class="argument">xlim</span> <span class="argument">=</span> <span class="functioncall">range</span><span class="keyword">(</span><span class="symbol">dates</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">xaxs</span> <span class="argument">=</span> <span class="string">"i"</span><span class="keyword">,</span> <span class="argument">xpd</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">xlab</span> <span class="argument">=</span> <span class="string">""</span><span class="keyword">,</span> <span class="argument">ylab</span> <span class="argument">=</span> <span class="string">""</span> <span class="keyword">)</span>
+<span class="symbol">usr</span> <span class="assignement"><-</span> <span class="functioncall">par</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">[[</span><span class="string">"usr"</span><span class="keyword">]</span><span class="keyword">]</span>
+<span class="functioncall">rasterImage</span><span class="keyword">(</span> <span class="symbol">im</span><span class="keyword">,</span>  <span class="functioncall">min</span><span class="keyword">(</span> <span class="symbol">dates</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">usr</span><span class="keyword">[</span><span class="number">3</span><span class="keyword">]</span><span class="keyword">,</span> <span class="functioncall">max</span><span class="keyword">(</span><span class="symbol">dates</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">usr</span><span class="keyword">[</span><span class="number">4</span><span class="keyword">]</span> <span class="keyword">)</span>
+<span class="functioncall">abline</span><span class="keyword">(</span> <span class="argument">h</span> <span class="argument">=</span> <span class="functioncall">seq</span><span class="keyword">(</span><span class="number">0</span><span class="keyword">,</span><span class="number">70000</span><span class="keyword">,</span> <span class="argument">by</span> <span class="argument">=</span> <span class="number">5000</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">col</span> <span class="argument">=</span> <span class="string">"gray"</span> <span class="keyword">)</span>
+<span class="functioncall">polygon</span><span class="keyword">(</span>
+    <span class="functioncall">c</span><span class="keyword">(</span><span class="symbol">dates</span><span class="keyword">,</span> <span class="functioncall">rev</span><span class="keyword">(</span><span class="symbol">dates</span><span class="keyword">)</span> <span class="keyword">)</span><span class="keyword">,</span>
+    <span class="functioncall">c</span><span class="keyword">(</span><span class="symbol">nlines</span><span class="keyword">,</span> <span class="functioncall">rep</span><span class="keyword">(</span><span class="number">80000</span><span class="keyword">,</span> <span class="functioncall">length</span><span class="keyword">(</span><span class="symbol">nlines</span><span class="keyword">)</span> <span class="keyword">)</span> <span class="keyword">)</span><span class="keyword">,</span>
+    <span class="argument">col</span> <span class="argument">=</span> <span class="string">"#FFFFFFDD"</span> <span class="keyword">)</span>
+<span class="functioncall">box</span><span class="keyword">(</span><span class="keyword">)</span>
+
+<span class="functioncall">lines</span><span class="keyword">(</span> <span class="symbol">dates</span><span class="keyword">,</span> <span class="symbol">nlines</span><span class="keyword">,</span> <span class="argument">lwd</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">,</span> <span class="argument">col</span> <span class="argument">=</span> <span class="string">"black"</span><span class="keyword">,</span> <span class="argument">xpd</span> <span class="argument">=</span> <span class="number">NA</span> <span class="keyword">)</span>
+<span class="functioncall">lines</span><span class="keyword">(</span> <span class="symbol">dates</span><span class="keyword">,</span> <span class="symbol">nlines</span><span class="keyword">,</span> <span class="argument">lwd</span> <span class="argument">=</span> <span class="number">5</span><span class="keyword">,</span> <span class="argument">col</span> <span class="argument">=</span> <span class="string">"orange"</span><span class="keyword">,</span> <span class="argument">xpd</span> <span class="argument">=</span> <span class="number">NA</span> <span class="keyword">)</span>
+
+<span class="functioncall">axis</span><span class="keyword">(</span> <span class="argument">side</span> <span class="argument">=</span> <span class="number">3</span><span class="keyword">,</span> <span class="symbol">dates</span><span class="keyword">,</span> <span class="functioncall">names</span><span class="keyword">(</span><span class="symbol">nlines</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">las</span> <span class="argument">=</span> <span class="number">2</span> <span class="keyword">)</span>
+<span class="functioncall">axis</span><span class="keyword">(</span> <span class="argument">side</span> <span class="argument">=</span> <span class="number">2</span><span class="keyword">,</span> <span class="functioncall">seq</span><span class="keyword">(</span><span class="number">0</span><span class="keyword">,</span><span class="number">70000</span><span class="keyword">,</span> <span class="argument">by</span> <span class="argument">=</span> <span class="number">5000</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">las</span> <span class="argument">=</span> <span class="number">2</span> <span class="keyword">)</span>
+
+<span class="symbol">years</span> <span class="assignement"><-</span> <span class="functioncall">seq.Date</span><span class="keyword">(</span> <span class="functioncall">as.Date</span><span class="keyword">(</span> <span class="string">"2008/01/01"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall">as.Date</span><span class="keyword">(</span> <span class="string">"2011/01/01"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">by</span> <span class="argument">=</span> <span class="string">"year"</span> <span class="keyword">)</span>
+<span class="functioncall">text</span><span class="keyword">(</span> <span class="symbol">years</span><span class="keyword">,</span> <span class="functioncall">rep</span><span class="keyword">(</span><span class="number">68000</span><span class="keyword">,</span> <span class="functioncall">length</span><span class="keyword">(</span><span class="symbol">years</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall">format</span><span class="keyword">(</span> <span class="symbol">years</span><span class="keyword">,</span> <span class="string">"%Y"</span><span class="keyword">)</span> <span class="keyword">,</span> <span class="argument">cex</span> <span class="argument">=</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">col</span> <span class="argument">=</span> <span class="string">"gray"</span><span class="keyword">,</span> <span class="argument">font</span> <span class="argument">=</span> <span class="number">2</span> <span class="keyword">)</span>
+
+<span class="symbol">months</span> <span class="assignement"><-</span> <span class="functioncall">seq.Date</span><span class="keyword">(</span> <span class="functioncall">as.Date</span><span class="keyword">(</span> <span class="string">"2008/01/01"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall">as.Date</span><span class="keyword">(</span> <span class="string">"2011/01/01"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">by</span> <span class="argument">=</span> <span class="string">"month"</span> <span class="keyword">)</span>
+<span class="functioncall">axis</span><span class="keyword">(</span> <span class="number">1</span><span class="keyword">,</span> <span class="symbol">months</span><span class="keyword">,</span> <span class="functioncall">substr</span><span class="keyword">(</span> <span class="symbol">month.abb</span><span class="keyword">[</span> <span class="functioncall">as.integer</span><span class="keyword">(</span> <span class="functioncall">format</span><span class="keyword">(</span> <span class="symbol">months</span><span class="keyword">,</span> <span class="string">"%m"</span> <span class="keyword">)</span> <span class="keyword">)</span> <span class="keyword">]</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">,</span> <span class="number">1</span> <span class="keyword">)</span> <span class="keyword">)</span>
+
+<span class="functioncall">dev.off</span><span class="keyword">(</span><span class="keyword">)</span>
+</pre>
+</body>
+</html>

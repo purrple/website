@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>HelloJavaWorld_Test.java</title>
+<style type="text/css"><!--
+
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #a19d9d;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #ff0000;
+}
+.syntax-INVALID {
+  background: #000000;
+  color: #ffff00;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #33cc00;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #6633ff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ffc000;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="syntax-KEYWORD2">import</span> <span class="syntax-KEYWORD1">static</span> org.junit.Assert.assertEquals;
+<span class="syntax-KEYWORD2">import</span> org.junit.Test;
+
+<span class="syntax-KEYWORD1">public</span> <span class="syntax-KEYWORD3">class</span> HelloJavaWorld_Test <span class="syntax-OPERATOR">{</span>
+  
+  <span class="syntax-KEYWORD4">@</span><span class="syntax-KEYWORD4">Test</span>
+  <span class="syntax-KEYWORD1">public</span> <span class="syntax-KEYWORD3">void</span> <span class="syntax-FUNCTION">test</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+    HelloJavaWorld greeter <span class="syntax-OPERATOR">=</span> <span class="syntax-KEYWORD1">new</span> <span class="syntax-FUNCTION">HelloJavaWorld</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>; 
+    String message <span class="syntax-OPERATOR">=</span> greeter.<span class="syntax-FUNCTION">sayHello</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>; 
+    <span class="syntax-FUNCTION">assertEquals</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">Hello</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">Java</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">World!</span><span class="syntax-LITERAL1">&quot;</span>, message <span class="syntax-OPERATOR">)</span> ;
+  <span class="syntax-OPERATOR">}</span>
+  
+<span class="syntax-OPERATOR">}</span>
+
+</span></pre>
+</body>
+</html>
+

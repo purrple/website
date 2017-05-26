@@ -1,0 +1,118 @@
+<html>
+<head>
+<title>Mod.cpp</title>
+<style type="text/css"><!--
+
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #cc0000;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #9966ff;
+}
+.syntax-INVALID {
+  background: #ffffcc;
+  color: #ff0066;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #0099ff;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #66ccff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ff00cc;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="syntax-KEYWORD2">#</span><span class="syntax-MARKUP">include</span> <span class="syntax-LITERAL1">&lt;</span><span class="syntax-LITERAL1">Rcpp.h</span><span class="syntax-LITERAL1">&gt;</span>
+<span class="syntax-KEYWORD3">class</span> Foo <span class="syntax-OPERATOR">;</span>
+<span class="syntax-FUNCTION">RCPP_EXPOSED_CLASS</span><span class="syntax-OPERATOR">(</span>Foo<span class="syntax-OPERATOR">)</span>
+
+<span class="syntax-KEYWORD2">using</span> <span class="syntax-KEYWORD2">namespace</span> Rcpp <span class="syntax-OPERATOR">;</span>
+
+<span class="syntax-KEYWORD3">class</span> Foo<span class="syntax-OPERATOR">{</span>
+    <span class="syntax-KEYWORD1">public</span><span class="syntax-OPERATOR">:</span>
+        <span class="syntax-KEYWORD3">enum</span> Bla<span class="syntax-OPERATOR">{</span> FOO<span class="syntax-OPERATOR">,</span> BAR <span class="syntax-OPERATOR">}</span> <span class="syntax-OPERATOR">;</span>
+        
+        <span class="syntax-FUNCTION">Foo</span><span class="syntax-OPERATOR">(</span> <span class="syntax-KEYWORD3">double</span> x_<span class="syntax-OPERATOR">,</span> <span class="syntax-KEYWORD3">double</span> y_<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">:</span> <span class="syntax-FUNCTION">x</span><span class="syntax-OPERATOR">(</span>x_<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> <span class="syntax-FUNCTION">y</span><span class="syntax-OPERATOR">(</span>y_<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span><span class="syntax-OPERATOR">}</span>
+        
+        Foo<span class="syntax-OPERATOR">*</span> <span class="syntax-FUNCTION">clone</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+            <span class="syntax-KEYWORD1">return</span> <span class="syntax-KEYWORD1">new</span> <span class="syntax-FUNCTION">Foo</span><span class="syntax-OPERATOR">(</span> x<span class="syntax-OPERATOR">,</span> y<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">;</span>    
+        <span class="syntax-OPERATOR">}</span>
+        
+        <span class="syntax-KEYWORD3">double</span> x<span class="syntax-OPERATOR">,</span> y <span class="syntax-OPERATOR">;</span>
+        
+        <span class="syntax-KEYWORD1">void</span> <span class="syntax-FUNCTION">bla</span><span class="syntax-OPERATOR">(</span><span class="syntax-KEYWORD1">const</span> Foo<span class="syntax-OPERATOR">&amp;</span> other<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+            <span class="syntax-FUNCTION">Rprintf</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">efez\n</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">;</span>   
+        <span class="syntax-OPERATOR">}</span>
+        
+<span class="syntax-OPERATOR">}</span> <span class="syntax-OPERATOR">;</span>
+Foo <span class="syntax-FUNCTION">make_foo</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span> <span class="syntax-KEYWORD1">return</span> <span class="syntax-FUNCTION">Foo</span><span class="syntax-OPERATOR">(</span><span class="syntax-DIGIT">3</span><span class="syntax-OPERATOR">,</span> <span class="syntax-DIGIT">4</span><span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">;</span> <span class="syntax-OPERATOR">}</span>
+
+<span class="syntax-FUNCTION">RCPP_MODULE</span><span class="syntax-OPERATOR">(</span>Mod<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+    
+    class_<span class="syntax-OPERATOR">&lt;</span>Foo<span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">Foo</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span>constructor<span class="syntax-OPERATOR">&lt;</span><span class="syntax-KEYWORD3">double</span><span class="syntax-OPERATOR">,</span><span class="syntax-KEYWORD3">double</span><span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span> 
+        <span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">method</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">clone</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>Foo<span class="syntax-OPERATOR">::</span>clone <span class="syntax-OPERATOR">)</span>
+        
+        <span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">field</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">x</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>Foo<span class="syntax-OPERATOR">::</span>x <span class="syntax-OPERATOR">)</span>
+        <span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">field</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">y</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>Foo<span class="syntax-OPERATOR">::</span>y <span class="syntax-OPERATOR">)</span>
+        
+        <span class="syntax-OPERATOR">.</span><span class="syntax-FUNCTION">method</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">bla</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>Foo<span class="syntax-OPERATOR">::</span>bla <span class="syntax-OPERATOR">)</span>
+    <span class="syntax-OPERATOR">;</span>
+    <span class="syntax-FUNCTION">function</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">make_foo</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">,</span> <span class="syntax-OPERATOR">&amp;</span>make_foo <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">;</span>
+    
+<span class="syntax-OPERATOR">}</span>
+    
+
+</span></pre>
+</body>
+</html>
+

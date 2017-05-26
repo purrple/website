@@ -1,0 +1,177 @@
+<html>
+<head>
+<title>RserveWire.java</title>
+<style type="text/css"><!--
+pre{
+	font-size: xx-small !important ;
+}
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #a19d9d;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #ff0000;
+}
+.syntax-INVALID {
+  background: #000000;
+  color: #ffff00;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #33cc00;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #6633ff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ffc000;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+  font-weight: bold;
+  font-style: italic;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0">
+<span class="syntax-KEYWORD2">import</span> org.rosuda.REngine.Rserve.*; 
+<span class="syntax-KEYWORD2">import</span> java.io.* ;
+
+<span class="syntax-KEYWORD1">public</span> <span class="syntax-KEYWORD3">class</span> RserveWire <span class="syntax-OPERATOR">{</span>
+  
+  <span class="syntax-KEYWORD1">private</span> RConnection r; 
+  
+  <span class="syntax-KEYWORD1">public</span> <span class="syntax-FUNCTION">RserveWire</span><span class="syntax-OPERATOR">(</span> RConnection r<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+    <span class="syntax-LITERAL2">this</span>.r <span class="syntax-OPERATOR">=</span> r ;
+  <span class="syntax-OPERATOR">}</span>
+  
+  <span class="syntax-KEYWORD1">public</span> <span class="syntax-KEYWORD3">void</span> <span class="syntax-FUNCTION">transfer_toserver</span><span class="syntax-OPERATOR">(</span> String client_file, String server_file <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+    
+    <span class="syntax-KEYWORD3">byte</span> [] b <span class="syntax-OPERATOR">=</span> <span class="syntax-KEYWORD1">new</span> <span class="syntax-KEYWORD3">byte</span>[<span class="syntax-DIGIT">8192</span>];
+    <span class="syntax-KEYWORD1">try</span><span class="syntax-OPERATOR">{</span>
+      <span class="syntax-COMMENT1">/*</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">file</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">on</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">client</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">machine</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">we</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">read</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">from</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">*/</span>
+      BufferedInputStream client_stream <span class="syntax-OPERATOR">=</span> <span class="syntax-KEYWORD1">new</span> <span class="syntax-FUNCTION">BufferedInputStream</span><span class="syntax-OPERATOR">(</span> 
+        <span class="syntax-KEYWORD1">new</span> <span class="syntax-FUNCTION">FileInputStream</span><span class="syntax-OPERATOR">(</span> <span class="syntax-KEYWORD1">new</span> <span class="syntax-FUNCTION">File</span><span class="syntax-OPERATOR">(</span> client_file <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>; 
+      
+      <span class="syntax-COMMENT1">/*</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">file</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">on</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">server</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">we</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">write</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">to</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">*/</span>
+      RFileOutputStream server_stream <span class="syntax-OPERATOR">=</span> r.<span class="syntax-FUNCTION">createFile</span><span class="syntax-OPERATOR">(</span> server_file <span class="syntax-OPERATOR">)</span>;
+      
+      <span class="syntax-COMMENT1">/*</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">typical</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">java</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">IO</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">stuff</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">*/</span>
+      <span class="syntax-KEYWORD3">int</span> c <span class="syntax-OPERATOR">=</span> client_stream.<span class="syntax-FUNCTION">read</span><span class="syntax-OPERATOR">(</span>b<span class="syntax-OPERATOR">)</span> ; 
+      <span class="syntax-KEYWORD1">while</span><span class="syntax-OPERATOR">(</span> c <span class="syntax-OPERATOR">&gt;=</span> <span class="syntax-DIGIT">0</span> <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+        server_stream.<span class="syntax-FUNCTION">write</span><span class="syntax-OPERATOR">(</span> b, <span class="syntax-DIGIT">0</span>, c <span class="syntax-OPERATOR">)</span> ;
+        c <span class="syntax-OPERATOR">=</span> client_stream.<span class="syntax-FUNCTION">read</span><span class="syntax-OPERATOR">(</span>b<span class="syntax-OPERATOR">)</span> ;
+      <span class="syntax-OPERATOR">}</span>
+      server_stream.<span class="syntax-FUNCTION">close</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>;
+      client_stream.<span class="syntax-FUNCTION">close</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>; 
+      
+    <span class="syntax-OPERATOR">}</span> <span class="syntax-KEYWORD1">catch</span><span class="syntax-OPERATOR">(</span> IOException e<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+      e.<span class="syntax-FUNCTION">printStackTrace</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>; 
+    <span class="syntax-OPERATOR">}</span>
+    
+  <span class="syntax-OPERATOR">}</span>
+  
+  <span class="syntax-KEYWORD1">public</span> <span class="syntax-KEYWORD3">void</span> <span class="syntax-FUNCTION">transfer_toclient</span><span class="syntax-OPERATOR">(</span> String client_file, String server_file <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+    
+    <span class="syntax-KEYWORD3">byte</span> [] b <span class="syntax-OPERATOR">=</span> <span class="syntax-KEYWORD1">new</span> <span class="syntax-KEYWORD3">byte</span>[<span class="syntax-DIGIT">8192</span>];
+    <span class="syntax-KEYWORD1">try</span><span class="syntax-OPERATOR">{</span>
+      
+      <span class="syntax-COMMENT1">/*</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">file</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">on</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">client</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">machine</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">we</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">write</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">to</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">*/</span>
+      BufferedOutputStream client_stream <span class="syntax-OPERATOR">=</span> <span class="syntax-KEYWORD1">new</span> <span class="syntax-FUNCTION">BufferedOutputStream</span><span class="syntax-OPERATOR">(</span> 
+        <span class="syntax-KEYWORD1">new</span> <span class="syntax-FUNCTION">FileOutputStream</span><span class="syntax-OPERATOR">(</span> <span class="syntax-KEYWORD1">new</span> <span class="syntax-FUNCTION">File</span><span class="syntax-OPERATOR">(</span> client_file <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span>;
+      
+      <span class="syntax-COMMENT1">/*</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">file</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">on</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">the</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">server</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">machine</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">we</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">read</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">from</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">*/</span>
+      RFileInputStream server_stream <span class="syntax-OPERATOR">=</span> r.<span class="syntax-FUNCTION">openFile</span><span class="syntax-OPERATOR">(</span> server_file <span class="syntax-OPERATOR">)</span>;
+      
+      <span class="syntax-COMMENT1">/*</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">typical</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">java</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">io</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">stuff</span><span class="syntax-COMMENT1"> </span><span class="syntax-COMMENT1">*/</span>
+      <span class="syntax-KEYWORD3">int</span> c <span class="syntax-OPERATOR">=</span> server_stream.<span class="syntax-FUNCTION">read</span><span class="syntax-OPERATOR">(</span>b<span class="syntax-OPERATOR">)</span> ; 
+      <span class="syntax-KEYWORD1">while</span><span class="syntax-OPERATOR">(</span> c <span class="syntax-OPERATOR">&gt;=</span> <span class="syntax-DIGIT">0</span> <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+        client_stream.<span class="syntax-FUNCTION">write</span><span class="syntax-OPERATOR">(</span> b, <span class="syntax-DIGIT">0</span>, c <span class="syntax-OPERATOR">)</span> ;
+        c <span class="syntax-OPERATOR">=</span> server_stream.<span class="syntax-FUNCTION">read</span><span class="syntax-OPERATOR">(</span>b<span class="syntax-OPERATOR">)</span> ;
+      <span class="syntax-OPERATOR">}</span>
+      client_stream.<span class="syntax-FUNCTION">close</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>;
+      server_stream.<span class="syntax-FUNCTION">close</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>; 
+      
+    <span class="syntax-OPERATOR">}</span> <span class="syntax-KEYWORD1">catch</span><span class="syntax-OPERATOR">(</span> IOException e<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+      e.<span class="syntax-FUNCTION">printStackTrace</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>; 
+    <span class="syntax-OPERATOR">}</span>
+    
+  <span class="syntax-OPERATOR">}</span>
+  
+  <span class="syntax-KEYWORD1">public</span> <span class="syntax-KEYWORD1">static</span> <span class="syntax-KEYWORD3">void</span> <span class="syntax-FUNCTION">main</span><span class="syntax-OPERATOR">(</span> String[] args<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+    <span class="syntax-KEYWORD1">try</span><span class="syntax-OPERATOR">{</span>
+      RConnection r <span class="syntax-OPERATOR">=</span> <span class="syntax-KEYWORD1">new</span> <span class="syntax-FUNCTION">RConnection</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>;
+      System.out.<span class="syntax-FUNCTION">println</span><span class="syntax-OPERATOR">(</span> r.<span class="syntax-FUNCTION">parseAndEval</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">getwd()</span><span class="syntax-LITERAL1">&quot;</span><span class="syntax-OPERATOR">)</span>.<span class="syntax-FUNCTION">asString</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span> ;
+      
+      RserveWire wire <span class="syntax-OPERATOR">=</span> <span class="syntax-KEYWORD1">new</span> <span class="syntax-FUNCTION">RserveWire</span><span class="syntax-OPERATOR">(</span> r <span class="syntax-OPERATOR">)</span>; 
+      
+      String client_file <span class="syntax-OPERATOR">=</span> args[<span class="syntax-DIGIT">0</span>];
+      String server_file <span class="syntax-OPERATOR">=</span> args[<span class="syntax-DIGIT">1</span>]; 
+      System.out.<span class="syntax-FUNCTION">println</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">writing</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">the</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">client</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">file</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">'</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">+</span> 
+        client_file <span class="syntax-OPERATOR">+</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">'</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">to</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">the</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">server</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">as</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">'</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">+</span> 
+        server_file <span class="syntax-OPERATOR">+</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">'</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span> ;
+      wire.<span class="syntax-FUNCTION">transfer_toserver</span><span class="syntax-OPERATOR">(</span> client_file, server_file <span class="syntax-OPERATOR">)</span> ;
+      
+      r.<span class="syntax-FUNCTION">parseAndEval</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">sink('file.txt')</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">;</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">print(</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">rnorm(30)</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">);</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">sink()</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span> ;
+      System.out.<span class="syntax-FUNCTION">println</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">writing</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">the</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">server</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">file</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">'file.txt'</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">to</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">the</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">client</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">as</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">'file.txt'</span><span class="syntax-LITERAL1"> </span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span> ;
+      wire.<span class="syntax-FUNCTION">transfer_toclient</span><span class="syntax-OPERATOR">(</span> <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">file.txt</span><span class="syntax-LITERAL1">&quot;</span>, <span class="syntax-LITERAL1">&quot;</span><span class="syntax-LITERAL1">file.txt</span><span class="syntax-LITERAL1">&quot;</span> <span class="syntax-OPERATOR">)</span> ;
+      
+    <span class="syntax-OPERATOR">}</span> <span class="syntax-KEYWORD1">catch</span><span class="syntax-OPERATOR">(</span> Exception e<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+      e.<span class="syntax-FUNCTION">printStackTrace</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span>; 
+    <span class="syntax-OPERATOR">}</span>
+    
+  <span class="syntax-OPERATOR">}</span>
+  
+  
+<span class="syntax-OPERATOR">}</span>
+
+
+ 
+</span></pre>
+</body>
+</html>
+

@@ -1,0 +1,136 @@
+<html>
+<head>
+<title>play.cpp</title>
+<style type="text/css"><!--
+
+.syntax-NULL {
+  color: #000000;
+}
+.syntax-COMMENT1 {
+  color: #cc0000;
+}
+.syntax-COMMENT2 {
+  color: #ff8400;
+}
+.syntax-COMMENT3 {
+  color: #6600cc;
+}
+.syntax-COMMENT4 {
+  color: #cc6600;
+}
+.syntax-DIGIT {
+  color: #ff0000;
+}
+.syntax-FUNCTION {
+  color: #9966ff;
+}
+.syntax-INVALID {
+  background: #ffffcc;
+  color: #ff0066;
+}
+.syntax-KEYWORD1 {
+  color: #006699;
+  font-weight: bold;
+}
+.syntax-KEYWORD2 {
+  color: #009966;
+  font-weight: bold;
+}
+.syntax-KEYWORD3 {
+  color: #0099ff;
+  font-weight: bold;
+}
+.syntax-KEYWORD4 {
+  color: #66ccff;
+  font-weight: bold;
+}
+.syntax-LABEL {
+  color: #02b902;
+}
+.syntax-LITERAL1 {
+  color: #ff00cc;
+}
+.syntax-LITERAL2 {
+  color: #cc00cc;
+}
+.syntax-LITERAL3 {
+  color: #9900cc;
+}
+.syntax-LITERAL4 {
+  color: #6600cc;
+}
+.syntax-MARKUP {
+  color: #0000ff;
+}
+.syntax-OPERATOR {
+  color: #000000;
+  font-weight: bold;
+}
+
+
+--></style>
+</head>
+<body bgcolor="#ffffff">
+<pre><span class="syntax0"><span class="syntax-KEYWORD3">class</span> Point <span class="syntax-OPERATOR">{</span>
+<span class="syntax-KEYWORD1">public</span><span class="syntax-OPERATOR">:</span>
+    <span class="syntax-FUNCTION">Point</span><span class="syntax-OPERATOR">(</span> <span class="syntax-KEYWORD3">double</span> x_<span class="syntax-OPERATOR">,</span> <span class="syntax-KEYWORD3">double</span> y_<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">:</span> <span class="syntax-FUNCTION">x</span><span class="syntax-OPERATOR">(</span>x_<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> <span class="syntax-FUNCTION">y</span><span class="syntax-OPERATOR">(</span>y_<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span><span class="syntax-OPERATOR">}</span>
+    
+    <span class="syntax-KEYWORD3">double</span> x<span class="syntax-OPERATOR">,</span> y <span class="syntax-OPERATOR">;</span>
+<span class="syntax-OPERATOR">}</span> <span class="syntax-OPERATOR">;</span>
+
+<span class="syntax-KEYWORD3">double</span> <span class="syntax-FUNCTION">square</span><span class="syntax-OPERATOR">(</span> <span class="syntax-KEYWORD3">double</span> x<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">{</span>
+    <span class="syntax-KEYWORD1">return</span> x<span class="syntax-OPERATOR">*</span>x <span class="syntax-OPERATOR">;</span>    
+<span class="syntax-OPERATOR">}</span>
+<span class="syntax-KEYWORD3">double</span> <span class="syntax-FUNCTION">distance</span><span class="syntax-OPERATOR">(</span> <span class="syntax-KEYWORD1">const</span> Point<span class="syntax-OPERATOR">&amp;</span> p1<span class="syntax-OPERATOR">,</span> <span class="syntax-KEYWORD1">const</span> Point<span class="syntax-OPERATOR">&amp;</span> p2 <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+    <span class="syntax-KEYWORD1">return</span> <span class="syntax-FUNCTION">sqrt</span><span class="syntax-OPERATOR">(</span> <span class="syntax-FUNCTION">square</span><span class="syntax-OPERATOR">(</span> p1<span class="syntax-OPERATOR">.</span>x <span class="syntax-OPERATOR">-</span> p2<span class="syntax-OPERATOR">.</span>x<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">+</span> <span class="syntax-FUNCTION">square</span><span class="syntax-OPERATOR">(</span> p1<span class="syntax-OPERATOR">.</span>y <span class="syntax-OPERATOR">-</span> p2<span class="syntax-OPERATOR">.</span>y <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">;</span>   
+<span class="syntax-OPERATOR">}</span>
+
+
+<span class="syntax-KEYWORD3">class</span> Shape <span class="syntax-OPERATOR">{</span>
+<span class="syntax-KEYWORD1">public</span><span class="syntax-OPERATOR">:</span> 
+    <span class="syntax-FUNCTION">Shape</span><span class="syntax-OPERATOR">(</span> <span class="syntax-KEYWORD1">const</span> Point<span class="syntax-OPERATOR">&amp;</span> center_ <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">:</span> <span class="syntax-FUNCTION">center</span><span class="syntax-OPERATOR">(</span>center_<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span><span class="syntax-OPERATOR">}</span>
+    
+    Point center <span class="syntax-OPERATOR">;</span>    
+    
+    <span class="syntax-KEYWORD1">virtual</span> <span class="syntax-KEYWORD3">double</span> <span class="syntax-FUNCTION">area</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span> <span class="syntax-KEYWORD1">const</span> <span class="syntax-OPERATOR">{</span> <span class="syntax-KEYWORD1">return</span> <span class="syntax-DIGIT">0</span><span class="syntax-OPERATOR">.</span><span class="syntax-DIGIT">0</span> <span class="syntax-OPERATOR">;</span><span class="syntax-OPERATOR">}</span>
+    <span class="syntax-KEYWORD1">virtual</span> <span class="syntax-KEYWORD3">bool</span> <span class="syntax-FUNCTION">contains</span><span class="syntax-OPERATOR">(</span><span class="syntax-KEYWORD1">const</span> Point<span class="syntax-OPERATOR">&amp;</span> point<span class="syntax-OPERATOR">)</span> <span class="syntax-KEYWORD1">const</span> <span class="syntax-OPERATOR">{</span> <span class="syntax-KEYWORD1">return</span> <span class="syntax-LITERAL2">false</span> <span class="syntax-OPERATOR">;</span> <span class="syntax-OPERATOR">}</span> 
+<span class="syntax-OPERATOR">}</span> <span class="syntax-OPERATOR">;</span>
+
+<span class="syntax-KEYWORD3">class</span> Circle <span class="syntax-OPERATOR">:</span> <span class="syntax-KEYWORD1">public</span> Shape <span class="syntax-OPERATOR">{</span>
+<span class="syntax-KEYWORD1">public</span><span class="syntax-OPERATOR">:</span> 
+    <span class="syntax-FUNCTION">Circle</span><span class="syntax-OPERATOR">(</span> Point center_<span class="syntax-OPERATOR">,</span> <span class="syntax-KEYWORD3">double</span> radius_ <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">:</span> <span class="syntax-FUNCTION">Shape</span><span class="syntax-OPERATOR">(</span>center_<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> <span class="syntax-FUNCTION">radius</span><span class="syntax-OPERATOR">(</span>radius_<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span><span class="syntax-OPERATOR">}</span>
+
+    <span class="syntax-KEYWORD3">double</span> <span class="syntax-FUNCTION">area</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span> <span class="syntax-KEYWORD1">const</span> <span class="syntax-OPERATOR">{</span>
+        <span class="syntax-KEYWORD1">return</span> PI <span class="syntax-OPERATOR">*</span> <span class="syntax-FUNCTION">square</span><span class="syntax-OPERATOR">(</span> radius <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">;</span>    
+    <span class="syntax-OPERATOR">}</span>
+    <span class="syntax-KEYWORD3">bool</span> <span class="syntax-FUNCTION">contains</span><span class="syntax-OPERATOR">(</span> <span class="syntax-KEYWORD1">const</span> Point<span class="syntax-OPERATOR">&amp;</span> point <span class="syntax-OPERATOR">)</span> <span class="syntax-KEYWORD1">const</span> <span class="syntax-OPERATOR">{</span>
+        <span class="syntax-KEYWORD1">return</span> <span class="syntax-FUNCTION">distance</span><span class="syntax-OPERATOR">(</span>point<span class="syntax-OPERATOR">,</span> center<span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">&lt;</span> radius <span class="syntax-OPERATOR">;</span>
+    <span class="syntax-OPERATOR">}</span>
+    
+    <span class="syntax-KEYWORD3">double</span> radius <span class="syntax-OPERATOR">;</span>
+<span class="syntax-OPERATOR">}</span> <span class="syntax-OPERATOR">;</span>
+
+<span class="syntax-KEYWORD3">class</span> Rectangle <span class="syntax-OPERATOR">:</span> <span class="syntax-KEYWORD1">public</span> Shape <span class="syntax-OPERATOR">{</span>
+<span class="syntax-KEYWORD1">public</span><span class="syntax-OPERATOR">:</span>
+    <span class="syntax-FUNCTION">Rectangle</span><span class="syntax-OPERATOR">(</span> Point center_<span class="syntax-OPERATOR">,</span> <span class="syntax-KEYWORD3">double</span> width_<span class="syntax-OPERATOR">,</span> <span class="syntax-KEYWORD3">double</span> height_ <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">:</span>
+        <span class="syntax-FUNCTION">Shape</span><span class="syntax-OPERATOR">(</span>center_<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> <span class="syntax-FUNCTION">width</span><span class="syntax-OPERATOR">(</span>width_<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">,</span> <span class="syntax-FUNCTION">height</span><span class="syntax-OPERATOR">(</span>height_<span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span><span class="syntax-OPERATOR">}</span>
+    
+    <span class="syntax-KEYWORD3">double</span> <span class="syntax-FUNCTION">area</span><span class="syntax-OPERATOR">(</span><span class="syntax-OPERATOR">)</span> <span class="syntax-KEYWORD1">const</span> <span class="syntax-OPERATOR">{</span>
+        <span class="syntax-KEYWORD1">return</span> width <span class="syntax-OPERATOR">*</span> height <span class="syntax-OPERATOR">;</span>    
+    <span class="syntax-OPERATOR">}</span>
+    <span class="syntax-KEYWORD3">bool</span> <span class="syntax-FUNCTION">contains</span><span class="syntax-OPERATOR">(</span> <span class="syntax-KEYWORD1">const</span> Point<span class="syntax-OPERATOR">&amp;</span> point <span class="syntax-OPERATOR">)</span><span class="syntax-OPERATOR">{</span>
+        <span class="syntax-KEYWORD1">return</span> 
+            point<span class="syntax-OPERATOR">.</span>x <span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">=</span> <span class="syntax-OPERATOR">(</span> center<span class="syntax-OPERATOR">.</span>x <span class="syntax-OPERATOR">-</span> width  <span class="syntax-OPERATOR">/</span> <span class="syntax-DIGIT">2</span><span class="syntax-OPERATOR">.</span><span class="syntax-DIGIT">0</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">&amp;</span> 
+            point<span class="syntax-OPERATOR">.</span>x <span class="syntax-OPERATOR">&lt;</span><span class="syntax-OPERATOR">=</span> <span class="syntax-OPERATOR">(</span> center<span class="syntax-OPERATOR">.</span>x <span class="syntax-OPERATOR">+</span> width  <span class="syntax-OPERATOR">/</span> <span class="syntax-DIGIT">2</span><span class="syntax-OPERATOR">.</span><span class="syntax-DIGIT">0</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">&amp;</span>
+            point<span class="syntax-OPERATOR">.</span>y <span class="syntax-OPERATOR">&gt;</span><span class="syntax-OPERATOR">=</span> <span class="syntax-OPERATOR">(</span> center<span class="syntax-OPERATOR">.</span>y <span class="syntax-OPERATOR">-</span> height <span class="syntax-OPERATOR">/</span> <span class="syntax-DIGIT">2</span><span class="syntax-OPERATOR">.</span><span class="syntax-DIGIT">0</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">&amp;</span> 
+            point<span class="syntax-OPERATOR">.</span>y <span class="syntax-OPERATOR">&lt;</span><span class="syntax-OPERATOR">=</span> <span class="syntax-OPERATOR">(</span> center<span class="syntax-OPERATOR">.</span>y <span class="syntax-OPERATOR">+</span> height <span class="syntax-OPERATOR">/</span> <span class="syntax-DIGIT">2</span><span class="syntax-OPERATOR">.</span><span class="syntax-DIGIT">0</span> <span class="syntax-OPERATOR">)</span> <span class="syntax-OPERATOR">;</span>
+    <span class="syntax-OPERATOR">}</span>
+        
+    <span class="syntax-KEYWORD3">double</span> width<span class="syntax-OPERATOR">,</span> height <span class="syntax-OPERATOR">;</span>    
+        
+<span class="syntax-OPERATOR">}</span> <span class="syntax-OPERATOR">;</span>
+
+</span></pre>
+</body>
+</html>
+

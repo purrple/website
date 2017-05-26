@@ -1,0 +1,83 @@
+<html>
+<head>
+<style type="text/css">
+.number{
+	color: rgb(21,20,181) ;
+}
+
+.functioncall{
+	color: red ;
+}
+
+.string{
+	color: rgb(153,153,255) ;
+}
+
+.keyword{
+	font-weight: bolder ;
+	color: black;
+}
+
+.argument{
+	color: rgb( 177,63,5) ;
+}
+
+.comment{
+	color: rgb( 204,204,204) ;
+}
+
+.roxygencomment{
+	color: rgb(0,151,255);
+}
+
+.formalargs{
+	color: rgb(18,182,18);
+}
+
+.eqformalargs{
+	color: rgb(18,182,18);
+}
+
+.assignement{
+	font-weight: bolder;
+	color: rgb(55,55,98);
+}
+
+.package{
+	color: rgb(150,182,37);
+}
+
+.slot{
+	font-style:italic;
+}
+
+.symbol{
+	color: black ;
+}
+
+.prompt{
+	color: black ;
+}
+
+.line{
+    color: gray ;   
+}
+</style>
+</head>
+<body>
+<pre>
+<span class="functioncall">require</span><span class="keyword">(</span><span class="symbol">RCurl</span><span class="keyword">)</span>
+<span class="functioncall">require</span><span class="keyword">(</span><span class="symbol">rjson</span><span class="keyword">)</span>
+
+<span class="symbol">facebook</span> <span class="assignement">&lt;-</span>  <span class="keyword">function</span><span class="keyword">(</span> <span class="formalargs">path</span> <span class="eqformalargs">=</span> <span class="string">"me"</span><span class="keyword">,</span> <span class="formalargs">access_token</span> <span class="eqformalargs">=</span> <span class="symbol">token</span><span class="keyword">,</span> <span class="formalargs">options</span><span class="keyword">)</span><span class="keyword">{</span>
+    <span class="keyword">if</span><span class="keyword">(</span> <span class="keyword">!</span><span class="functioncall">missing</span><span class="keyword">(</span><span class="symbol">options</span><span class="keyword">)</span> <span class="keyword">)</span><span class="keyword">{</span>
+        <span class="symbol">options</span> <span class="assignement">&lt;-</span> <span class="functioncall">sprintf</span><span class="keyword">(</span> <span class="string">"?%s"</span><span class="keyword">,</span> <span class="functioncall">paste</span><span class="keyword">(</span> <span class="functioncall">names</span><span class="keyword">(</span><span class="symbol">options</span><span class="keyword">)</span><span class="keyword">,</span> <span class="string">"="</span><span class="keyword">,</span> <span class="functioncall">unlist</span><span class="keyword">(</span><span class="symbol">options</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">collapse</span> <span class="argument">=</span> <span class="string">"&amp;"</span><span class="keyword">,</span> <span class="argument">sep</span> <span class="argument">=</span> <span class="string">""</span> <span class="keyword">)</span> <span class="keyword">)</span>
+    <span class="keyword">}</span> <span class="keyword">else</span> <span class="keyword">{</span>
+        <span class="symbol">options</span> <span class="assignement">&lt;-</span> <span class="string">""</span>
+    <span class="keyword">}</span>
+    <span class="symbol">data</span> <span class="assignement">&lt;-</span> <span class="functioncall">getURL</span><span class="keyword">(</span> <span class="functioncall">sprintf</span><span class="keyword">(</span> <span class="string">"https://graph.facebook.com/%s%s&amp;access_token=%s"</span><span class="keyword">,</span> <span class="symbol">path</span><span class="keyword">,</span> <span class="symbol">options</span><span class="keyword">,</span> <span class="symbol">access_token</span> <span class="keyword">)</span> <span class="keyword">)</span>
+    <span class="functioncall">fromJSON</span><span class="keyword">(</span> <span class="symbol">data</span> <span class="keyword">)</span>
+<span class="keyword">}</span>
+</pre>
+</body>
+</html>

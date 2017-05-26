@@ -1,0 +1,108 @@
+<html>
+<head>
+<style type="text/css">
+.number{
+	color: rgb(21,20,181) ;
+}
+
+.functioncall{
+	color: red ;
+}
+
+.string{
+	color: rgb(153,153,255) ;
+}
+
+.keyword{
+	font-weight: bolder ;
+	color: black;
+}
+
+.argument{
+	color: rgb( 177,63,5) ;
+}
+
+.comment{
+	color: rgb( 204,204,204) ;
+}
+
+.roxygencomment{
+	color: rgb(0,151,255);
+}
+
+.formalargs{
+	color: rgb(18,182,18);
+}
+
+.eqformalargs{
+	color: rgb(18,182,18);
+}
+
+.assignement{
+	font-weight: bolder;
+	color: rgb(55,55,98);
+}
+
+.package{
+	color: rgb(150,182,37);
+}
+
+.slot{
+	font-style:italic;
+}
+
+.symbol{
+	color: black ;
+}
+
+.prompt{
+	color: black ;
+}
+
+</style>
+</head>
+<body>
+<pre>
+<span class="functioncall">require</span><span class="keyword">(</span><span class="symbol">inline</span><span class="keyword">)</span>
+<span class="functioncall">require</span><span class="keyword">(</span><span class="symbol">Rcpp</span><span class="keyword">)</span>
+<span class="symbol">generateIndex14</span> <span class="assignement">&lt;-</span> <span class="functioncall">local</span><span class="keyword">(</span> <span class="keyword">{</span>
+
+    <span class="symbol">fun</span> <span class="assignement">&lt;-</span> <span class="functioncall">cxxfunction</span><span class="keyword">(</span>
+        <span class="functioncall">signature</span><span class="keyword">(</span> <span class="argument">n_</span> <span class="argument">=</span> <span class="string">"integer"</span><span class="keyword">,</span> <span class="argument">width_</span> <span class="argument">=</span> <span class="string">"integer"</span><span class="keyword">,</span> <span class="argument">format_</span> <span class="argument">=</span> <span class="string">"character"</span>  <span class="keyword">)</span><span class="keyword">,</span> <span class="string">'
+
+        int n = as&lt;int&gt;(n_) ;
+        int width = as&lt;int&gt;( width_ ) ;
+        const char* format = as&lt;const char*&gt;( format_ ) ;
+        
+        std::string buffer( width, \'0\' ) ;
+        std::vector&lt; std::string &gt; elements( n ) ;
+        for( int i=0; i&lt;n; i++){
+                sprintf( const_cast&lt;char*&gt;(buffer.data() ), 
+                    format, 
+                    i+1
+                    ) ;
+            elements[i] = buffer.c_str() ;
+        }
+        
+        std::stringstream ss ;
+        
+        CharacterVector res( n*(n-1)/2) ;
+        for( int i=0, k=0; i&lt;n-1; i++){
+            for(int j=i+1; j&lt;n; j++, k++){
+                ss &lt;&lt; "i" &lt;&lt; elements[i] &lt;&lt; "." &lt;&lt; elements[j];
+                res[k] = ss.str(); 
+                ss.str( "" ) ;
+            }
+        }
+        return res ;
+        '</span><span class="keyword">,</span> <span class="argument">plugin</span> <span class="argument">=</span> <span class="string">"Rcpp"</span> <span class="keyword">)</span>
+
+    <span class="keyword">function</span><span class="keyword">(</span> <span class="formalargs">n</span> <span class="keyword">)</span><span class="keyword">{</span>
+        <span class="symbol">width</span> <span class="assignement">&lt;-</span> <span class="functioncall">ceiling</span><span class="keyword">(</span> <span class="functioncall">log10</span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">+</span><span class="number">1</span><span class="keyword">)</span> <span class="keyword">)</span>
+        <span class="functioncall">fun</span><span class="keyword">(</span> <span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">width</span><span class="keyword">,</span> <span class="functioncall">sprintf</span><span class="keyword">(</span><span class="string">"%%0%dd"</span><span class="keyword">,</span> <span class="symbol">width</span><span class="keyword">)</span>  <span class="keyword">)</span>
+    <span class="keyword">}</span>
+<span class="keyword">}</span> <span class="keyword">)</span>
+<span class="functioncall">generateIndex14</span><span class="keyword">(</span> <span class="number">10</span> <span class="keyword">)</span>
+</pre>
+</body>
+</html>
