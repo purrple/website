@@ -36,14 +36,36 @@ download_post <- function(url){
     html_nodes("div.post-content img") %>% 
     html_attr("src")
   
+  iframes <- html %>% 
+    html_nodes("div.post-content iframe")
+  
   data_frame( 
     title = title, 
     tags = list(tags), 
     content = content, 
-    imgs = list(imgs)
-    )
+    imgs = list(imgs), 
+    iframes = list(iframes)
+  )
 }
 
 data <- links$url %>% 
   map(download_post) %>% 
   bind_rows()
+
+imgs <- unlist(data$imgs) %>% 
+  str_subset( "^/public" ) %>% 
+  str_replace( "^/", "")
+  unique
+
+directories <- sort( unique( dirname(imgs) ) )
+
+file.path( "static", directories) %>% 
+  walk( dir.create, recursive = TRUE, showWarnings = FALSE)
+
+download.file(
+  paste0( "http://romainfrancois.blog.free.fr/", imgs ), 
+  file.path( "static", imgs)
+)
+
+
+
