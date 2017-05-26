@@ -51,7 +51,8 @@ download_post <- function(url){
 
 data <- links$url %>% 
   map(download_post) %>% 
-  bind_rows()
+  bind_rows() %>% 
+  bind_cols( links )
 
 imgs <- unlist(data$imgs) %>% 
   str_subset( "^/public" ) %>% 
@@ -67,6 +68,50 @@ download.file(
   paste0( "http://romainfrancois.blog.free.fr/", imgs ), 
   file.path( "static", imgs)
 )
+
+iframes <- unique(unlist(data$iframes)) %>% 
+  str_subset( "^/public" )
+
+directories <- sort( unique( dirname(iframes) ) )
+file.path( "static", directories) %>% 
+  walk( dir.create, recursive = TRUE, showWarnings = FALSE)
+
+download.file( 
+  paste0( "http://romainfrancois.blog.free.fr/", iframes ), 
+  file.path( "static", iframes)
+  )
+
+data$slug <- data$slug %>% str_replace_all( "[%].{2}", "-")
+data$title <- data$title %>% str_replace_all( "[#:]", "-" )
+
+for(i in seq_len(nrow(data))){
+  slug <- data$slug[i]
+  title <- data$title[i]
+  
+  year <- data$year[i]
+  month <- data$month[i]
+  day <- data$day[i]
+  content <- data$content[i]
+  tags <- data$tags[[i]]
+  
+  cat( slug, "\n" )
+  
+  md <- file.path( "content",  "blog", paste0(year, "-", month, "-", day, "-", slug, ".md") )
+  file <- file( md, open = "w" )
+  writeLines( "---", file )
+  writeLines( paste( "title:  ", title ), file )
+  writeLines( 'author: "Romain François"', file )
+  writeLines( sprintf( "date:  %s-%s-%s", year, month, day), file )
+  writeLines( sprintf( "slug:  %s", slug), file )
+  if( length(tags) ){
+    writeLines( sprintf( "tags:  [ %s ]", paste( '"', tags, '"', collapse = ", ", sep = "" ) ), file )
+  }
+    
+  writeLines( "---", file)
+  
+  writeLines( content, file )
+  close(file)
+}
 
 
 

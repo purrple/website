@@ -72,7 +72,9 @@
 pre {
   border: none ;
   background-color: #eee ;
-  padding: 30px ;
+  padding: 20px ;
+  margin-top: 10px;
+  margin-bottom: 10px ;
   font-size: 16px ;
 }
 
