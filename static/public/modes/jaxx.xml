@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE MODE SYSTEM "xmode.dtd">
+
+<MODE>
+	<RULES IGNORE_CASE="FALSE">
+		    
+    <SPAN_REGEXP MATCH_TYPE="MARKUP" 
+			DELEGATE="java::MAIN" HASH_CHAR="&lt;">
+      <BEGIN>&lt;script&gt;</BEGIN>
+      <END>&lt;/script&gt;</END>
+    </SPAN_REGEXP>
+		
+		<SPAN_REGEXP MATCH_TYPE="MARKUP" 
+			DELEGATE="css::MAIN" HASH_CHAR="&lt;">
+      <BEGIN>&lt;style&gt;</BEGIN>
+      <END>&lt;/style&gt;</END>
+    </SPAN_REGEXP>
+		
+		<IMPORT DELEGATE="xml::MAIN" />
+	</RULES>
+
+</MODE>
+

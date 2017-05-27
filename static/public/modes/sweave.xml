@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE MODE SYSTEM "xmode.dtd">
+
+<MODE>
+	<PROPS>
+		<PROPERTY NAME="lineComment" VALUE="%" />
+    <PROPERTY NAME="deepIndent" VALUE="FALSE" />
+    <PROPERTY NAME="wordBreakChars" VALUE="" />
+    <PROPERTY NAME="noWordSep" VALUE="\@_-:*&lt;&gt;" />
+	</PROPS>
+	
+	<RULES IGNORE_CASE="FALSE">
+		
+    <!-- \Sexpr -->
+    <SPAN DELEGATE="R::MAIN" >
+      <BEGIN>\Sexpr{</BEGIN>                                                        
+      <END>}</END>
+    </SPAN>
+    
+    <SPAN_REGEXP DELEGATE="latex+R" HASH_CHAR="&lt;" MATCH_TYPE="MARKUP">
+      <BEGIN AT_LINE_START="TRUE">&lt;&lt;.*&gt;&gt;=?.*</BEGIN>
+      <END AT_LINE_START="TRUE">@</END>
+    </SPAN_REGEXP>
+		
+		<IMPORT DELEGATE="latex::MAIN" />
+	</RULES>
+
+	<RULES SET="latex+R">
+		<EOL_SPAN_REGEXP 
+			HASH_CHAR="&lt;"
+			MATCH_TYPE="MARKUP" 
+			AT_LINE_START="TRUE">&lt;&lt;.*&gt;&gt;=?</EOL_SPAN_REGEXP>
+		<IMPORT DELEGATE="R::MAIN"/>
+	</RULES>
+</MODE>

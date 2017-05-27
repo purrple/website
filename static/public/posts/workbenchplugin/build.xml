@@ -1,0 +1,91 @@
+<project name="biocep-simple" basedir="." default="usage" >
+  
+	<!--{{{ properties -->
+	<property file="build.properties" />
+	<property name="full.biocep.jar" value="${biocep.dir}/${biocep.jar}" />
+	<!--}}}-->
+
+	<!--{{{ classpath -->
+	<path id="simple.class.path">
+		<pathelement location="${full.biocep.jar}" />
+		<pathelement location="lib/jaxx-runtime.jar" />
+		<pathelement location="build/classes" />
+	</path>
+	<!--}}}-->
+
+	<!--{{{ clean -->
+	<target name="clean">
+    <delete dir="build"/>
+		<delete dir="dist"/>
+	</target>
+	<!--}}}-->
+
+  <!--{{{ ant task to use jaxx compiler -->
+  <target name="defineAntTask">
+    <taskdef name="jaxxc" classname="jaxx.JaxxcAntTask" 
+			classpath="lib/jaxxc.jar"/>
+  </target>
+	<!--}}}-->
+	
+	<!--{{{ compile the jaxx and java files -->
+  <target name="compile" depends="clean,defineAntTask">
+    <mkdir dir="build/classes"/>
+    <jaxxc srcdir="src" keepJavaFiles='yes' 
+			destdir="build/classes" classpath="${full.biocep.jar}" />
+		<javac srcdir="src" destdir="build/classes" source="1.5" target="1.5" > 
+			<classpath refid="simple.class.path"/>
+		</javac>
+	</target>
+	<!--}}}-->
+
+	<!--{{{ build the jar file -->
+  <target name="build" depends="compile">
+    <mkdir dir="build/lib"/>
+		<unjar src="lib/jaxx-runtime.jar" dest="build/classes" />
+    <jar jarfile="build/lib/simple.jar">
+			<fileset dir="build/classes" />
+			<fileset dir="src">
+				<include name="*.xml" />
+				<include name="**/*.props" />
+				<include name="**/*.properties" />
+				<include name="**/*.html" />
+				<include name="**/*.gif" />
+				<include name="**/*.png" />
+			</fileset>
+		</jar>	
+  </target>
+	<!--}}}-->
+
+	<!--{{{ build the plugin structure-->
+	<target name="dist" depends="build">
+		<mkdir dir="dist/simple" />
+		<mkdir dir="dist/simple/lib" />
+		<copy file="descriptor.xml" tofile="dist/simple/descriptor.xml" />
+		<copy file="build/lib/simple.jar" tofile="dist/simple/lib/simple.jar" />
+	</target>
+	<!--}}}-->
+	
+	<!--{{{ zip the plugin -->
+	<target name="zip" depends="dist">
+		<zip basedir="dist" destfile="zip/simple.zip" /> 
+	</target>
+	<!--}}}-->
+	
+	<!--{{{ install the plugin -->
+	<target name="install" depends="dist">
+		<copydir src="dist" dest="${install.dir}" />
+	</target>
+	<!--}}}-->
+	
+	<!--{{{ default usage target -->
+	<target name="usage">
+		<echo>
+			In order to build this plugin, please fill the build.properties file
+			and use one of these targets:
+			- `zip`     to create a zip version of the plugin
+			- `install` to install the plugin in your RWorkbench plugins directory
+		</echo>
+	</target>
+	<!--}}}-->
+	
+</project>

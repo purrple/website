@@ -1,0 +1,32 @@
+Index: src_server/org/kchine/r/server/DirectJNI.java
+===================================================================
+--- src_server/org/kchine/r/server/DirectJNI.java	(revision 466)
++++ src_server/org/kchine/r/server/DirectJNI.java	(working copy)
+@@ -365,11 +365,15 @@
+ 
+ 		public String rReadConsole(Rengine re, String prompt, int addToHistory) {
+ 			String consoleInput = "\n";
+-			if (busy) {
+-
++			boolean browsing = prompt.startsWith( "Browse[" ) ;
++			if (busy || browsing) {
++			
+ 				_userInput = null;
+ 				notifyRActionListeners(new RConsoleAction("GET_USER_INPUT", new HashMap<String, Object>()));
+ 				_stopRequired = false;
++				if( browsing ){
++					appendText( prompt ) ;
++				}
+ 				while (_userInput == null) {
+ 					try {
+ 						if (_stopRequired)
+@@ -380,6 +384,9 @@
+ 					;
+ 				}
+ 				consoleInput = _userInput + "\n";
++				if( browsing ) {
++					appendText( consoleInput ) ; 
++				}
+ 
+ 			} else if (_sharedExecutionUnit != null) {
+ 

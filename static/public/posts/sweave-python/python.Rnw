@@ -1,0 +1,16 @@
+\documentclass{article}
+\usepackage{python}
+
+\begin{document}
+
+<<hello,engine=python>>=
+print "hello"
+print "world"
+@
+
+<<>>=
+rnorm( 10 )
+@
+
+\end{document}
+

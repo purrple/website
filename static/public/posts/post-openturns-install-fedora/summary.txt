@@ -1,0 +1,62 @@
+Summary:
+========
+
+ Modules              Activation
+ -------------------------------
+  Library             OK
+  GUI                 OK
+  Python module       OK
+  Documentation       OK
+  Validation          OK
+
+Here are the submodule specific summaries:
+
+
+(lib)
+ Debug level is 3
+
+ Support for          is
+ -----------------------------
+  R                    OK
+  libxml2              OK
+  Regex                OK
+  Doxygen              OK
+  dot                  OK
+  bc                   OK
+  rm                   OK
+  Multithreading       OK
+(gui)
+
+ Debug level is 3
+
+ Support for          is
+ -----------------------------
+  Doxygen              OK
+  dot                  OK
+  BOOST                OK
+  Qt                   OK
+(python)
+
+ Debug level is 3
+
+ Support for          is
+ -----------------------------
+  Python               OK
+  Python Qt module     OK
+  Python rpy module    OK
+  SWIG                 OK
+  bc                   OK
+  Doxygen              OK
+  dot                  OK
+(doc)
+
+ Debug level is 3
+
+ Support for          is
+ -----------------------------
+  pdflatex             OK
+  makeindex            OK
+  bibtex               OK
+(validation)
+
+

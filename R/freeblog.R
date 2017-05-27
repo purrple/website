@@ -4,6 +4,8 @@ library(purrr)
 library(stringr)
 library(dplyr)
 
+llply <- plyr::llply
+
 get_links <- function(page = 1){
   url <- paste0("http://romainfrancois.blog.free.fr/index.php?/page/", page)  
   url %>% 
@@ -19,7 +21,10 @@ links <- bind_rows( map(1:7, get_links) )
 download_post <- function(url){
   prefix <- "http://romainfrancois.blog.free.fr/index.php?post/"
   url <- paste0(prefix, url)
-  html <- read_html(url)
+  read_html(url)
+}  
+ 
+extract_data <- function(html){ 
   title <- html %>% 
     html_node("h2.post-title") %>% 
     html_text()
@@ -31,43 +36,66 @@ download_post <- function(url){
   content <- html %>% 
     html_node("div.post-content") %>% 
     as.character()
-  
-  imgs <- html %>% 
-    html_nodes("div.post-content img") %>% 
-    html_attr("src")
-  
-  iframes <- html %>% 
-    html_nodes("div.post-content iframe") %>% 
-    html_attr("src")
-  
+
   data_frame( 
     title = title, 
     tags = list(tags), 
     content = content, 
-    imgs = list(imgs), 
     iframes = list(iframes)
   )
 }
 
-data <- links$url %>% 
-  map(download_post) %>% 
+posts <- llply( links$url, download_post, .progress = "text")
+
+data <- posts %>%
+  llply(extract_data, .progress = "text") %>% 
   bind_rows() %>% 
   bind_cols( links )
 
-imgs <- unlist(data$imgs) %>% 
-  str_subset( "^/public" ) %>% 
-  str_replace( "^/", "")
-  unique
+download_images <- function(posts){
+  imgs <- posts %>% 
+    map( ~ html_nodes(., "img" ) %>% html_attr("src") %>% str_subset( "^/public" )  ) %>% 
+    unlist() %>% 
+    str_subset( "^/public" ) %>% 
+    str_replace( "^/", "") %>% 
+    unique
+  
+  directories <- sort( unique( dirname(imgs) ) )
+  
+  file.path( "static", directories) %>% 
+    walk( dir.create, recursive = TRUE, showWarnings = FALSE)
+  
+  download.file(
+    paste0( "http://romainfrancois.blog.free.fr/", imgs ), 
+    file.path( "static", str_replace(imgs, "/[.]", "/") )
+  )
+  
+}
 
-directories <- sort( unique( dirname(imgs) ) )
+download_links <- function(posts){
+  links <- posts %>% 
+    map( ~html_nodes(., "a") %>% html_attr("href") %>% str_subset("^/public") ) %>% 
+    unlist
+  
+  iframes <- posts %>% 
+    map( ~html_nodes(., "div.post-content iframe") %>% html_attr("src") %>% str_subset("^/public")) %>% 
+    unlist
+  
+  links <- c(links, iframes)
+  
+  directories <- sort( unique( dirname(links) ) )
+  
+  file.path( "static", directories) %>% 
+    walk( dir.create, recursive = TRUE, showWarnings = FALSE)
+  
+  download.file(
+    paste0( "http://romainfrancois.blog.free.fr/", links ), 
+    file.path( "static", links )
+  )
+  
+  
+}
 
-file.path( "static", directories) %>% 
-  walk( dir.create, recursive = TRUE, showWarnings = FALSE)
-
-download.file(
-  paste0( "http://romainfrancois.blog.free.fr/", imgs ), 
-  file.path( "static", imgs)
-)
 
 iframes <- unique(unlist(data$iframes)) %>% 
   str_subset( "^/public" )

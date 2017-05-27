@@ -1,0 +1,18 @@
+bank, MV2007, MV2009
+MS, 49, 13.7
+Credit Agricole, 67, 20
+Credit Suisse, 75, 22
+Deutsche Bank, 76, 12
+Societe Generale, 80, 19
+Barclays, 91, 7
+Unicredit, 93, 24
+Goldman Sachs, 100, 28
+BNP, 108, 26
+Santander, 116, 53
+UBS, 116, 29
+RBS, 120, 6
+JP Morgan, 165, 68
+HSBC, 215, 82
+Bank of America, 228, 33
+Citigroup, 255, 15
+
