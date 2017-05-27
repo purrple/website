@@ -17,7 +17,7 @@ pre{
 
 <p>As an example, if I add the view supplied by this <a href="/index.php?post/2009/02/07/a-hello-world-visual-miner-for-the-biocep-workbench">tutorial</a>, it appears as this: </p>
 
-<a href="/public/posts/perspectives/createView.png"><img src="/public/posts/perspectives/.createView_m.jpg" alt="createView.png" style="margin: 0 auto; display: block;" title="createView.png, fév. 2009"></a>
+<a href="/public/posts/perspectives/createView.png"><img src="/public/posts/perspectives/createView_m.jpg" alt="createView.png" style="margin: 0 auto; display: block;" title="createView.png, fév. 2009"></a>
 
 <p>and unless your plugin uses tricks, that is the only place where the view can be added, and you have to move it around to compose the layout you want to use. This is fine if your plugin only defines one view, but if you define many views (such as the power editor plugin), then asking the user to arrange the views each time is not so great.</p>
 
@@ -27,7 +27,7 @@ pre{
 
 <p>I have added support for perspectives in the power editor so that the many views supplied by the power editor are arranged in a useful way when the plugin is started, which can be configured by the user. Here is the default layout: </p>
 
-<a href="/public/posts/perspectives/perspectives.png"><img src="/public/posts/perspectives/.perspectives_m.jpg" alt="perspectives.png" style="margin: 0 auto; display: block;" title="perspectives.png, fév. 2009"></a>
+<a href="/public/posts/perspectives/perspectives.png"><img src="/public/posts/perspectives/perspectives_m.jpg" alt="perspectives.png" style="margin: 0 auto; display: block;" title="perspectives.png, fév. 2009"></a>
 
 <p>That is stored in this xml file in the pesrepectives directory of the Editor plugin</p>
 
@@ -80,7 +80,7 @@ pre{
 
 <p>I have recently added support for perspectives in the power editor (this feature should really belong to the biocep project itself, but is not high priority to the author at the moment) by using XML. For example, the default layout that appears when the workbench is started</p>
 
-<a href="/public/posts/perspectives/default.png"><img src="/public/posts/perspectives/.default_m.jpg" alt="default.png" style="margin: 0 auto; display: block;" title="default.png, fév. 2009"></a>
+<a href="/public/posts/perspectives/default.png"><img src="/public/posts/perspectives/default_m.jpg" alt="default.png" style="margin: 0 auto; display: block;" title="default.png, fév. 2009"></a>
 
 <p>can be represented by this perspective</p>
 

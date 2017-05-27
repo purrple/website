@@ -26,7 +26,7 @@ google_ad_height = 60;
 
 <p>Then, all it takes is some processing with R to extract the relevant information (number of lines in files of interest), and present the data in a graph. I'm also taking this opportunity to have some fun with raster images and the <a href="http://www.rforge.net/png/">png</a> package</p>
 
-<a href="/public/packages/Rcpp/code_size/nlines_rcpp.png"><img src="/public/packages/Rcpp/code_size/.nlines_rcpp_m.jpg" alt="nlines_rcpp.png" style="margin: 0 auto; display: block;" title="nlines_rcpp.png, déc. 2010"></a>
+<a href="/public/packages/Rcpp/code_size/nlines_rcpp.png"><img src="/public/packages/Rcpp/code_size/nlines_rcpp_m.jpg" alt="nlines_rcpp.png" style="margin: 0 auto; display: block;" title="nlines_rcpp.png, déc. 2010"></a>
 
 <p>The code explosion that started around version 0.7.8 marks the beginning of development of two of the most exciting and addictive projects I ever worked on: <a href="http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-modules.pdf">modules</a> and <a href="http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-sugar.pdf">sugar</a>
 

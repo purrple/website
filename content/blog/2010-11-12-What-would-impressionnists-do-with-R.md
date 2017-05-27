@@ -10,7 +10,7 @@ tags:  [ "images", "R" ]
 
 <p>The starting point is this picture of the golden gate bridge</p>
 
-<a href="/public/posts/goldengate/goldengate.png"><img src="/public/posts/goldengate/.goldengate_m.jpg" alt="goldengate.png" style="margin: 0 auto; display: block;" title="goldengate.png, nov. 2010"></a>
+<a href="/public/posts/goldengate/goldengate.png"><img src="/public/posts/goldengate/goldengate_m.jpg" alt="goldengate.png" style="margin: 0 auto; display: block;" title="goldengate.png, nov. 2010"></a>
 
 <p>The <a href="http://rforge.net/png/">png package</a> makes it straightforward to import png pictures into R (There are other ways as well).</p>
 
@@ -19,24 +19,24 @@ tags:  [ "images", "R" ]
 <table border="1px solid black">
 <tr>
 <td>
-<img src="/public/posts/goldengate/.circles-1_m.jpg" alt="circles-1.png" style="margin: 0 auto; display: block;" title="circles-1.png, nov. 2010" width="250px">
+<img src="/public/posts/goldengate/circles-1_m.jpg" alt="circles-1.png" style="margin: 0 auto; display: block;" title="circles-1.png, nov. 2010" width="250px">
 </td>
 <td>
-<img src="/public/posts/goldengate/.circles-2_m.jpg" alt="circles-2.png" style="margin: 0 auto; display: block;" title="circles-2.png, nov. 2010" width="250px">
+<img src="/public/posts/goldengate/circles-2_m.jpg" alt="circles-2.png" style="margin: 0 auto; display: block;" title="circles-2.png, nov. 2010" width="250px">
 </td>
 </tr>
 <tr>
 <td>
-<img src="/public/posts/goldengate/.circles-3_m.jpg" alt="circles-3.png" style="margin: 0 auto; display: block;" title="circles-3.png, nov. 2010" width="250px">
+<img src="/public/posts/goldengate/circles-3_m.jpg" alt="circles-3.png" style="margin: 0 auto; display: block;" title="circles-3.png, nov. 2010" width="250px">
 </td>
 <td>
-<img src="/public/posts/goldengate/.circles-4_m.jpg" alt="circles-4.png" style="margin: 0 auto; display: block;" title="circles-4.png, nov. 2010" width="250px">
+<img src="/public/posts/goldengate/circles-4_m.jpg" alt="circles-4.png" style="margin: 0 auto; display: block;" title="circles-4.png, nov. 2010" width="250px">
 </td>
 </tr>
 </table>
 <p>Then I do this many times, with translucent circles, and after some iterations ,the golden gate bridge starts to reveal itself</p>
 
-<a href="/public/posts/goldengate/goldengate-circles.png"><img src="/public/posts/goldengate/.goldengate-circles_m.jpg" alt="goldengate-circles.png" style="margin: 0 auto; display: block;" title="goldengate-circles.png, nov. 2010"></a>
+<a href="/public/posts/goldengate/goldengate-circles.png"><img src="/public/posts/goldengate/goldengate-circles_m.jpg" alt="goldengate-circles.png" style="margin: 0 auto; display: block;" title="goldengate-circles.png, nov. 2010"></a>
 
 <p>The code for this is included below</p>
 
@@ -46,10 +46,10 @@ tags:  [ "images", "R" ]
 
 </p>
 <p>
-<a href="/public/posts/goldengate/google-circles.png"><img src="/public/posts/goldengate/.google-circles_m.jpg" alt="google-circles.png" style="margin: 0 auto; display: block;" title="google-circles.png, nov. 2010"></a>
+<a href="/public/posts/goldengate/google-circles.png"><img src="/public/posts/goldengate/google-circles_m.jpg" alt="google-circles.png" style="margin: 0 auto; display: block;" title="google-circles.png, nov. 2010"></a>
 </p>
 
 <p>
-<a href="/public/posts/goldengate/apple-circles.png"><img src="/public/posts/goldengate/.apple-circles_m.jpg" alt="apple-circles.png" style="margin: 0 auto; display: block;" title="apple-circles.png, nov. 2010"></a>
+<a href="/public/posts/goldengate/apple-circles.png"><img src="/public/posts/goldengate/apple-circles_m.jpg" alt="apple-circles.png" style="margin: 0 auto; display: block;" title="apple-circles.png, nov. 2010"></a>
 </p>
 </div>

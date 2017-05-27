@@ -9,7 +9,7 @@ tags:  [ "R", "r graph gallery" ]
 <p>I've added a PayPal button into the <a href="http://addictedtor.free.fr/graphiques">graph</a>, just in case people want to help the development of the website</p>
 
 <a href="http://gallery.r-enthusiasts.com">
-<img src="/public/graphgallery/.paypal_button_m.jpg" alt="paypal_button.png" style="margin: 0 auto; display: block;" title="paypal_button.png, sept. 2011"></a>
+<img src="/public/graphgallery/paypal_button_m.jpg" alt="paypal_button.png" style="margin: 0 auto; display: block;" title="paypal_button.png, sept. 2011"></a>
 
 <br><script type="text/javascript"><!--
 google_ad_client = "ca-pub-0193080271541659";

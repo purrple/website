@@ -14,7 +14,7 @@ border: 1px black solid ;
 </style>
 <p>This post has a following goals: announcing the <a href="http://addictedtor.free.fr/graphiques">graph gallery</a> has gained a tag cloud, and showing how it is done. </p>
 
-<img src="/public/posts/tagcloud/.Screenshot_m.jpg" alt="Screenshot.png" style="margin: 0 auto; display: block;" title="Screenshot.png, fév. 2009"><p>The cloud is a simple tag cloud of the words in <strong>titles</strong> of graphics that are included in the gallery. For this purpose, I am using an 
+<img src="/public/posts/tagcloud/Screenshot_m.jpg" alt="Screenshot.png" style="margin: 0 auto; display: block;" title="Screenshot.png, fév. 2009"><p>The cloud is a simple tag cloud of the words in <strong>titles</strong> of graphics that are included in the gallery. For this purpose, I am using an 
 <a href="/public/posts/tagcloud/rgraphgallery.xml">XML dump</a> of the main table of the gallery database, here is for example the information for graph <a href="http://addictedtor.free.fr/graphiques/RGraphGallery.php?graph=12">12</a>. 
 
 </p>

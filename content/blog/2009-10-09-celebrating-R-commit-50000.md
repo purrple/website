@@ -59,25 +59,25 @@ $ svn log -v https://svn.r-project.org/R &gt; rsvn.log
 
 <h3>Number of commits per day</h3>
 
-<a href="/public/R50000/commits_day.png"><img src="/public/R50000/.commits_day_m.jpg" alt="commits_day.png" style="margin: 0 auto; display: block;" title="commits_day.png, oct. 2009"></a>
+<a href="/public/R50000/commits_day.png"><img src="/public/R50000/commits_day_m.jpg" alt="commits_day.png" style="margin: 0 auto; display: block;" title="commits_day.png, oct. 2009"></a>
 
 <iframe src="/public/R50000/commits_day.html" width="500" height="150" frameborder="1"></iframe>
 
 <h3>... split by author</h3>
 
-<a href="/public/R50000/commits_author_day.png"><img src="/public/R50000/.commits_author_day_m.jpg" alt="commits_author_day.png" style="margin: 0 auto; display: block;" title="commits_author_day.png, oct. 2009"></a>
+<a href="/public/R50000/commits_author_day.png"><img src="/public/R50000/commits_author_day_m.jpg" alt="commits_author_day.png" style="margin: 0 auto; display: block;" title="commits_author_day.png, oct. 2009"></a>
 
 <iframe src="/public/R50000/commits_day_author.html" width="500" height="150" frameborder="1"></iframe>
 
 <h3>The number of commits per month</h3>
 
-<a href="/public/R50000/commits_month.png"><img src="/public/R50000/.commits_month_m.jpg" alt="commits_month.png" style="margin: 0 auto; display: block;" title="commits_month.png, oct. 2009"></a>
+<a href="/public/R50000/commits_month.png"><img src="/public/R50000/commits_month_m.jpg" alt="commits_month.png" style="margin: 0 auto; display: block;" title="commits_month.png, oct. 2009"></a>
 
 <iframe src="/public/R50000/commits_month.html" width="500" height="150" frameborder="1"></iframe>
 
 <h3>... split by author</h3>
 
-<a href="/public/R50000/commits_author_month.png"><img src="/public/R50000/.commits_author_month_m.jpg" alt="commits_author_month.png" style="margin: 0 auto; display: block;" title="commits_author_month.png, oct. 2009"></a>
+<a href="/public/R50000/commits_author_month.png"><img src="/public/R50000/commits_author_month_m.jpg" alt="commits_author_month.png" style="margin: 0 auto; display: block;" title="commits_author_month.png, oct. 2009"></a>
 
 <iframe src="/public/R50000/commits_month_author.html" width="500" height="150" frameborder="1"></iframe>
 

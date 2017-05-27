@@ -10,7 +10,7 @@ tags:  [ "R", "R Bloggers", "r graph gallery" ]
 
 <p>Tal and I have been wondering about how to tight R Bloggers with the gallery, supporting each other's website. To that extent, I've made a quick and dirty widget, using <a href="http://jquery.malsup.com/cycle/">the jquery cycle plugin</a> that is now on the right sidebar of R bloggers, inside the <b>related sites</b> box. </p>
 
-<a href="/public/graphgallery/rbloggers.png"><img src="/public/graphgallery/.rbloggers_m.jpg" alt="rbloggers.png" style="margin: 0 auto; display: block;" title="rbloggers.png, oct. 2011"></a>
+<a href="/public/graphgallery/rbloggers.png"><img src="/public/graphgallery/rbloggers_m.jpg" alt="rbloggers.png" style="margin: 0 auto; display: block;" title="rbloggers.png, oct. 2011"></a>
 
 <p>The widget first chooses 20 items from the gallery at random, and then cycles through them. </p>
 

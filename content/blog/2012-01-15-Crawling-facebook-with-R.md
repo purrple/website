@@ -18,7 +18,7 @@ google_ad_height = 60;
 
 <p>First, we need an access token from facebook. I don't know how to get this programmatically, so let's get one manually, log on to facebook and then go to the <a href="https://developers.facebook.com/tools/explorer">Graph API Explorer</a></p>
 
-<a href="/public/posts/facebook/graph_api_explorer.png"><img src="/public/posts/facebook/.graph_api_explorer_m.jpg" alt="graph_api_explorer.png" style="margin: 0 auto; display: block;" title="graph_api_explorer.png, janv. 2012"></a>
+<a href="/public/posts/facebook/graph_api_explorer.png"><img src="/public/posts/facebook/graph_api_explorer_m.jpg" alt="graph_api_explorer.png" style="margin: 0 auto; display: block;" title="graph_api_explorer.png, janv. 2012"></a>
 
 <p>Grab the access token and save it into a variable in R</p>
 

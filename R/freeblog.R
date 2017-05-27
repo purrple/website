@@ -3,6 +3,7 @@ library(rvest)
 library(purrr)
 library(stringr)
 library(dplyr)
+library(readr)
 
 llply <- plyr::llply
 
@@ -81,7 +82,9 @@ download_links <- function(posts){
     map( ~html_nodes(., "div.post-content iframe") %>% html_attr("src") %>% str_subset("^/public")) %>% 
     unlist
   
-  links <- c(links, iframes)
+  links <- c(links, iframes) %>% 
+    str_replace("^/", "")
+    
   
   directories <- sort( unique( dirname(links) ) )
   
@@ -96,18 +99,6 @@ download_links <- function(posts){
   
 }
 
-
-iframes <- unique(unlist(data$iframes)) %>% 
-  str_subset( "^/public" )
-
-directories <- sort( unique( dirname(iframes) ) )
-file.path( "static", directories) %>% 
-  walk( dir.create, recursive = TRUE, showWarnings = FALSE)
-
-download.file( 
-  paste0( "http://romainfrancois.blog.free.fr/", iframes ), 
-  file.path( "static", iframes)
-  )
 
 data$slug <- data$slug %>% str_replace_all( "[%].{2}", "-")
 data$title <- data$title %>% str_replace_all( "[#:]", "-" )
@@ -141,5 +132,13 @@ for(i in seq_len(nrow(data))){
   close(file)
 }
 
+mdfiles <- list.files( "content/blog", pattern = "[.]md$", full.names = TRUE  )
+
+mdfiles %>% 
+  map( function(file){
+    read_lines( file ) %>% 
+      str_replace_all("/[.]([^.]+)[.]jpg", "/\\1.jpg" ) %>% 
+      write_lines( path = file )
+  }) 
 
 

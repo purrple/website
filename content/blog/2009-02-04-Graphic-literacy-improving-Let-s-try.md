@@ -8,9 +8,9 @@ tags:  [ "graphgallery", "graphics", "R" ]
 <div class="post-content">Here is a proposed alternative to this bubble inferno pointed out in the <a href="http://blog.revolution-computing.com/2009/02/graphic-literacy-improving.html">revolutions blog</a>
 
 <a href="http://ftalphaville.ft.com/blog/2009/01/22/51558/that-jp-morgan-picture-official-redux/">
-<img src="/public/posts/financialtimes/.bubble_m.jpg" alt="bubble.png" style="margin: 0 auto; display: block;" title="bubble.png, fév. 2009"></a>
+<img src="/public/posts/financialtimes/bubble_m.jpg" alt="bubble.png" style="margin: 0 auto; display: block;" title="bubble.png, fév. 2009"></a>
 
-<a href="/public/posts/financialtimes/ft.png"><img src="/public/posts/financialtimes/.ft_m.jpg" alt="ft.png" style="margin: 0 auto; display: block;" title="ft.png, fév. 2009"></a>
+<a href="/public/posts/financialtimes/ft.png"><img src="/public/posts/financialtimes/ft_m.jpg" alt="ft.png" style="margin: 0 auto; display: block;" title="ft.png, fév. 2009"></a>
 
 and the R <a href="/public/posts/financialtimes/plot.R">code</a> behind it (here is the <a href="/public/posts/financialtimes/data.txt">data</a>). This is now item <a href="http://addictedtor.free.fr/graphiques/RGraphGallery.php?graph=150">150</a> in the graph gallery
 

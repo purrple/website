@@ -21,7 +21,7 @@ pre{
 <p>The application we are demonstrating here is really simple and may not be useful beyond getting started at making other plugins for biocep. It will add a single view into the workbench allowing to retrieve data from <a href="http://finance.yahoo.com/">yahoo finance</a> using the function <a href="http://finzi.psych.upenn.edu/R/library/tseries/html/get.hist.quote.html"><code>get.hist.quote</code></a> from the beginning of a year to today, and display the result in a graphical device. This will look something like that: </p>
 
 <a href="/public/posts/workbenchplugin/Screenshot.png">
-<img src="/public/posts/workbenchplugin/.Screenshot_m.jpg" alt="Screenshot.png" style="margin: 0 auto; display: block;" title="Screenshot.png, fév. 2009"></a>
+<img src="/public/posts/workbenchplugin/Screenshot_m.jpg" alt="Screenshot.png" style="margin: 0 auto; display: block;" title="Screenshot.png, fév. 2009"></a>
 
 <h2>Structure of the plugin</h2>
 

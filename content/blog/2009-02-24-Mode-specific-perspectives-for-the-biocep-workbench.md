@@ -10,15 +10,15 @@ tags:  [ "jedit" ]
 
 <p>You first need to start the workbench, with a recent version of the power editor plugin (svn revision &gt;220)</p>
 
-<a href="/public/posts/perspectives/startup.png"><img src="/public/posts/perspectives/.startup_m.jpg" alt="startup.png" style="margin: 0 auto; display: block;" title="startup.png, fév. 2009"></a> 
+<a href="/public/posts/perspectives/startup.png"><img src="/public/posts/perspectives/startup_m.jpg" alt="startup.png" style="margin: 0 auto; display: block;" title="startup.png, fév. 2009"></a> 
 
 <p>Then load the editor plugin. <em>Plugin &gt; Editor &gt; Power Editor</em></p>
 
-<a href="/public/posts/perspectives/powereditorloaded.png"><img src="/public/posts/perspectives/.powereditorloaded_m.jpg" alt="powereditorloaded.png" style="margin: 0 auto; display: block;" title="powereditorloaded.png, fév. 2009"></a>
+<a href="/public/posts/perspectives/powereditorloaded.png"><img src="/public/posts/perspectives/powereditorloaded_m.jpg" alt="powereditorloaded.png" style="margin: 0 auto; display: block;" title="powereditorloaded.png, fév. 2009"></a>
 
 <p>Finally, you need to tell jedit that you want it to manage saving and loading perspectives automatically based on the mode of the file being edited. You can do that using the jedit menu jEdit &gt; Utilities &gt; Global Options, ... The following dialog is displayed, click the two checkboxes on top. </p>
 
-<a href="/public/posts/perspectives/dockingdialog.png"><img src="/public/posts/perspectives/.dockingdialog_m.jpg" alt="dockingdialog.png" style="margin: 0 auto; display: block;" title="dockingdialog.png, fév. 2009"></a>
+<a href="/public/posts/perspectives/dockingdialog.png"><img src="/public/posts/perspectives/dockingdialog_m.jpg" alt="dockingdialog.png" style="margin: 0 auto; display: block;" title="dockingdialog.png, fév. 2009"></a>
 
 <p>That's it. You can also save a perspective by selecting <em>jEdit &gt; View &gt; Docking &gt; Save Docking Layout ... </em></p>
 </div>

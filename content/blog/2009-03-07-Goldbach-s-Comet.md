@@ -120,10 +120,10 @@ border: 1px solid black;
 <p>Or a graphical display (see <a href="http://wiki.r-project.org/rwiki/doku.php?id=tips:misc:profiling">the R wiki</a> for the perl script that makes the graph): </p>
 
 <p>goldbach4</p>
-<a href="/public/posts/goldbach/goldbach4.png"><img src="/public/posts/goldbach/.goldbach4_m.jpg" alt="goldbach4.png" style="margin: 0 auto; display: block;" title="goldbach4.png, mar. 2009"></a>
+<a href="/public/posts/goldbach/goldbach4.png"><img src="/public/posts/goldbach/goldbach4_m.jpg" alt="goldbach4.png" style="margin: 0 auto; display: block;" title="goldbach4.png, mar. 2009"></a>
 
 <p>goldbach5</p>
-<a href="/public/posts/goldbach/goldbach5.png"><img src="/public/posts/goldbach/.goldbach5_m.jpg" alt="goldbach5.png" style="margin: 0 auto; display: block;" title="goldbach5.png, mar. 2009"></a>
+<a href="/public/posts/goldbach/goldbach5.png"><img src="/public/posts/goldbach/goldbach5_m.jpg" alt="goldbach5.png" style="margin: 0 auto; display: block;" title="goldbach5.png, mar. 2009"></a>
 
 <p>The question is now, can we go further. I believe we can, because we still allocate a lot of things we trash eventually, any takers ?</p></pre>
 </div>

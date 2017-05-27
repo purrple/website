@@ -9,7 +9,7 @@ slug:  a-hello-world-visual-miner-for-the-biocep-workbench
 
 <p>This is an example on using jgraphx as a plugin to the <a href="">biocep workbench</a>, we are just going to integrate the hello world example from jgraphx as a view of the workbench. I am hoping people will find this useful and more ideas will come later. Here is a screenshot: </p>
 
-<img src="/public/posts/jgraphx/.Screenshot_m.jpg" alt="Screenshot.png" style="margin: 0 auto; display: block;" title="Screenshot.png, fév. 2009"><p>As you might guess from the screenshot, this is not really useful and does not do anything apart from being able to move things around. jgraphx has more examples, and apparently you can use any swing component as a renderer to a graph vertex, so there is no limit to what can be achieved ... </p>
+<img src="/public/posts/jgraphx/Screenshot_m.jpg" alt="Screenshot.png" style="margin: 0 auto; display: block;" title="Screenshot.png, fév. 2009"><p>As you might guess from the screenshot, this is not really useful and does not do anything apart from being able to move things around. jgraphx has more examples, and apparently you can use any swing component as a renderer to a graph vertex, so there is no limit to what can be achieved ... </p>
 
 <p>The project looks like this: </p>
 

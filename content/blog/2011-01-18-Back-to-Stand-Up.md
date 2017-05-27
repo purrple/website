@@ -17,9 +17,9 @@ tags:  [ "standup comedy" ]
 
 <p>Some press coverage and pictures: <a href="http://www.soonnight.com/languedoc-roussillon/photos-macadam-erasmus-party,3,303380.html">soonlight</a>
 
-<a href="/public/comedy/le-macadam-303380_0.jpg"><img src="/public/comedy/.le-macadam-303380_0_m.jpg" alt="le-macadam-303380_0.jpg" style="margin: 0 auto; display: block;" title="le-macadam-303380_0.jpg, janv. 2011"></a>
+<a href="/public/comedy/le-macadam-303380_0.jpg"><img src="/public/comedy/le-macadam-303380_0_m.jpg" alt="le-macadam-303380_0.jpg" style="margin: 0 auto; display: block;" title="le-macadam-303380_0.jpg, janv. 2011"></a>
 
-<a href="/public/comedy/le-macadam-303380_1.jpg"><img src="/public/comedy/.le-macadam-303380_1_m.jpg" alt="le-macadam-303380_1.jpg" style="margin: 0 auto; display: block;" title="le-macadam-303380_1.jpg, janv. 2011"></a>
+<a href="/public/comedy/le-macadam-303380_1.jpg"><img src="/public/comedy/le-macadam-303380_1_m.jpg" alt="le-macadam-303380_1.jpg" style="margin: 0 auto; display: block;" title="le-macadam-303380_1.jpg, janv. 2011"></a>
 
 <a href="/public/comedy/le-macadam-303380_12.jpg"><img src="/public/comedy/le-macadam-303380_12.jpg" alt="le-macadam-303380_12.jpg" style="margin: 0 auto; display: block;" title="le-macadam-303380_12.jpg, janv. 2011"></a>
 

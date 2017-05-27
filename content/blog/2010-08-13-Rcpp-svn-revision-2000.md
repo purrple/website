@@ -17,21 +17,21 @@ border : 1px solid black ;
 
 <p>Here are the number of commits per day and month</p>
 
-<a href="/public/packages/Rcpp/commit2000/commits_per_day.png"><img src="/public/packages/Rcpp/commit2000/.commits_per_day_m.jpg" alt="commits_per_day.png" style="margin: 0 auto; display: block;" title="commits_per_day.png, août 2010"></a>
+<a href="/public/packages/Rcpp/commit2000/commits_per_day.png"><img src="/public/packages/Rcpp/commit2000/commits_per_day_m.jpg" alt="commits_per_day.png" style="margin: 0 auto; display: block;" title="commits_per_day.png, août 2010"></a>
 
-<a href="/public/packages/Rcpp/commit2000/commits_per_month.png"><img src="/public/packages/Rcpp/commit2000/.commits_per_month_m.jpg" alt="commits_per_month.png" style="margin: 0 auto; display: block;" title="commits_per_month.png, août 2010"></a>
+<a href="/public/packages/Rcpp/commit2000/commits_per_month.png"><img src="/public/packages/Rcpp/commit2000/commits_per_month_m.jpg" alt="commits_per_month.png" style="margin: 0 auto; display: block;" title="commits_per_month.png, août 2010"></a>
 
 <p>... the same thing, but focused on the period since I joined the project</p>
 
-<a href="/public/packages/Rcpp/commit2000/commits_per_day__zoom.png"><img src="/public/packages/Rcpp/commit2000/.commits_per_day__zoom_m.jpg" alt="commits_per_day__zoom.png" style="margin: 0 auto; display: block;" title="commits_per_day__zoom.png, août 2010"></a>
+<a href="/public/packages/Rcpp/commit2000/commits_per_day__zoom.png"><img src="/public/packages/Rcpp/commit2000/commits_per_day__zoom_m.jpg" alt="commits_per_day__zoom.png" style="margin: 0 auto; display: block;" title="commits_per_day__zoom.png, août 2010"></a>
 
-<a href="/public/packages/Rcpp/commit2000/commits_per_month__zoom.png"><img src="/public/packages/Rcpp/commit2000/.commits_per_month__zoom_m.jpg" alt="commits_per_month__zoom.png" style="margin: 0 auto; display: block;" title="commits_per_month__zoom.png, août 2010"></a>
+<a href="/public/packages/Rcpp/commit2000/commits_per_month__zoom.png"><img src="/public/packages/Rcpp/commit2000/commits_per_month__zoom_m.jpg" alt="commits_per_month__zoom.png" style="margin: 0 auto; display: block;" title="commits_per_month__zoom.png, août 2010"></a>
 
 <p>... and now split by contributor</p>
 
-<a href="/public/packages/Rcpp/commit2000/commits_per_day_per_author__zoom.png"><img src="/public/packages/Rcpp/commit2000/.commits_per_day_per_author__zoom_m.jpg" alt="commits_per_day_per_author__zoom.png" style="margin: 0 auto; display: block;" title="commits_per_day_per_author__zoom.png, août 2010"></a>
+<a href="/public/packages/Rcpp/commit2000/commits_per_day_per_author__zoom.png"><img src="/public/packages/Rcpp/commit2000/commits_per_day_per_author__zoom_m.jpg" alt="commits_per_day_per_author__zoom.png" style="margin: 0 auto; display: block;" title="commits_per_day_per_author__zoom.png, août 2010"></a>
 
-<a href="/public/packages/Rcpp/commit2000/commits_per_month_author__zoom.png"><img src="/public/packages/Rcpp/commit2000/.commits_per_month_author__zoom_m.jpg" alt="commits_per_month_author__zoom.png" style="margin: 0 auto; display: block;" title="commits_per_month_author__zoom.png, août 2010"></a>
+<a href="/public/packages/Rcpp/commit2000/commits_per_month_author__zoom.png"><img src="/public/packages/Rcpp/commit2000/commits_per_month_author__zoom_m.jpg" alt="commits_per_month_author__zoom.png" style="margin: 0 auto; display: block;" title="commits_per_month_author__zoom.png, août 2010"></a>
 
 <p>here are the month where each of us have been the most active</p>
 

@@ -7,7 +7,7 @@ tags:  [ "graphgallery" ]
 ---
 <div class="post-content">I've just uploaded <a href="http://addictedtor.free.fr/graphiques/graphcode.php?graph=144">graph 144</a> by Barry Rowlingson in the graph gallery. 
 
-<a href="http://addictedtor.free.fr/graphiques/RGraphGallery.php?graph=144"><img src="/public/posts/graphgallery/.graph_144_m.jpg" alt="graph_144.png" style="margin: 0 auto; display: block;" title="graph_144.png, janv. 2009"></a>
+<a href="http://addictedtor.free.fr/graphiques/RGraphGallery.php?graph=144"><img src="/public/posts/graphgallery/graph_144_m.jpg" alt="graph_144.png" style="margin: 0 auto; display: block;" title="graph_144.png, janv. 2009"></a>
 
 I has been a while since I last uploaded a graph in there, mainly because the process of adding a new graph is taking some time and is not that much automated. Many people have sent me suggestion graphics and eventually I will add them ... I promise.
 

@@ -12,7 +12,7 @@ tags:  [ "R" ]
 
 <p>The idea is to use the <a href="http://frexx.de/xterm-256-notes/">The 256 color mode of xterm</a> to wrap some text between escape sequences so that when it is cat to the console, the text appears with a background and/or a foreground color. Here is a screenshot from my console: 
 
-<a href="/public/posts/xterm256/lef-2.png"><img src="/public/posts/xterm256/.lef-2_m.jpg" alt="lef-2.png" style="margin: 0 auto; display: block;" title="lef-2.png, avr. 2009"></a>
+<a href="/public/posts/xterm256/lef-2.png"><img src="/public/posts/xterm256/lef-2_m.jpg" alt="lef-2.png" style="margin: 0 auto; display: block;" title="lef-2.png, avr. 2009"></a>
 
 </p>
 <p>The package exposes only one function with three arguments: the <code>style</code> function with arguments :

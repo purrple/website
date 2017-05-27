@@ -15,5 +15,5 @@ people will share their own graphs by sending a picture on the facebook page wal
 
 <p>As part of this, I've added the usual "find us on facebook" widget on the home page of the gallery</p>
 
-<a href="http://addictedtor.free.fr/graphiques"><img src="/public/graphgallery/.facebook_page_m.jpg" alt="facebook_page.png" style="margin: 0 auto; display: block;" title="facebook_page.png, sept. 2011"></a>
+<a href="http://addictedtor.free.fr/graphiques"><img src="/public/graphgallery/facebook_page_m.jpg" alt="facebook_page.png" style="margin: 0 auto; display: block;" title="facebook_page.png, sept. 2011"></a>
 </div>

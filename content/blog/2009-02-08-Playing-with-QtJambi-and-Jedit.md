@@ -100,7 +100,7 @@ $ tree
 
 <p>Apart from the code of the Qt Jambi to Awt bridge, there is the patched <code>jEdit.java</code>, the <code>JambiJedit.java</code> file which basically creates a Qt main window and sets jedit as its central widget, and the <code>jambidocking</code> directory which contains the start of an implementation of jedit's shiny new <a href="http://www.jedit.org/api/org/gjt/sp/jedit/gui/DockableWindowManager.html">DockableWindowManager</a> system (more on that later)</p>
 
-<a href="/public/posts/jambijedit/jeditinjambi.png"><img src="/public/posts/jambijedit/.jeditinjambi_m.jpg" alt="jeditinjambi.png" style="margin: 0 auto; display: block;" title="jeditinjambi.png, fév. 2009"></a>
+<a href="/public/posts/jambijedit/jeditinjambi.png"><img src="/public/posts/jambijedit/jeditinjambi_m.jpg" alt="jeditinjambi.png" style="margin: 0 auto; display: block;" title="jeditinjambi.png, fév. 2009"></a>
 
 <p>The good news is that it works, the bad news is that it <em>sort of</em> works</p>
 

@@ -8,5 +8,5 @@ tags:  [ "R", "r graph gallery" ]
 <div class="post-content">
 <p>I've added a twitter search widget that searches for the #rgraphgallery hashtag or the url of the gallery on the <a href="http://addictedtor.free.fr/graphiques">front page</a>. </p>
 
-<a href="http://addictedtor.free.fr/graphiques"><img src="/public/graphgallery/.twitter_m.jpg" alt="twitter.png" style="margin: 0 auto; display: block;" title="twitter.png, oct. 2011"></a>
+<a href="http://addictedtor.free.fr/graphiques"><img src="/public/graphgallery/twitter_m.jpg" alt="twitter.png" style="margin: 0 auto; display: block;" title="twitter.png, oct. 2011"></a>
 </div>

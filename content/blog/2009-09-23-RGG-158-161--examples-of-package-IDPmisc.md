@@ -11,15 +11,15 @@ tags:  [ "graphgallery" ]
 <p>Image lag plot matrix</p>
 
 <a href="http://addictedtor.free.fr/graphiques/RGraphGallery.php?graph=158">
-<img src="/public/posts/graphgallery/.graph_158_m.jpg" alt="graph_158.png" style="margin: 0 auto; display: block;" title="graph_158.png, sept. 2009"></a>
+<img src="/public/posts/graphgallery/graph_158_m.jpg" alt="graph_158.png" style="margin: 0 auto; display: block;" title="graph_158.png, sept. 2009"></a>
 
 <p>Image scatter plot matrix</p>
 
 <a href="http://addictedtor.free.fr/graphiques/RGraphGallery.php?graph=159">
-<img src="/public/posts/graphgallery/.graph_159_m.jpg" alt="graph_159.png" style="margin: 0 auto; display: block;" title="graph_159.png, sept. 2009"></a>
+<img src="/public/posts/graphgallery/graph_159_m.jpg" alt="graph_159.png" style="margin: 0 auto; display: block;" title="graph_159.png, sept. 2009"></a>
 
 <p>Regular time series</p>
 
 <a href="http://addictedtor.free.fr/graphiques/RGraphGallery.php?graph=160">
-<img src="/public/posts/graphgallery/.graph_160_m.jpg" alt="graph_160.png" style="margin: 0 auto; display: block;" title="graph_160.png, sept. 2009"></a>
+<img src="/public/posts/graphgallery/graph_160_m.jpg" alt="graph_160.png" style="margin: 0 auto; display: block;" title="graph_160.png, sept. 2009"></a>
 </div>

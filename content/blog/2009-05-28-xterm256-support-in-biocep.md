@@ -12,7 +12,7 @@ tags:  [ "R" ]
 
 <p>Here, I am proposing a patch to the <a href="http://cran.r-project.org/web/packages/xterm256/index.html">biocep workbench</a> that emulates support for these colors directly in the biocep R console, see the screenshot below: </p>
 
-<a href="/public/posts/xterm256/xterm256-biocep.png"><img src="/public/posts/xterm256/.xterm256-biocep_m.jpg" alt="xterm256-biocep.png" style="margin: 0 auto; display: block;" title="xterm256-biocep.png, mai 2009"></a>
+<a href="/public/posts/xterm256/xterm256-biocep.png"><img src="/public/posts/xterm256/xterm256-biocep_m.jpg" alt="xterm256-biocep.png" style="margin: 0 auto; display: block;" title="xterm256-biocep.png, mai 2009"></a>
 
 <p>Combined with the syntax highlighter I am working on, this allows syntax highlighting of R code (pretty close to the way R sees the code) directly in the code and is in my view both visually pleasing and very useful</p>
 

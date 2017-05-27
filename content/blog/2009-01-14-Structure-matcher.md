@@ -12,7 +12,7 @@ tags:  [ "jedit" ]
 <p>On the other hand, the <a href="http://plugins.jedit.org/plugins/?XML">XML plugin</a> gives you a more useful information when closing an XML tag. Let's see it in action with this <a href="http://www.w3schools.com/XML/note.xml">simple XML file from the w3c</a></p>
 
 
-<p><a href="/public/posts/post5-structurematcher/xml.png"><img src="/public/posts/post5-structurematcher/.xml_m.jpg" alt="xml.png" style="display:block; margin:0 auto;" title="xml.png, janv. 2009"></a></p>
+<p><a href="/public/posts/post5-structurematcher/xml.png"><img src="/public/posts/post5-structurematcher/xml_m.jpg" alt="xml.png" style="display:block; margin:0 auto;" title="xml.png, janv. 2009"></a></p>
 
 
 <p>On the left, the caret is within the <code>&lt;/note&gt;</code> closing tag and so the entire opening <code>&lt;note&gt;</code> tag is being highlighted. Similarly, on the right, the caret is within the opening <code>&lt;heading&gt;</code> tag and consequently the closing <code>&lt;/heading&gt;</code> gets highlighted. This is particularly useful when editing xml documents.</p>

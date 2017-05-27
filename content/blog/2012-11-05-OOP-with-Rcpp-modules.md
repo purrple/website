@@ -36,5 +36,5 @@ google_ad_height = 60;
 
 <iframe src="/public/posts/shapes/play.html" width="500" height="200" frameborder="0"></iframe>
 
-<img src="/public/posts/shapes/.shapes_m.jpg" alt="shapes.jpg" style="margin: 0 auto; display: block;" title="shapes.jpg, nov. 2012">
+<img src="/public/posts/shapes/shapes_m.jpg" alt="shapes.jpg" style="margin: 0 auto; display: block;" title="shapes.jpg, nov. 2012">
 </div>
