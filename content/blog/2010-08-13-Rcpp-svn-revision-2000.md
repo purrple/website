@@ -13,7 +13,7 @@ border : 1px solid black ;
 </style>
 <a href="http://www.flickr.com/photos/hijukal/146101132/"><img src="http://farm1.static.flickr.com/47/146101132_f1855e53b9_z_d.jpg?zz=1"></a>
 
-<p>I commited the 2000th revision of <a href="http://dirk.eddelbuettel.com/code/rcpp.html">Rcpp</a> svn today, so I wanted to look back at what I did previously with the <a href="http://romainfrancois.blog.free.fr/index.php?post/2009/10/09/celebrating-R-commit-50000">50 000th</a> R commit. </p>
+<p>I commited the 2000th revision of <a href="http://dirk.eddelbuettel.com/code/rcpp.html">Rcpp</a> svn today, so I wanted to look back at what I did previously with the <a href="/blog/2009/10/09/celebrating-R-commit-50000">50 000th</a> R commit. </p>
 
 <p>Here are the number of commits per day and month</p>
 

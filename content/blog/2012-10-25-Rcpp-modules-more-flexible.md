@@ -6,20 +6,13 @@ slug:  Rcpp-modules-more-flexible
 tags:  [ "cplusplus", "R", "Rcpp" ]
 ---
 <div class="post-content">
-<script type="text/javascript"><!--
-google_ad_client = "ca-pub-0193080271541659";
-/* blog */
-google_ad_slot = "4394100836";
-google_ad_width = 468;
-google_ad_height = 60;
-//-->
-</script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script><br><p>
-<a href="http://dirk.eddelbuettel.com/code/rcpp.html">Rcpp</a> modules just got more flexible (as of revision 3838 of Rcpp, to become 0.9.16 in the future). 
+
+<p>
+<a href="http://dirk.eddelbuettel.com/code/rcpp.html">Rcpp</a> modules just got more flexible (as of revision 3838 of Rcpp, to become 0.9.16 in the future).
 </p>
 
 <p>
-modules have allowed exposing C++ classes for some time now, but developpers had to declare custom wrap and as specializations if they wanted their classes to be used as return type or argument type of a C++ function or method. This led to writing boilerplate code. The newest devel version allows for syntax like this: 
+modules have allowed exposing C++ classes for some time now, but developpers had to declare custom wrap and as specializations if they wanted their classes to be used as return type or argument type of a C++ function or method. This led to writing boilerplate code. The newest devel version allows for syntax like this:
 </p>
 
 <iframe src="/public/packages/Rcpp/Mod.cpp.html" width="500" height="650" frameborder="0" scrolling="none">Mod.cpp.html</iframe>

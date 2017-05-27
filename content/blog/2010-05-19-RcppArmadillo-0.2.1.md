@@ -19,22 +19,22 @@ several operations into one and reduce (or eliminate) the need for
 temporaries.  This is accomplished through recursive templates and template
 meta-programming.</p>
 
-<p>This library is useful if C++ has been decided as the language of choice 
-(due to speed and/or integration capabilities), rather than another language 
-like Matlab or Octave. It is distributed under a license that is useful in 
+<p>This library is useful if C++ has been decided as the language of choice
+(due to speed and/or integration capabilities), rather than another language
+like Matlab or Octave. It is distributed under a license that is useful in
 both open-source and commercial contexts.</p>
 
-<p>Armadillo is primarily developed by 
-<a href="http://www.itee.uq.edu.au/~conrad/">Conrad Sanderson</a> at 
+<p>Armadillo is primarily developed by
+<a href="http://www.itee.uq.edu.au/~conrad/">Conrad Sanderson</a> at
 <a href="http://nicta.com.au/research/project_list">NICTA</a> (Australia),
 with contributions from around the world.</p>
 
 
 <h2>RcppArmadillo</h2>
 
-<p><a href="http://dirk.eddelbuettel.com/code/rcpp.armadillo.html">RcppArmadillo</a> 
+<p><a href="http://dirk.eddelbuettel.com/code/rcpp.armadillo.html">RcppArmadillo</a>
 is an R package that facilitates using Armadillo classes
-in R packages through <a href="http://dirk.eddelbuettel.com/code/rcpp.html">Rcpp</a>. 
+in R packages through <a href="http://dirk.eddelbuettel.com/code/rcpp.html">Rcpp</a>.
 It achieves the integration by extending Rcpp's
 data interchange concepts to <a href="http://arma.sourceforge.net/">Armadillo</a> classes.</p>
 
@@ -49,61 +49,61 @@ RcppArmadillo via the
 
 <p>Note however that you may not want to compute a linear regression fit this
 way in order to protect from numerical inaccuracies on rank-deficient
-problems. The help page for 
-<a href="http://finzi.psych.upenn.edu/R/library/RcppArmadillo/html/fastLm.html">fastLm()</a> 
+problems. The help page for
+<a href="http://finzi.psych.upenn.edu/R/library/RcppArmadillo/html/fastLm.html">fastLm()</a>
 provides an example.</p>
 
 
 <h2>Using RcppArmadillo in other packages</h2>
 
-<p><a href="http://dirk.eddelbuettel.com/code/rcpp.armadillo.html">RcppArmadillo</a> 
+<p><a href="http://dirk.eddelbuettel.com/code/rcpp.armadillo.html">RcppArmadillo</a>
 is designed so that its classes can be used from other packages. </p>
 
 <p>Using RcppArmadillo requires: </p>
 
 <ul>
 <li>
-<p>Using the header files provided by Rcpp and RcppArmadillo. This is 
-   typically achieved by adding this line in the DESCRIPTION file of the 
+<p>Using the header files provided by Rcpp and RcppArmadillo. This is
+   typically achieved by adding this line in the DESCRIPTION file of the
    client package:</p>
-   
+
 <pre>LinkingTo : Rcpp, RcppArmadillo</pre>
-   
-   <p>and the following line in the package code:</p> 
-   
+
+   <p>and the following line in the package code:</p>
+
 <pre>#include &lt;RcppArmadillo.h&gt;</pre>
 </li>
 
 <li>
 <p>Linking against Rcpp dynamic or shared library and librairies needed
    by Armadillo, which is achieved by adding this line in the src/Makevars
-   file of the client package</p> 
-   
+   file of the client package</p>
+
 <pre>
 PKG_LIBS = $(shell $(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()" ) $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 </pre>
 
-   <p>and this line in the file src/Makevars.win:</p> 
-   
+   <p>and this line in the file src/Makevars.win:</p>
+
 <pre>
 PKG_LIBS = $(shell Rscript.exe -e "Rcpp:::LdFlags()") $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 </pre>
 </li>
 </ul>
-<p>RcppArmadillo contains a function 
+<p>RcppArmadillo contains a function
 <a href="http://finzi.psych.upenn.edu/R/library/RcppArmadillo/html/RcppArmadillo.package.skeleton.html">RcppArmadillo.package.skeleton</a>, modelled
-after package.skeleton from the utils package in base R, that creates a 
+after package.skeleton from the utils package in base R, that creates a
 skeleton of a package using RcppArmadillo, including example code.</p>
 
 
 <h2>Quality Assurance</h2>
 
-<p>RcppArmadillo uses the RUnit package by Matthias Burger et al to provide 
-unit testing. RcppArmadillo currently has 19 unit tests (called from 8 unit 
+<p>RcppArmadillo uses the RUnit package by Matthias Burger et al to provide
+unit testing. RcppArmadillo currently has 19 unit tests (called from 8 unit
 test functions). </p>
 
-<p>Source code for unit test functions are stored in the unitTests directory 
-of the installed package and the results are collected in the 
+<p>Source code for unit test functions are stored in the unitTests directory
+of the installed package and the results are collected in the
 <a href="http://cran.r-project.org/web/packages/RcppArmadillo/vignettes/RcppArmadillo-unitTests.pdf">RcppArmadillo-unitTests</a> vignette. </p>
 
 <p>We run unit tests before sending the package to CRAN on as many systems as
@@ -127,7 +127,7 @@ possible, including Mac OSX (Snow Leopard), Debian, Ubuntu, Fedora 12
 </li>   
 <li>Dirk's blog : <a href="http://dirk.eddelbuettel.com/blog/code/rcpp/">http://dirk.eddelbuettel.com/blog/code/rcpp/ </a>
 </li>
-<li>Romain's blog : <a href="http://romainfrancois.blog.free.fr/index.php?category/R-package/RcppArmadillo">http://romainfrancois.blog.free.fr/index.php?category/R-package/RcppArmadillo</a>
+<li>Romain's blog : <a href="/tags/RcppArmadillo">https://romain.rbind.io/tags/RcppArmadillo</a>
 </li>
 </ul>
 <h2>Support</h2>

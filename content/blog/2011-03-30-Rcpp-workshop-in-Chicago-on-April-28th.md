@@ -12,7 +12,7 @@ tags:  [ "cplusplus", "finance", "R", "Rcpp" ]
   preceded by a full-day masterclass on <a href="http://dirk.eddelbuettel.com/code/rcpp.html">Rcpp</a> and related topics which will be
   held on Thursday, April 28, 2011, the Univ. of Illinois at Chicago campus.</p>
 
-  <p>Join <a href="http://dirk.eddelbuettel.com/">Dirk Eddelbuettel</a> and  <a href="http://romainfrancois.blog.free.fr/">Romain Francois</a> for six hours of detailed and
+  <p>Join <a href="http://dirk.eddelbuettel.com/">Dirk Eddelbuettel</a> and  <a href="https://romain.rbind.io">Romain Francois</a> for six hours of detailed and
   hands-on instructions and discussions around Rcpp, inline, RInside,
   RcppArmadillo and other packages---in intimate small-group setting.</p>
 
@@ -56,7 +56,7 @@ tags:  [ "cplusplus", "finance", "R", "Rcpp" ]
   <p>Users should bring a laptop set up so that R packages can be built. That
   means on Windows, Rtools needs to be present and working, and on OS X the
   Xcode package should be installed.</p>
-	       
+
 <h2>Registration</h2>
 
   <p>Registration is available via the R/Finance conference at</p>
