@@ -9,6 +9,7 @@ tags:
   - crayon
   - colformat
   - rstudio
+banner: "img/banners/retro-r-logo-pixelized.png"
 ---
 
 Typical saturday morning, so I make [pain perdu](https://fr.wikipedia.org/wiki/Pain_perdu) from 
