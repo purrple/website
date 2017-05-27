@@ -25,7 +25,7 @@ definitely looks like a lot went on if I believe the tweetstorm. One particular 
 
 Sounds like a nice implementation of a cool idea. But that's not what woke me up, as 
 I already had seen mentions of `available`. What surprised me was the use of color in the 
-rstudio console output. I can only mean one thing, rstudio now supports colored outputs
+rstudio console output. It could only mean one thing, rstudio now supports colored outputs
 we this far could only used on capable terminals through the 
 [`crayon`](https://github.com/gaborcsardi/crayon) package, and indeed here's the 
 relevant extract of [the NEWS.md file](https://github.com/rstudio/rstudio/blob/master/NEWS.md)
