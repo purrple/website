@@ -88,7 +88,7 @@ body {
 }
 
 #post-content {
-    margin-top: 50px ;
+    margin-top: 30px ;
 }
 
 #blog-listing-medium .post h2 {
@@ -106,4 +106,29 @@ body {
 
 .year-summary {
   margin-top: 40px ;
+}
+
+#article-nav {
+  display: flex;
+  align-items: stretch;
+  clear: both;
+  margin-top: 10px ;
+  font-size: 16px ;
+}
+
+#article-nav-older, #article-nav-newer, .article-date span {
+  flex: 1;
+}
+#article-nav-newer, .article-date .article-toolbar {
+  text-align: right;
+}
+.article-nav-link-wrap {
+  display: block;
+  text-decoration: none;
+}
+.article-toolbar a {
+  margin-left: .2em;
+}
+.article-toolbar a:hover, .article-toolbar a:focus {
+  color: #222;
 }
