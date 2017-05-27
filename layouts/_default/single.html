@@ -28,11 +28,13 @@
                         {{ partial "article_meta.html" . }}
 
                         {{ partial "tags.html" . }}
-                        
+
                         <div id="post-content">
                           {{ .Content }}
                         </div>
                         <!-- /#post-content -->
+
+                        {{ partial "gallery.html" . }}
 
                         {{ partial "prev_next.html" . }}
 
@@ -76,6 +78,19 @@
     <!-- /#all -->
 
     {{ partial "scripts.html" . }}
+
+    {{ if .Params.gallery }}
+    <script src="/lib/gallery/js/blueimp-gallery.min.js"></script>
+
+    <script>
+    blueimp.Gallery(
+    document.getElementById('links').getElementsByTagName('a'),{
+        container: '#blueimp-gallery-carousel',
+        carousel: true
+    });
+    </script>
+
+    {{ end }}
 
   </body>
 </html>

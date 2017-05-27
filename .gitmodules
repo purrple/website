@@ -1,3 +1,6 @@
 [submodule "themes/hugo-universal-theme"]
 	path = themes/hugo-universal-theme
 	url = https://github.com/romainfrancois/hugo-universal-theme
+[submodule "static/lib/gallery"]
+	path = static/lib/gallery
+	url = https://github.com/blueimp/Gallery
