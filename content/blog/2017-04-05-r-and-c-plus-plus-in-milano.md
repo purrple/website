@@ -47,9 +47,11 @@ I gave a talk about R and C++, where we are, and where I'd like to go next.
 
 {{< speakerdeck ea8d3ae2bf5b42d28b4e966893cf33dd  >}}
 
-For the occasion, I was wearing my `%>%` t-shirt and my dearstalker Sherlock Holmes hat.
-
-{{< tweet 849659703080751105 >}}
+For the occasion, I was wearing my `%>%` t-shirt and my
+dearstalker Sherlock Holmes hat.
 
 Before the meetup, we spent a few days visiting around
-lake Como, lake Maggiore, and of course we had lots of coffee and pizza.
+lake Como, lake Maggiore, and of course we had
+lots of coffee, ice cream, spritz and pizza.
+
+One of our Airbnb in Genoa had R-branded toilet paper.
