@@ -47,6 +47,7 @@ paginate = 10
     author = "Romain François"
     defaultKeywords = ["r"]
     defaultDescription = "Romain François. Consulting Datactive"
+    githubContentURL = "https://github.com/rbind/romain/edit/master/content/"
 
     # Google Maps API key (if not set will default to not passing a key.)
     # googleMapsApiKey = ""
@@ -93,6 +94,10 @@ paginate = 10
 
 [Permalinks]
     blog = "/blog/:year/:month/:day/:slug/"
+
+[params.social]
+    twitter = "romain_francois"
+    github = "romainfrancois"
 
 # Enable and disable widgets for the right sidebar
 [params.widgets]

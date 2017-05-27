@@ -22,24 +22,12 @@
 
                     <div class="col-md-9" id="blog-post">
 
+                        <span class="article-duration">{{ .ReadingTime }} min read</span>
                         <h2>{{ .Title }}</h2>
-                        <p class="text-muted">
-                          {{ if .Params.author }} {{ .Params.author }} - {{ end }}
 
-                          {{ .Date.Format .Site.Params.date_format }}
-                        </p>
+                        {{ partial "article_meta.html" . }}
 
-                        {{ if isset .Params "tags" }}
-                        {{ $count := len .Params.tags }}
-                        {{ if gt $count 0}}
-                        <p>
-
-                          {{ range $k, $v := .Params.tags }}
-                          <a href="/tags/{{ . | urlize }}" class="post-taxonomy-tag"> <i class="fa fa-tags fa-fw"></i> {{.}}</a>
-                          {{ end }}
-                        </p>
-                        {{ end }}
-                        {{ end }}
+                        {{ partial "tags.html" . }}
 
                         <div id="post-content">
                           {{ .Content }}
