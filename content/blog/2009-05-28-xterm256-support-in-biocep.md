@@ -6,7 +6,7 @@ slug:  xterm256-support-in-biocep
 tags:  [ "R" ]
 ---
 <div class="post-content">
-<p>On this <a href="/index.php?post/2009/04/18/Colorful-terminal%3A-the-R-package-%22xterm256%22">post</a>, I presented the <a href="http://cran.r-project.org/web/packages/xterm256/index.html">xterm256</a> package for R, allowing to have text in background and foreground color in the R console</p>
+<p>On this <a href="/blog/2009/04/18/colorful-output-in-r-console">post</a>, I presented the <a href="http://cran.r-project.org/web/packages/xterm256/index.html">xterm256</a> package for R, allowing to have text in background and foreground color in the R console</p>
 
 <p>The drawback of relying on xterm escape sequences is that the package needs to be used within a terminal that supports this escape sequence protocol (basically some linux consoles)</p>
 

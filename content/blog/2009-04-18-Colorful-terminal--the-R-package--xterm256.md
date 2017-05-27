@@ -2,7 +2,7 @@
 title:   Colorful terminal- the R package "xterm256"
 author: "Romain François"
 date:  2009-04-18
-slug:  Colorful-terminal--the-R-package--xterm256-
+slug:  Colorful-terminal--the-R-package--xterm256
 tags:  [ "R" ]
 ---
 <div class="post-content">

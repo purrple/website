@@ -6,7 +6,7 @@ slug:  new-R-package---highlight
 tags:  [ "highlight", "html", "latex", "package", "parser", "R" ]
 ---
 <div class="post-content">
-<p>I finally pushed <strong>highlight</strong> to CRAN, which should be available in a few days. The package uses the information gathered by the <a href="http://romainfrancois.blog.free.fr/index.php?post/2009/07/28/R-parser-package-on-CRAN">parser</a> package to perform syntax highlighting of R code</p>
+<p>I finally pushed <strong>highlight</strong> to CRAN, which should be available in a few days. The package uses the information gathered by the <a href="/blog/2009/07/28/R-parser-package-on-CRAN">parser</a> package to perform syntax highlighting of R code</p>
 
 <p>The main function of the package is <strong>highlight</strong>, which takes a number of argument including :</p>
 
@@ -28,7 +28,7 @@ tags:  [ "highlight", "html", "latex", "package", "parser", "R" ]
 <li>
 <strong>renderer_verbatim</strong>: does nothing</li>
 </ul>
-<p>And additionally, the <a href="http://romainfrancois.blog.free.fr/index.php?post/2009/04/18/Colorful-terminal%3A-the-R-package-%22xterm256%22">xterm256</a> package defines a renderer that allows syntax highlighting directly in the console (if the console knows xterm 256 colors)</p>
+<p>And additionally, the <a href="2009/04/18/colorful-output-in-r-console">xterm256</a> package defines a renderer that allows syntax highlighting directly in the console (if the console knows xterm 256 colors)</p>
 
 <p>Let's assume we have this code file (/tmp/code.R) </p>
 
