@@ -98,6 +98,12 @@ paginate = 10
 [params.social]
     twitter = "romain_francois"
     github = "romainfrancois"
+    linkedin = "romain-francois"
+    stackoverflow = "499163/romain-francois"
+    researchgate = "Romain_Francois2"
+    email = "romain@thinkr.fr"
+    mobile = "+33(0) 6 28 91 30 30"
+    youtube = "UCd357E9PIj497TXmYRtKliw"
 
 # Enable and disable widgets for the right sidebar
 [params.widgets]
