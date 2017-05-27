@@ -10,8 +10,12 @@
 </div>
 
 <div id="links">
-  {{ range .Params.gallery }}
-    <a href="{{ . }}"></a>
+
+  {{ $gallery := .Params.gallery }}
+  {{ $sourcePath := ( printf "static/img/gallery/%s" $gallery ) }}
+  {{ $files := readDir $sourcePath }}
+  {{ range $files }}
+    <a href="/img/gallery/{{ $gallery }}/{{ .Name }}"></a>
   {{ end }}
 
 </div>

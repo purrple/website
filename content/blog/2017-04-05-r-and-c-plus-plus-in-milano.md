@@ -9,36 +9,7 @@ tags:
   - milano
   - Rcpp
 banner: "img/banners/milanoR.png"
-gallery:
-  - /img/gallery/milanoR/milanoR_01.jpg
-  - /img/gallery/milanoR/milanoR_02.jpg
-  - /img/gallery/milanoR/milanoR_03.jpg
-  - /img/gallery/milanoR/milanoR_04.jpg
-  - /img/gallery/milanoR/milanoR_05.jpg
-  - /img/gallery/milanoR/milanoR_06.jpg
-  - /img/gallery/milanoR/milanoR_07.jpg
-  - /img/gallery/milanoR/milanoR_08.jpg
-  - /img/gallery/milanoR/milanoR_09.jpg
-  - /img/gallery/milanoR/milanoR_10.jpg
-  - /img/gallery/milanoR/milanoR_11.jpg
-  - /img/gallery/milanoR/milanoR_12.jpg
-  - /img/gallery/milanoR/milanoR_13.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_25f6.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_2601.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_2605.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_2623.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_2624.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_2656.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_265f.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_2678.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_268a.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_2699.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_26a1.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_26b1.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_26b2.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_26b4.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_26c6.jpg
-  - /img/gallery/milanoR/UNADJUSTEDNONRAW_thumb_26c8.jpg
+gallery: "milanoR"
 ---
 
 I was in Milano with the [team](www.thinkr.fr) yesterday,
