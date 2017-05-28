@@ -88,6 +88,7 @@ body {
 }
 
 #post-content {
+    font-size: 20px ;
     margin-top: 30px ;
 }
 
@@ -145,6 +146,7 @@ body {
 
 #blog-post h2 {
   margin-bottom: 10px ;
+  font-size: 60px ;
 }
 
 .meta-tags{

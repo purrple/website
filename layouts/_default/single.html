@@ -19,12 +19,14 @@
                 <div class="row">
 
                     <!-- *** LEFT COLUMN *** -->
+                    <div class="col-md-1"></div>
 
-                    <div class="col-md-9" id="blog-post">
+                    <div class="col-md-10" id="blog-post">
 
-                        <span class="article-duration">{{ .ReadingTime }} min read</span>
                         <h2>{{ .Title }}</h2>
 
+                        <span class="article-duration">{{ .ReadingTime }} min read</span>
+                        
                         {{ partial "article_meta.html" . }}
 
                         {{ partial "tags.html" . }}
@@ -48,21 +50,6 @@
                     <!-- /#blog-post -->
 
                     <!-- *** LEFT COLUMN END *** -->
-
-                    <!-- *** RIGHT COLUMN *** -->
-
-                    <div class="col-md-3">
-
-                        <!-- *** MENUS AND WIDGETS *** -->
-
-                        {{ partial "sidebar.html" . }}
-
-                        <!-- *** MENUS AND FILTERS END *** -->
-
-                    </div>
-                    <!-- /.col-md-3 -->
-
-                    <!-- *** RIGHT COLUMN END *** -->
 
                 </div>
                 <!-- /.row -->
