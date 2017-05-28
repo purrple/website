@@ -3,7 +3,7 @@ title:   RGG-149- correlation ellipses
 author: "Romain François"
 date:  2009-02-03
 slug:  RGG149--correlation-ellipses
-tags:  [ "graphgallery" ]
+tags:  [ "r graph gallery" ]
 ---
 <div class="post-content">As suggested by <a href="http://gregor.gorjanc.googlepages.com/">Gregor Gorjanc</a>, I've added the correlation ellipses graph from the <a href="http://finzi.psych.upenn.edu/R/library/ellipse/html/plotcorr.html">plotcorr</a> function of the ellipse package. 
 

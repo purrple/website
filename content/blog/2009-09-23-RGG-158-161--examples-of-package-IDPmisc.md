@@ -3,7 +3,7 @@ title:   RGG -158-161- examples of package IDPmisc
 author: "Romain François"
 date:  2009-09-23
 slug:  RGG-158-161--examples-of-package-IDPmisc
-tags:  [ "graphgallery" ]
+tags:  [ "r graph gallery" ]
 ---
 <div class="post-content">
 <p>three new graphs have made their way to the graph gallery, submitted by <a href="http://www.zhaw.ch/~bure">Reto Burgin</a></p>

@@ -3,7 +3,7 @@ title:   RGG- 154- demo of atomic functions
 author: "Romain François"
 date:  2009-07-08
 slug:  RGG-154--demo-of-atimoc-functions
-tags:  [ "graphgallery", "graphics", "R" ]
+tags:  [ "r graph gallery", "graphics", "R" ]
 ---
 <div class="post-content">
 <p>Przemyslaw Biecek has submitted this graph (and also others I will add later) to the graphics gallery</p>

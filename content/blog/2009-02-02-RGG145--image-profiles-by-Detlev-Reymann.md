@@ -3,7 +3,7 @@ title:   RGG-145- image profiles by Detlev Reymann
 author: "Romain François"
 date:  2009-02-02
 slug:  RGG145--image-profiles-by-Detlev-Reymann
-tags:  [ "graphgallery" ]
+tags:  [ "r graph gallery" ]
 ---
 <div class="post-content">I have just posted graph 145 into r graph gallery. Image Profiles by <a href="http://www.reymann.eu">Detlev Reymann</a>. 
 

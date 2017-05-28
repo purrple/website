@@ -3,7 +3,7 @@ title:   RGG-147, RGG-148- correlation matrices gone wild
 author: "Romain François"
 date:  2009-02-02
 slug:  RGG147--RGG148--correlation-matrices-gone-wild
-tags:  [ "graphgallery" ]
+tags:  [ "r graph gallery" ]
 ---
 <div class="post-content">Thanks to Kevin Wright's <a href="http://cran.r-project.org/web/packages/corrgram/index.html">corrgram</a> package, here are two nex graphics for the graph gallery.
 

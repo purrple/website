@@ -3,7 +3,7 @@ title:   RGG-153- stars network
 author: "Romain François"
 date:  2009-07-03
 slug:  RGG153--stars-network
-tags:  [ "graphgallery", "graphics", "R" ]
+tags:  [ "r graph gallery", "graphics", "R" ]
 ---
 <div class="post-content">
 <p>Graham Williams sent me this graph, now item <a href="http://addictedtor.free.fr/graphiques/RGraphGallery.php?graph=153">153</a> in the graph gallery.</p>

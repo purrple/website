@@ -3,7 +3,7 @@ title:   RGG-146- multipanel geographic lattice plot
 author: "Romain François"
 date:  2009-02-02
 slug:  RGG146--multipanel-geographic-lattice-plot
-tags:  [ "graphgallery" ]
+tags:  [ "r graph gallery" ]
 ---
 <div class="post-content">graph 146 from Karl Hufthammer has landed on <a href="http://addictedtor.free.fr/graphiques">r graph gallery</a>.
 

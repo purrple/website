@@ -3,7 +3,7 @@ title:   Tag cloud for the R Graph Gallery
 author: "Romain François"
 date:  2009-02-06
 slug:  Tag-cloud-for-the-R-Graph-Gallery
-tags:  [ "graphgallery", "operators", "R", "R4X" ]
+tags:  [ "r graph gallery", "operators", "R", "R4X" ]
 ---
 <div class="post-content">
 <style type="text/css">

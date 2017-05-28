@@ -3,9 +3,9 @@ title:   graph 144 on graph gallery and plans for the future of the gallery
 author: "Romain François"
 date:  2009-01-30
 slug:  graph-144-on-graph-gallery-and-plans-for-the-future-of-the-gallery
-tags:  [ "graphgallery" ]
+tags:  [ "r graph gallery" ]
 ---
-<div class="post-content">I've just uploaded <a href="http://addictedtor.free.fr/graphiques/graphcode.php?graph=144">graph 144</a> by Barry Rowlingson in the graph gallery. 
+<div class="post-content">I've just uploaded <a href="http://addictedtor.free.fr/graphiques/graphcode.php?graph=144">graph 144</a> by Barry Rowlingson in the graph gallery.
 
 <a href="http://addictedtor.free.fr/graphiques/RGraphGallery.php?graph=144"><img src="/public/posts/graphgallery/graph_144_m.jpg" alt="graph_144.png" style="margin: 0 auto; display: block;" title="graph_144.png, janv. 2009"></a>
 

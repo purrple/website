@@ -3,7 +3,7 @@ title:   Graphic literacy improving? Let's try (RGG-150)
 author: "Romain François"
 date:  2009-02-04
 slug:  Graphic-literacy-improving-Let-s-try
-tags:  [ "graphgallery", "graphics", "R" ]
+tags:  [ "r graph gallery", "graphics", "R" ]
 ---
 <div class="post-content">Here is a proposed alternative to this bubble inferno pointed out in the <a href="http://blog.revolution-computing.com/2009/02/graphic-literacy-improving.html">revolutions blog</a>
 

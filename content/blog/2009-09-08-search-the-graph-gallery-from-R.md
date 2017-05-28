@@ -3,7 +3,7 @@ title:   search the graph gallery from R
 author: "Romain François"
 date:  2009-09-08
 slug:  search-the-graph-gallery-from-R
-tags:  [ "graphgallery", "R" ]
+tags:  [ "r graph gallery", "R" ]
 ---
 <div class="post-content">
 <style>

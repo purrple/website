@@ -3,7 +3,7 @@ title:   Improving the graph gallery
 author: "Romain François"
 date:  2013-02-18
 slug:  Improving-the-graph-gallery
-tags:  [ "graphgallery", "R" ]
+tags:  [ "r graph gallery", "R" ]
 ---
 <div class="post-content">
 
