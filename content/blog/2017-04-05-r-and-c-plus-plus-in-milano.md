@@ -14,15 +14,15 @@ gallery: "milanoR"
 
 I was in Milano with the [team](www.thinkr.fr) yesterday,
 for my second time as a speaker at the [MilanoR meetup](http://www.milanor.net/blog/).
-I gave a talk about R and C++, where we are, and where I'd like to go next.
+I gave a talk about R and C++ roughly split in two parts : where we are,
+and where I'd like to go next with the R and C++ integration.
 
 {{< speakerdeck ea8d3ae2bf5b42d28b4e966893cf33dd  >}}
 
 For the occasion, I was wearing my `%>%` t-shirt and my
-dearstalker Sherlock Holmes hat.
+dear stalker Sherlock Holmes hat.
 
 Before the meetup, we spent a few days visiting around
 lake Como, lake Maggiore, and of course we had
-lots of coffee, ice cream, spritz and pizza.
-
-One of our Airbnb in Genoa had R-branded toilet paper.
+lots of coffee, ice cream, spritz and pizza. One of our Airbnb in Genoa
+even had R-branded toilet paper.
