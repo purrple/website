@@ -23,6 +23,15 @@ to contribute to the [evil.R](https://github.com/romainfrancois/evil.R) repo.
 
 So far I have these tricks: 
 
+### Prevent loading of packages
+
+Because who needs to use any of the +10K packages from CRAN ?
+
+```
+assign( "library", function(...) invisible(NULL), as.environment("evil_shims"))
+assign( "require", function(...) invisible(TRUE), as.environment("evil_shims"))
+```
+
 ### Natural selection for the global environment
 
 ```
