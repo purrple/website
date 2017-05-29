@@ -8,6 +8,7 @@ tags:
   - evil
   - R
   - useless
+banner: "img/evil.png"
 ---
 
 For me it all started when I saw a mention of the [evil.sh](https://github.com/mathiasbynens/evil.sh)

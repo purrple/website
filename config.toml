@@ -25,23 +25,6 @@ paginate = 10
     url  = "/blog/"
     weight = 2
 
-[[menu.main]]
-    name = ""
-    url = "https://github.com/rbind/romain"
-    weight = 4
-    icon = "github"
-
-#[[menu.main]]
-#    name = "FAQ"
-#    identifier = "faq"
-#    url  = "/faq/"
-#    weight = 3
-#
-#[[menu.main]]
-#    name = "Contact"
-#    url  = "/contact/"
-#    weight = 4
-
 [params]
     viewMorePostLink = "/blog/"
     author = "Romain François"
