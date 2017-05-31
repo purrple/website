@@ -24,7 +24,7 @@ session, it is a feature of R that is not widely known that can be used to attac
 to the search path things that act like environments but are not. 
 
 To use them you have to write some C code to react to lookups. I've been using them 
-for real things in the [RProtoBuf](https://github.com/RcppCore/RProtoBuf) and [rJava](https://cran.r-project.org/web/packages/rJava/index.html) packages, 
+for real things in the [RProtoBuf](https://github.com/eddelbuettel/rprotobuf) and [rJava](https://cran.r-project.org/web/packages/rJava/index.html) packages, 
 and more recently for an evil purpose in [`evil.R`](https://github.com/romainfrancois/evil.R) 
 so that anything that starts with a 
 capital letter is automatically bound to `666`. 
