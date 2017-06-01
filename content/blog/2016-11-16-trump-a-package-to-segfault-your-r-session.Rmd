@@ -60,8 +60,7 @@ Selection:
 
 And here is what happens in Rstudio:
 
-<img src="https://github.com/romainfrancois/trump/raw/master/images/trump.png" width = "100%" />
-
+<img src="https://media.giphy.com/media/3oKIPx8H70SsclhKkE/giphy.gif" style = "float:right; margin: 20px; border: 1px solid lightgray" />
 
 I achieved this with C code in the one-liner file `src/trump.c` that I found in this
 [stack overflow thread](http://stackoverflow.com/questions/18986351/what-is-the-simplest-standard-conform-way-to-produce-a-segfault-in-c)
