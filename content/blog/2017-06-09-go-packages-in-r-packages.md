@@ -17,7 +17,7 @@ go code (and therefore go packages) in an R package. Most of the tools that we n
 are available, we can have C (or C++) code in the `src/` directory of an R package, 
 and we can call go from C using [cgo](https://golang.org/cmd/cgo/), it's all there. It's just 
 a matter of using these tools correctly, so I've played with the idea on 
-the [gotest](https://github.com/romainfrancois/gotest) repository. This was not (at least to me)
+the [gotest](https://github.com/rstats-go/gotest) repository. This was not (at least to me)
 trivial to get everything so I've asked help on twitter. 
 
 {{< tweet 872809887918587905 >}}
@@ -176,7 +176,7 @@ extern GoInt DoubleIt(GoInt p0);
 Then we can compile, load and use it, for example with 
 
 ```
-install_github( "romainfrancois/gotest")
+install_github( "rstats-go/gotest")
 gotest::godouble(21L)
 ```
 
