@@ -179,3 +179,36 @@ Then, we call the proxy `Nbytes` function and wraps up the returned
 ```
 return ScalarInteger( Nbytes(gos) ) ;
 ```
+
+# wrapping up
+
+Installing the code from this [post' companion repo](https://github.com/rstats-go/_playground_string) and calling the 
+`foobar` and `nbytes` functions.
+
+```
+romain@sherlock ~/git/rbind/romain $ Rscript -e 'install_github("rstats-go/_playground_string"); gostring::foobar(); gostring::nbytes("foo")'
+Using GitHub PAT from envvar GITHUB_PAT
+Downloading GitHub repo rstats-go/_playground_string@master
+from URL https://api.github.com/repos/rstats-go/_playground_string/zipball/master
+Installing gostring
+'/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file --no-environ  \
+  --no-save --no-restore --quiet CMD INSTALL  \
+  '/private/var/folders/9k/s6066bbx22s7g9gy6sg4qy3w0000gn/T/RtmpkUIA0L/devtools12067239a4401/rstats-go-_playground_string-dd417b7'  \
+  --library='/Library/Frameworks/R.framework/Versions/3.4/Resources/library'  \
+  --install-tests
+
+* installing *source* package ‘gostring’ ...
+** libs
+rm -f *.h
+CGO_CFLAGS="-I/Library/Frameworks/R.framework/Resources/include -DNDEBUG   -I/usr/local/include" CGO_LDFLAGS="  -F/Library/Frameworks/R.framework/.. -framework R" GOPATH=/private/var/folders/9k/s6066bbx22s7g9gy6sg4qy3w0000gn/T/RtmpkUIA0L/devtools12067239a4401/rstats-go-_playground_string-dd417b7/src/go  go build -o gostring.so -buildmode=c-shared main
+installing to /Library/Frameworks/R.framework/Versions/3.4/Resources/library/gostring/libs
+** R
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (gostring)
+[1] "foobar"
+[1] 3
+```
