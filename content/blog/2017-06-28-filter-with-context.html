@@ -12,14 +12,6 @@ banner: "img/banners/dplyr.png"
 
 
 
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
 <p><img src="/img/banners/dplyr.png" width="100px" style = "float: left; margin: 20px;" /></p>
 <p>The new <a href="http://dplyr.tidyverse.org/articles/programming.html">programming tools</a> that arrived with the <code>0.7</code> series of <a href="http://dplyr.tidyverse.org">dplyr</a> are pretty cool. Good bye old clunky functions suffixed by the underscore and their weird use of <code>lazyeval::interp</code> …</p>
 <p>The <code>tidyeval</code> framework give us a way to make new verbs with <code>dplyr</code>-like syntax. It takes some getting used to, and might not be the easiest thing to teach, although compared to the old approach it makes a lot more sense. In the <a href="https://www.rstudio.com/resources/webinars/whats-new-in-dplyr-0-7-0/">webinar</a> Hadley said that he does not yet really know how to teach tidyeval. I don’t pretend I have ot covered, but here’s an example of using tidy eval to filter with context.</p>

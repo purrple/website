@@ -11,7 +11,7 @@ banner: "img/banners/dplyr.png"
 ---
 
 ```{r, echo = FALSE, print=FALSE}
-library(dplyr)
+suppressPackageStartupMessages( library(dplyr, verbose = FALSE) )
 ```
 
 <img src="/img/banners/dplyr.png" width="100px" style = "float: left; margin: 20px;" />
