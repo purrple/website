@@ -23,7 +23,7 @@ functions suffixed by the underscore and their weird use of `lazyeval::interp`  
 The `tidyeval` framework give us a way to make new verbs with `dplyr`-like syntax. It takes 
 some getting used to, and might not be the easiest thing to teach, although compared to the old 
 approach it makes a lot more sense. In the [webinar](https://www.rstudio.com/resources/webinars/whats-new-in-dplyr-0-7-0/)
-Hadley said that he does not yet really know how to teach tidyeval. I don't pretend I have ot covered, but here's an example
+Hadley said that he does not yet really know how to teach tidyeval. I don't pretend I have it covered, but here's an example
 of using tidy eval to filter with context. 
 
 The idea is to add context to `filter`, similar to the `-A` and `-B` options for the unix `grep`, in other 
