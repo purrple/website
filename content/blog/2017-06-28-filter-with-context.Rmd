@@ -1,0 +1,107 @@
+---
+title: filter with context
+author: Romain François
+date: '2017-06-28'
+slug: filter-with-context
+categories: []
+tags:
+  - dplyr
+  - tidyeval
+banner: "img/banners/dplyr.png"
+---
+
+```{r, echo = FALSE, print=FALSE}
+library(dplyr)
+```
+
+<img src="/img/banners/dplyr.png" width="100px" style = "float: left; margin: 20px;" />
+
+The new [programming tools](http://dplyr.tidyverse.org/articles/programming.html) that 
+arrived with the `0.7` series of [dplyr](http://dplyr.tidyverse.org) are pretty cool. Good bye old clunky
+functions suffixed by the underscore and their weird use of `lazyeval::interp`  ... 
+
+The `tidyeval` framework give us a way to make new verbs with `dplyr`-like syntax. It takes 
+some getting used to, and might not be the easiest thing to teach, although compared to the old 
+approach it makes a lot more sense. In the [webinar](https://www.rstudio.com/resources/webinars/whats-new-in-dplyr-0-7-0/)
+Hadley said that he does not yet really know how to teach tidyeval. I don't pretend I have ot covered, but here's an example
+of using tidy eval to filter with context. 
+
+The idea is to add context to `filter`, similar to the `-A` and `-B` options for the unix `grep`, in other 
+words we want the lines that match the `filter` condition (as usual), a given number of lines before and 
+a given number of lines after. 
+
+To make things simple for now, let's first consider a single `filter` condition, so we want a function with this
+interface: 
+
+```{r eval=FALSE}
+context_filter <- function( data, expr, before = 0L, after = 0L){
+  ...
+}
+context_filter( mtcars, cyl == 4 )
+```
+
+What the tidy eval framework give us is the ability to pass `cyl == 4` by expression so that 
+we can inline it into some other expression. The game is to get the indices that match the condition, expand those
+to add `before` and `after` indices, and then use these in a `slice` call. 
+
+First we need a tool to do the expanding. Nothing fancy here, just plain old regular `rep` and `seq` stuff. 
+For each element in `idx` we add the context, and then we just make sure the indices appear only once 
+and are restricted to the extent of the rows 
+
+```{r}
+context <- function(idx, n, before = 0L, after = 0L){
+  span <- seq( -before, after )
+  res <- unique( rep( idx, each = length(span) ) + span )
+  res[ res >= 1L & res <= n]
+}
+context( c(4, 8), 10, before= 1, after = 1)
+context( c(4, 5), 10, before= 1, after = 1)
+context( c(1, 10), 10, before= 1, after = 1)
+```
+
+Now we just need to feed that `context` function with indices:
+
+```{r}
+context_filter <- function( data, expr, before = 0, after = 0){
+  expr <- enquo(expr)
+  slice( data, context(which(!!expr), n(), before, after) ) 
+}
+```
+
+The tidyeval magic is to: 
+ - first capture the expression with `enquo` 
+ - then inline it into another expression with the unqoting operator `!!`
+
+```{r}
+context_filter( mtcars, cyl == 4, before = 1, after = 1)
+```
+
+Things happen as if we used this expression: 
+
+```{r, eval=FALSE}
+slice( mtcars, context(which(cyl == 4), n(), before = 1, after = 1) )
+```
+
+But letting R do the copy and paste for us. 
+
+Now we can genealise this to multiple `filter` conditions with `quos` and `!!!`. 
+Each of the `filter` condition gives us a logical vector and we want to `&` them all. That's a job for `Reduce` :
+
+```{r}
+Reduce( "&", list( c(T,T,F), c(T,F,F), c(T,T,T) )  )
+```
+
+Now we can capture all the conditions given in the `...` by expression and 
+splice them into a list via the `!!!` operator: 
+
+```{r}
+context_filter <- function( data, ..., before = 0, after = 0){
+  dots <- quos(...)
+  slice( data, context(which( Reduce("&", list(!!!dots) )  ), n(), before, after) ) 
+}
+context_filter( mtcars, cyl == 4, disp > 100, before = 1)
+context_filter( starwars, skin_color == "gold", eye_color == "yellow", before = 1, after = 1)
+```
+
+More about tidy eval on the [dplyr programming vignette](http://dplyr.tidyverse.org/articles/programming.html). 
+
