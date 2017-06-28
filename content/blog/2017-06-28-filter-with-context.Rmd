@@ -69,20 +69,15 @@ context_filter <- function( data, expr, before = 0, after = 0){
 ```
 
 The tidyeval magic is to: 
- - first capture the expression with `enquo` 
- - then inline it into another expression with the unqoting operator `!!`
+
+  - first capture the expression with `enquo` 
+  - then inline it into another expression with the unqoting operator `!!`
+
+So that we can let R do the copy and paste for us: 
 
 ```{r}
 context_filter( mtcars, cyl == 4, before = 1, after = 1)
 ```
-
-Things happen as if we used this expression: 
-
-```{r, eval=FALSE}
-slice( mtcars, context(which(cyl == 4), n(), before = 1, after = 1) )
-```
-
-But letting R do the copy and paste for us. 
 
 Now we can genealise this to multiple `filter` conditions with `quos` and `!!!`. 
 Each of the `filter` condition gives us a logical vector and we want to `&` them all. That's a job for `Reduce` :
