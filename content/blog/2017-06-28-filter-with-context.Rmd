@@ -79,7 +79,7 @@ So that we can let R do the copy and paste for us:
 context_filter( mtcars, cyl == 4, before = 1, after = 1)
 ```
 
-Now we can genealise this to multiple `filter` conditions with `quos` and `!!!`. 
+Now we can generalise this to multiple `filter` conditions with `quos` and `!!!`. 
 Each of the `filter` condition gives us a logical vector and we want to `&` them all. That's a job for `Reduce` :
 
 ```{r}
