@@ -53,7 +53,7 @@ paginate = 10
     # Enable the contact form by entering your Formspree.io email
     email = "romain@thinkr.fr"
 
-    about_us = """<p>I am <a href='www.thinkr.fr'>ThinkR</a>'s consulting
+    about_us = """<p>I am <a href='http://www.thinkr.fr'>ThinkR</a>'s consulting
       datactive since february 2017. Passionated about anything related to R.
       I take performance seriously, hence my historical involvment with the
       design and implementation of
