@@ -1,0 +1,114 @@
+---
+title: 'Excluding rows '
+author: Romain François
+date: '2017-07-01'
+slug: excluding-rows
+categories: []
+tags:
+  - dplyr
+  - tidyeval
+  - bangbang
+---
+
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+  library(rlang)
+  library(dplyr)
+  library(purrr)
+})
+data <- data.frame( a = rep(1:2, each = 3), b = rep(1:3,2))
+```
+
+This is another post about tidy evaluation, the new cool thing that appeared in 
+the `dplyr` 0.7 series and is likely to be used everywhere in the tidyverse. In this post, 
+we want to create a new verb `exclude` that kind of does the opposite of 
+`filter`, i.e. the call would extract the tibble on the right. 
+
+```{r eval=FALSE}
+exclude( data, a == 1, b == 2 )
+```
+
+<div class="text-center">
+  <img src="/img/bangbang/exclude.png" />
+</div>
+
+So the condition we give to `exclude` control what we don't want to see in the 
+result, this is equivalent to these. 
+
+```{r eval=FALSE}
+# more likely we would type this
+filter( data, a != 1, b != 2 )
+
+# but this will be easier to generate programmatically
+filter( data, ! (a == 1), !(b == 2) )
+
+# ... and using not instead spares us on bang
+filter( data, not(a == 1), not(b == 2) )
+```
+
+We can do something similar to [this previous post](blog/2017/06/28/filter-with-context/) and 
+use `Reduce` and `!!!` : 
+
+```{r}
+exclude1 <- function(data, ...){
+  dots <- quos(...)
+  filter( data, Reduce("&", map(list(!!!dots), ~not(.))) )
+}
+```
+
+- First we get a logical vector for each condition by splicing the dots:  `list(!!!dots)`
+- We use `purrr::map` to negate them. (see how this uses `not` instaed of `!`) because we have enough bangs in the expression
+- Then we iteratively reduce them into a single logical vector with `Reduce("&")`. 
+
+```{r}
+exclude1(  data, a == 1, b == 2 )
+```
+
+This works fine, but it's kind of hacky and asks `dplyr` to evaluate this 
+complicated expression:
+
+```{r}
+filter( data, Reduce("&", map(list(a==1, b==2), ~not(.))) )
+```
+
+tidy eval lets us manipulate the expressions before we splice them. Let's have a lot at 
+the mysterious `dots` object that `quos` gives us: 
+
+```{r}
+curious <- function(...) quos(...)
+curious( a == 1, b == 2)
+```
+
+We get a list of `quosure`, so we can manipulate each of them with `purrr::map`. 
+We just need a function that takes a quosure, and return a new quosure that 
+wraps the previous expression in a `not` call and uses the same environment. This is
+what I came up with, perhaps there is a better way: 
+
+```{r}
+negate_quosure <- function(q){
+  set_env( quo(not(!!get_expr(q))), get_env(q))
+}
+q <- quo(a==1)
+negate_quosure( q )
+
+dots <- curious(a == 1, b == 2)
+map( dots, negate_quosure )
+```
+
+Finally we can splice those modified quosures into a filter call: 
+
+```{r}
+exclude <- function(data, ...) {
+  ndots <- map( quos(...), negate_quosure )
+  filter( data, !!!ndots )
+}
+exclude( data, a == 1, b == 2 )
+```
+
+And celebrate our `!!!` (aka bang bang bang) skills: 
+
+<div style="width:100%;height:0;padding-bottom:100%;position:relative;">
+  <iframe src="https://giphy.com/embed/nrnD6Ur4Fb4qI" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+</div>
+

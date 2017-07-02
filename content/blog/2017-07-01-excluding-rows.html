@@ -1,0 +1,90 @@
+---
+title: 'Excluding rows '
+author: Romain François
+date: '2017-07-01'
+slug: excluding-rows
+categories: []
+tags:
+  - dplyr
+  - tidyeval
+  - bangbang
+---
+
+
+
+<p>This is another post about tidy evaluation, the new cool thing that appeared in the <code>dplyr</code> 0.7 series and is likely to be used everywhere in the tidyverse. In this post, we want to create a new verb <code>exclude</code> that kind of does the opposite of <code>filter</code>, i.e. the call would extract the tibble on the right.</p>
+<pre class="r"><code>exclude( data, a == 1, b == 2 )</code></pre>
+<div class="text-center">
+<p><img src="/img/bangbang/exclude.png" /></p>
+</div>
+<p>So the condition we give to <code>exclude</code> control what we don’t want to see in the result, this is equivalent to these.</p>
+<pre class="r"><code># more likely we would type this
+filter( data, a != 1, b != 2 )
+
+# but this will be easier to generate programmatically
+filter( data, ! (a == 1), !(b == 2) )
+
+# ... and using not instead spares us on bang
+filter( data, not(a == 1), not(b == 2) )</code></pre>
+<p>We can do something similar to <a href="blog/2017/06/28/filter-with-context/">this previous post</a> and use <code>Reduce</code> and <code>!!!</code> :</p>
+<pre class="r"><code>exclude1 &lt;- function(data, ...){
+  dots &lt;- quos(...)
+  filter( data, Reduce(&quot;&amp;&quot;, map(list(!!!dots), ~not(.))) )
+}</code></pre>
+<ul>
+<li>First we get a logical vector for each condition by splicing the dots: <code>list(!!!dots)</code></li>
+<li>We use <code>purrr::map</code> to negate them. (see how this uses <code>not</code> instaed of <code>!</code>) because we have enough bangs in the expression</li>
+<li>Then we iteratively reduce them into a single logical vector with <code>Reduce(&quot;&amp;&quot;)</code>.</li>
+</ul>
+<pre class="r"><code>exclude1(  data, a == 1, b == 2 )</code></pre>
+<pre><code>##   a b
+## 1 2 1
+## 2 2 3</code></pre>
+<p>This works fine, but it’s kind of hacky and asks <code>dplyr</code> to evaluate this complicated expression:</p>
+<pre class="r"><code>filter( data, Reduce(&quot;&amp;&quot;, map(list(a==1, b==2), ~not(.))) )</code></pre>
+<pre><code>##   a b
+## 1 2 1
+## 2 2 3</code></pre>
+<p>tidy eval lets us manipulate the expressions before we splice them. Let’s have a lot at the mysterious <code>dots</code> object that <code>quos</code> gives us:</p>
+<pre class="r"><code>curious &lt;- function(...) quos(...)
+curious( a == 1, b == 2)</code></pre>
+<pre><code>## [[1]]
+## &lt;quosure: global&gt;
+## ~a == 1
+## 
+## [[2]]
+## &lt;quosure: global&gt;
+## ~b == 2
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;quosures&quot;</code></pre>
+<p>We get a list of <code>quosure</code>, so we can manipulate each of them with <code>purrr::map</code>. We just need a function that takes a quosure, and return a new quosure that wraps the previous expression in a <code>not</code> call and uses the same environment. This is what I came up with, perhaps there is a better way:</p>
+<pre class="r"><code>negate_quosure &lt;- function(q){
+  set_env( quo(not(!!get_expr(q))), get_env(q))
+}
+q &lt;- quo(a==1)
+negate_quosure( q )</code></pre>
+<pre><code>## &lt;quosure: global&gt;
+## ~not(a == 1)</code></pre>
+<pre class="r"><code>dots &lt;- curious(a == 1, b == 2)
+map( dots, negate_quosure )</code></pre>
+<pre><code>## [[1]]
+## &lt;quosure: global&gt;
+## ~not(a == 1)
+## 
+## [[2]]
+## &lt;quosure: global&gt;
+## ~not(b == 2)</code></pre>
+<p>Finally we can splice those modified quosures into a filter call:</p>
+<pre class="r"><code>exclude &lt;- function(data, ...) {
+  ndots &lt;- map( quos(...), negate_quosure )
+  filter( data, !!!ndots )
+}
+exclude( data, a == 1, b == 2 )</code></pre>
+<pre><code>##   a b
+## 1 2 1
+## 2 2 3</code></pre>
+<p>And celebrate our <code>!!!</code> (aka bang bang bang) skills:</p>
+<div style="width:100%;height:0;padding-bottom:100%;position:relative;">
+<p><iframe src="https://giphy.com/embed/nrnD6Ur4Fb4qI" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></p>
+</div>
