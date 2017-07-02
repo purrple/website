@@ -88,3 +88,28 @@ exclude( data, a == 1, b == 2 )</code></pre>
 <div style="width:100%;height:0;padding-bottom:100%;position:relative;">
 <p><iframe src="https://giphy.com/embed/nrnD6Ur4Fb4qI" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></p>
 </div>
+<p><a href="https://twitter.com/_lionelhenry">Lionel</a> came to the rescue on twitter for a better implementation of <code>negate_quosure</code></p>
+{{< tweet 881476145895657472 >}}
+<pre class="r"><code>negate_quosure &lt;- function(q){
+  quo(not(UQ(q)))
+}
+exclude &lt;- function(data, ...) {
+  ndots &lt;- map( quos(...), negate_quosure )
+  filter( data, !!!ndots )
+}
+exclude( data, a == 1, b == 2 )</code></pre>
+<pre><code>##   a b
+## 1 2 1
+## 2 2 3</code></pre>
+<p>Actually while we are here, we can make this all thing <code>purrr</code>:</p>
+<pre class="r"><code>exclude &lt;- function(data, ...) {
+  ndots &lt;- map( quos(...), ~ quo(not(!!.x)) )
+  filter( data, !!!ndots )
+}
+exclude( data, a == 1, b == 2 )</code></pre>
+<pre><code>##   a b
+## 1 2 1
+## 2 2 3</code></pre>
+<div style="width:100%;height:0;padding-bottom:56%;position:relative;">
+<p><iframe src="https://giphy.com/embed/TOrbV3vZ7EboQ" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></p>
+</div>

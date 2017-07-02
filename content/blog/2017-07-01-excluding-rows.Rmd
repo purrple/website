@@ -112,3 +112,33 @@ And celebrate our `!!!` (aka bang bang bang) skills:
   <iframe src="https://giphy.com/embed/nrnD6Ur4Fb4qI" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
 </div>
 
+<a href="https://twitter.com/_lionelhenry">Lionel</a> came to the rescue on twitter 
+for a better implementation of `negate_quosure`
+
+`r htmltools::HTML("{{< tweet 881476145895657472 >}}")`
+
+```{r}
+negate_quosure <- function(q){
+  quo(not(UQ(q)))
+}
+exclude <- function(data, ...) {
+  ndots <- map( quos(...), negate_quosure )
+  filter( data, !!!ndots )
+}
+exclude( data, a == 1, b == 2 )
+```
+
+Actually while we are here, we can make this all thing `purrr`: 
+
+```{r}
+exclude <- function(data, ...) {
+  ndots <- map( quos(...), ~ quo(not(!!.x)) )
+  filter( data, !!!ndots )
+}
+exclude( data, a == 1, b == 2 )
+```
+
+<div style="width:100%;height:0;padding-bottom:56%;position:relative;">
+  <iframe src="https://giphy.com/embed/TOrbV3vZ7EboQ" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+</div>
+
