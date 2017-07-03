@@ -1,0 +1,146 @@
+---
+title: Go Slices
+author: Romain François
+date: '2017-07-03'
+slug: go-slices
+categories: []
+tags:
+  - go
+  - cgo
+  - rgo
+banner: "img/banners/go.png"
+---
+
+
+
+<p><img src="/img/banners/go.png" width="100px" style = "float: left; margin: 20px;" /></p>
+<p>In previous related posts, we have seen how to <a href="/blog/2017/05/14/calling-go-from-r/">call go from R</a>, <a href="/blog/2017/06/09/go-packages-in-r-packages/">use go in R 📦</a> and <a href="blog/2017/06/10/using-go-strings-in-r/">use go strings</a>.</p>
+<p>This post is about using go slices, which are somewhat similar to R vectors, i.e. their data are contiguous in memory, and they are self aware of their length and capacity.</p>
+<p>This post has an <a href="https://github.com/rstats-go/_playground_slice">associated playground repo</a> in the <a href="https://github.com/rstats-go">rstats-go organisation</a>. I’m using the same layout as the previously mentionned posts:</p>
+<ul>
+<li>pure <code>go</code> code in a <code>go</code> package “slice”</li>
+<li>mix of <code>go</code> and <code>c</code> code using <code>cgo</code> in the “main” package. Most of this will eventually be automatically generated somehow.</li>
+</ul>
+<pre><code>romain@sherlock ~/git/rstats-go/_playground_slice $ tree src
+src
+├── Makevars
+├── go
+│   └── src
+│       ├── main
+│       │   ├── main.c
+│       │   └── main.go
+│       └── slice
+│           └── slice.go
+├── goslice.h
+└── goslice.so
+
+4 directories, 6 files</code></pre>
+<div id="the-easy-part-using-r-vectors-in-go" class="section level3">
+<h3>The easy part : using R vectors in go</h3>
+<p>Let’s first have a look at the “easy” part, using R vectors in go, as go slices. We have these two go functions that take slice of <code>int32</code> and <code>float64</code> (which are the relevant data types for using R <code>integer</code> and <code>numeric</code> vectors. )</p>
+<pre class="go"><code>func SumInt( x []int32 ) int32 {
+  var sum int32
+  for _,v := range x {
+    sum += v
+  }
+  return sum
+}
+
+func SumDouble( x []float64 ) float64 {
+  var sum float64
+  for _,v := range x {
+    sum += v
+  }
+  return sum
+}</code></pre>
+<p>They belong to our pure go package <a href="https://github.com/rstats-go/_playground_slice/blob/master/src/go/src/slice/slice.go">“slice”</a>.</p>
+<p>We then need the corresponding proxy functions in the “main” package.</p>
+<pre class="go"><code>//export SumInt
+func SumInt( x []int32 ) int32 {
+  return slice.SumInt(x)
+}
+
+//export SumDouble
+func SumDouble( x []float64 ) float64 {
+  return slice.SumDouble(x)
+}
+</code></pre>
+<p>Nothing too fancy here, just go functions of the same name (but in package main) that are marked as exported to the C side via <code>//export</code>.</p>
+<p>The next part is the SEXP compatible functions. This does strict checks to assert that we give it the correct kind of vector, i.e. you don’t get automatic conversion as in <code>Rcpp</code> because I now believe this was a bad idea.</p>
+<pre class="c"><code>SEXP sum_int( SEXP x ){
+  if( TYPEOF(x) != INTSXP ) error(&quot;expecting an integer vector&quot;) ;
+  GoSlice gox = { INTEGER(x), LENGTH(x), LENGTH(x) } ;
+  return ScalarInteger( SumInt(gox) ) ;
+}
+
+SEXP sum_double( SEXP x ){
+  if( TYPEOF(x) != REALSXP ) error(&quot;expecting a numeric vector&quot;) ;
+  GoSlice gox = { REAL(x), LENGTH(x), LENGTH(x) } ;
+  return ScalarReal( SumDouble(gox) ) ;
+}</code></pre>
+<p>This uses the type <code>GoSlice</code> from <code>cgo</code> to embed information from the R vectors into something that go can use as a slice.</p>
+<pre class="c"><code>typedef struct { void *data; GoInt len; GoInt cap; } GoSlice;</code></pre>
+<p>Then we have the typical <code>.Call</code> wrappers:</p>
+<pre class="r"><code>#&#39; @export
+sum_int &lt;- function(x) {
+  .Call(&quot;sum_int&quot;, x, PACKAGE = &quot;goslice&quot;)
+}
+
+#&#39; @export
+sum_double &lt;- function(x) {
+  .Call(&quot;sum_double&quot;, x, PACKAGE = &quot;goslice&quot;)
+}</code></pre>
+<p>So now we may use go to sum integer or numeric vectors :</p>
+<pre class="r"><code>sum_int( 1:10 )</code></pre>
+<pre><code>## [1] 55</code></pre>
+<pre class="r"><code>sum_double( rnorm(10) )</code></pre>
+<pre><code>## [1] 2.030297</code></pre>
+</div>
+<div id="the-not-so-easy-part-sending-back-go-slices-as-r-vectors" class="section level3">
+<h3>The not so easy part : sending back go slices as R vectors</h3>
+<p>The other way around is trickier. We want to make some slice in go and send it back to the R side as an R vector. We have to copy the data into an R object, we can’t just borrow it because it may be reclaimed by go’s garbage collector.</p>
+<p>The go function we use takes an integer and makes a slice of that size with some numbers inside.</p>
+<pre class="go"><code>func Numbers( n int32 ) []int32 {
+  a := make( []int32, n) ;
+  for i := int32(0); i&lt;n; i++ {
+    a[i] = 2*i ;
+  }
+  return a ;
+}</code></pre>
+<p>Up to that point, this is just pure go code. It uses <code>int32</code> because that’s what R calls integers.</p>
+<p>The associated proxy function is more involved this time</p>
+<pre class="go"><code>//export Numbers
+func Numbers( n int32 ) C.SEXP {
+  // call a go function and get a slice
+  res := slice.Numbers(n)
+
+  // handle the raw data from the slice to the C side and let it build an
+  // R object from it
+  return C.IntegerVectorFromGoSlice( unsafe.Pointer(&amp;res[0]), C.int(len(res)) ) ;
+}</code></pre>
+<p>The first step just calls the go function to get the slice we want to send back to R.</p>
+<p>The second step calls a C function <code>IntegerVectorFromGoSlice</code> we will provide. As the name implies, <code>IntegerVectorFromGoSlice</code> makes an integer vector from a go slice. It takes raw (unsafe) pointer to the start of the slice and its length and return an R object (a SEXP). The function allocates the vector using <code>allocVector</code>, copies the memory with <code>memmove</code> and returns the object.</p>
+<pre class="c"><code>SEXP IntegerVectorFromGoSlice( void* data, int n ){
+  SEXP res = allocVector( INTSXP, n) ;
+  memmove( INTEGER(res), data, sizeof(int)*n ) ;
+  return res ;
+}</code></pre>
+<p>Finally, we can write the <code>SEXP</code> compatible function:</p>
+<pre class="c"><code>SEXP numbers( SEXP n ){
+  if( TYPEOF(n) != INTSXP || LENGTH(n) != 1 ) error(&quot;expecting a single integer&quot;) ;
+
+  return Numbers( INTEGER(n)[0] ) ;
+}</code></pre>
+<p>and the <code>.Call</code> wrapper :</p>
+<pre class="r"><code>#&#39; @export
+numbers &lt;- function(n){
+  .Call(&quot;numbers&quot;, n, PACKAGE = &quot;goslice&quot;)
+}</code></pre>
+<p>So now we can finally generate that sequence of numbers:</p>
+<pre class="r"><code>numbers(10L)</code></pre>
+<pre><code>##  [1]  0  2  4  6  8 10 12 14 16 18</code></pre>
+<p>Enjoy the slices</p>
+<div style="width:100%;height:0;padding-bottom:55%;position:relative;">
+<p><iframe src="https://giphy.com/embed/2LqQkIPKNevkc" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></p>
+</div>
+</div>

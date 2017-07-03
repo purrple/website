@@ -1,0 +1,224 @@
+---
+title: Go Slices
+author: Romain François
+date: '2017-07-03'
+slug: go-slices
+categories: []
+tags:
+  - go
+  - cgo
+  - rgo
+banner: "img/banners/go.png"
+---
+
+```{r echo=FALSE, print=FALSE}
+library('goslice')
+```
+
+
+<img src="/img/banners/go.png" width="100px" style = "float: left; margin: 20px;" />
+
+In previous related posts, we have seen how to [call go from R](/blog/2017/05/14/calling-go-from-r/), 
+[use go in R `r emo::ji("package")`](/blog/2017/06/09/go-packages-in-r-packages/) 
+and [use go strings](blog/2017/06/10/using-go-strings-in-r/). 
+
+This post is about using go slices, which are somewhat similar to R vectors, i.e. their data
+are contiguous in memory, and they are self aware of their length and capacity. 
+
+This post has an [associated playground repo](https://github.com/rstats-go/_playground_slice) in the 
+[rstats-go organisation](https://github.com/rstats-go). I'm using the same layout as 
+the previously mentionned posts: 
+
+ - pure `go` code in a `go` package "slice"
+ - mix of `go` and `c` code using `cgo` in the "main" package. Most of this will eventually be automatically generated somehow. 
+ 
+```
+romain@sherlock ~/git/rstats-go/_playground_slice $ tree src
+src
+├── Makevars
+├── go
+│   └── src
+│       ├── main
+│       │   ├── main.c
+│       │   └── main.go
+│       └── slice
+│           └── slice.go
+├── goslice.h
+└── goslice.so
+
+4 directories, 6 files
+```
+ 
+### The easy part : using R vectors in go
+
+Let's first have a look at the "easy" part, using R vectors in go, as go slices. We have these two go functions
+that take slice of `int32` and `float64` (which are the relevant data types for using R `integer` and `numeric` vectors. )
+
+```{go eval=FALSE}
+func SumInt( x []int32 ) int32 {
+  var sum int32
+  for _,v := range x {
+    sum += v
+  }
+  return sum
+}
+
+func SumDouble( x []float64 ) float64 {
+  var sum float64
+  for _,v := range x {
+    sum += v
+  }
+  return sum
+}
+```
+
+They belong to our pure go package ["slice"](https://github.com/rstats-go/_playground_slice/blob/master/src/go/src/slice/slice.go). 
+
+We then need the corresponding proxy functions in the "main" package. 
+
+```{go eval=FALSE}
+//export SumInt
+func SumInt( x []int32 ) int32 {
+  return slice.SumInt(x)
+}
+
+//export SumDouble
+func SumDouble( x []float64 ) float64 {
+  return slice.SumDouble(x)
+}
+
+```
+
+Nothing too fancy here, just go functions of the same name (but in package main)
+that are marked as exported to the C side via `//export`. 
+
+The next part is the SEXP compatible functions. This does strict checks to assert 
+that we give it the correct kind of vector, i.e. you don't get automatic
+conversion as in `Rcpp` because I now believe this was a bad idea. 
+
+```{c eval=FALSE}
+SEXP sum_int( SEXP x ){
+  if( TYPEOF(x) != INTSXP ) error("expecting an integer vector") ;
+  GoSlice gox = { INTEGER(x), LENGTH(x), LENGTH(x) } ;
+  return ScalarInteger( SumInt(gox) ) ;
+}
+
+SEXP sum_double( SEXP x ){
+  if( TYPEOF(x) != REALSXP ) error("expecting a numeric vector") ;
+  GoSlice gox = { REAL(x), LENGTH(x), LENGTH(x) } ;
+  return ScalarReal( SumDouble(gox) ) ;
+}
+```
+
+This uses the type `GoSlice` from `cgo` to embed information from the 
+R vectors into something that go can use as a slice. 
+
+```{c eval=FALSE}
+typedef struct { void *data; GoInt len; GoInt cap; } GoSlice;
+```
+
+Then we have the typical `.Call` wrappers: 
+
+```{r eval=FALSE}
+#' @export
+sum_int <- function(x) {
+  .Call("sum_int", x, PACKAGE = "goslice")
+}
+
+#' @export
+sum_double <- function(x) {
+  .Call("sum_double", x, PACKAGE = "goslice")
+}
+```
+
+So now we may use go to sum integer or numeric vectors : 
+
+```{r}
+sum_int( 1:10 )
+sum_double( rnorm(10) )
+```
+
+### The not so easy part : sending back go slices as R vectors
+
+The other way around is trickier. We want to make some slice
+in go and send it back to the R side as an R vector. We have to 
+copy the data into an R object, we can't just borrow it because 
+it may be reclaimed by go's garbage collector. 
+
+The go function we use takes an integer and makes a slice of that 
+size with some numbers inside. 
+
+```{go eval=FALSE}
+func Numbers( n int32 ) []int32 {
+  a := make( []int32, n) ;
+  for i := int32(0); i<n; i++ {
+    a[i] = 2*i ;
+  }
+  return a ;
+}
+```
+
+Up to that point, this is just pure go code. It uses `int32` because that's
+what R calls integers. 
+
+The associated proxy function is more involved this time
+
+```{go eval=FALSE}
+//export Numbers
+func Numbers( n int32 ) C.SEXP {
+  // call a go function and get a slice
+  res := slice.Numbers(n)
+
+  // handle the raw data from the slice to the C side and let it build an
+  // R object from it
+  return C.IntegerVectorFromGoSlice( unsafe.Pointer(&res[0]), C.int(len(res)) ) ;
+}
+```
+
+The first step just calls the go function to get the slice we want to 
+send back to R. 
+
+The second step calls a C function `IntegerVectorFromGoSlice` we will provide. 
+As the name implies, `IntegerVectorFromGoSlice` makes an integer vector from a go slice. 
+It takes raw (unsafe) pointer to the start of the slice and its length and return 
+an R object (a SEXP). The function allocates the vector using `allocVector`, copies
+the memory with `memmove` and returns the object. 
+
+```{c eval=FALSE}
+SEXP IntegerVectorFromGoSlice( void* data, int n ){
+  SEXP res = allocVector( INTSXP, n) ;
+  memmove( INTEGER(res), data, sizeof(int)*n ) ;
+  return res ;
+}
+```
+
+Finally, we can write the `SEXP` compatible function: 
+
+```{c eval=FALSE}
+SEXP numbers( SEXP n ){
+  if( TYPEOF(n) != INTSXP || LENGTH(n) != 1 ) error("expecting a single integer") ;
+
+  return Numbers( INTEGER(n)[0] ) ;
+}
+```
+
+and the `.Call` wrapper : 
+
+```{r eval=FALSE}
+#' @export
+numbers <- function(n){
+  .Call("numbers", n, PACKAGE = "goslice")
+}
+```
+
+So now we can finally generate that sequence of numbers: 
+
+```{r}
+numbers(10L)
+```
+
+Enjoy the slices 
+
+<div style="width:100%;height:0;padding-bottom:55%;position:relative;">
+  <iframe src="https://giphy.com/embed/2LqQkIPKNevkc" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+</div>
