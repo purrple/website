@@ -1,0 +1,104 @@
+---
+title: A fortune slack slash command using plumber
+author: Romain François
+date: '2017-07-29'
+slug: a-fortune-slack-slash-command-using-plumber
+categories: []
+tags:
+  - slack
+  - plumber
+  - web
+  - api
+  - fortunes
+  - ngrok
+banner: "img/slack/plumber_hex.jpg"
+---
+
+<img src="/img/slack/plumber_hex.jpg" style = "float: right; margin: 20px;" width="500px" />
+
+Most of our internal communication at [ThinkR](http://www.thinkr.fr) goes through Slack, and I'm also 
+popping up to other slack teams (e.g. the very active [ropensci](https://ropensci.org) team) from time to time. 
+
+The [slackr](https://github.com/hrbrmstr/slackr) package is great to send stuff (text, plots, ...) to slack from R, 
+but let's do the opposite, i.e. query R from slack with a [slash command](https://api.slack.com/custom-integrations/slash-commands). 
+
+This is my excuse to learn about [plumber](https://github.com/trestletech/plumber) and finally haver something to say when 
+people ask me about the `plumber` hex sticker on my laptop. `plumber` is a neat R package that allows you to simply 
+create web apis that are mapped to R functions. 
+
+<div style="clear:both" />
+
+Here is the canonical example: 
+
+```{r eval=FALSE}
+# plumber.R
+
+#* @get /mean
+normalMean <- function(samples=10){
+  data <- rnorm(samples)
+  mean(data)
+}
+
+#* @post /sum
+addTwo <- function(a, b){
+  as.numeric(a) + as.numeric(b)
+}
+```
+
+We can turn the `plumber.R` file into a web server with the api endpoints `/mean` and `/sum` with the `plumb` function. 
+
+```{r eval=FALSE}
+library(plumber)
+r <- plumb("plumber.R")  # Where 'plumber.R' is the location of the file shown above
+r$run(port=8000)
+```
+
+The [documentation](https://www.rplumber.io/docs/hosting.html) covers several hosting options for a plumber 
+server, but for the purpose of this post, I'll just host it on my local host and follow the 
+lead from [this article](http://www.girliemac.com/blog/2016/10/24/slack-command-bot-nodejs/) and 
+use [ngrok](https://ngrok.com) to tunnel the command in. I've installed `ngrok` on my mac with homebrew and run it 
+directly on a terminal
+
+```
+$ brew cask install ngrok
+$ ngrok http 3000
+```
+
+This gives you a temporary url that tunnels requests to the `3000` port on your machine: 
+
+![](/img/slack/ngrok.png)
+
+Next we need to create a custom integration at [http://my.slack.com/services/new/slash-commands](http://my.slack.com/services/new/slash-commands)
+
+![](/img/slack/integration.png)
+
+The important part is the `URL` field that is filled with the url we just got from `ngrok`. Once this is done, we have a slash 
+command called `/fortune` that uses a panda emoji because why not and send commands to our plumber server via `ngrok`. 
+
+The last thing we need is to make the api with `plumber`. The api is fairly simple and just 
+retrieves a fortune from the `fortunes` package, but we sort of need to go around the flexible
+interface of `fortunes::fortune`
+
+```{r}
+#* @get /
+#* @serializer unboxedJSON
+fortune <- function( text = NULL){
+  if( !is.null(text) ){
+    as_num <- suppressWarnings( as.numeric(text) )
+    if( !is.na(as_num) ) text <- as_num
+  } 
+  list( 
+    response_type = "in_channel",
+    text = paste( capture.output( fortunes::fortune(which=text) ), collapse = "\n")  
+  )
+}
+```
+
+So that we can support a variety of use cases
+
+ - get a random fortune
+ - get a fortune by id
+ - search fortune by author or content
+
+<img src="/img/slack/fortunes.png" width="100%" />
+
