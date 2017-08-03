@@ -53,3 +53,26 @@ tidyverse gymnatics, perhaps I'll write another post about that, but let's not d
 ```{r}
 uni::code
 ```
+
+So as of now, unicode has `r nrow(uni::code)` runes, that's way more
+than the 256 that can fit into a single byte (8 bits), however we still want to be able to
+process text from back in the days when strings were in fact arrays of single bytes.
+
+Unicode is just a giant map of characters, that covers all languages, emojis and other things I don't know
+about, currently ranging between `r uni::code$rune[1]` and `r tail(uni::code$rune, 1)`.
+
+```{r}
+uni::code %>%
+  slice( c(1, n()) )
+```
+
+Each rune is just a number, and the job of utf-8 is to encode that number (i.e. its bits) into
+a sequence of bytes. To do this utf-8 uses a variable number of bytes.
+
+For each rune:
+ - The number of leading 1 in the first byte indicate the number of bytes that the rune need
+ - The following bytes all start with "10"
+ - All the bits that are not used by this system are used to store the binary representation
+  of the rune.
+
+It sounds like a lot of words, so the `utf8splain::runes` function is here to help you.
