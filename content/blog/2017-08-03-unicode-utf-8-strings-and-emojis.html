@@ -23,7 +23,7 @@ banner: "img/banners/utf8splain.png"
 <p>But this post is not really about emojis, because my <a href="https://github.com/ThinkRstat/emojitsu">emojitsu</a> package is not ready yet, but here’s a preview anyway.</p>
 {{< tweet 892375718247706626 >}}
 <p>So I’ll blog specifically about emojis later, but this has led me to digress down the 🐇 hole, because emojis are made of unicode runes typically encoded into utf-8 strings. Most of the concepts in that last sentence were quite mysterious to me not so long ago, and I believe we should collectively know more about unicode and utf-8. I learned some of the basics from the <a href="https://blog.golang.org/strings">Strings, bytes, runes and characters in Go</a> post in the go blog, and <a href="https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/">The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)</a>.</p>
-<p>Typically when I want to understand something, I make an R 📦. For example a few years ago I wanted to understand C++. I guess I really want to understand this, as I am making not 1, not 2 but 3 pa📦if I count <code>emojitsu</code>).</p>
+<p>Typically when I want to understand something, I make an R 📦. For example a few years ago I wanted to understand C++. I guess I really want to understand this, as I am making not 1, not 2 but 3 📦 (if I count <code>emojitsu</code>).</p>
 <ul>
 <li><code>uni</code> : contains a tibble of unicode runes</li>
 <li><code>utf8splain</code> : to get to the 0 and 1 of utf-8 string encoding</li>
@@ -70,7 +70,7 @@ runes( &quot;hello 🌍&quot;)</code></pre>
 ## U+006F             6F                              01101111    Latin Small Letter O     
 ## U+0020             20                              00100000    Space                    
 ## U+1F30D   F0 9F 8C 8D   11110000 10011111 10001100 10001101    Earth Globe Europe-Africa</code></pre>
-<p>… and if you use a <a href="htt%20🖍ps://github.com/r-lib/crayon">crayon</a> compatible console, like a recent enough (maybe a daily build) of rstudio, you even get colour:</p>
+<p>… and if you use a <a href="https://github.com/r-lib/crayon">crayon 🖍</a> compatible console, like a recent enough (maybe a daily build) of rstudio, you even get colour:</p>
 <p><img src="/img/utf8splain/runes-crayon.png" width="100%" /></p>
 <p>The first 6 characters are just ascii “h”, “e”, “l”, “l”, “o” and &quot; “. They only need 7 bits, so they can be utf-8 encoded using just one byte.</p>
 <p>The 7th rune 🌍 is the rune “U+1F30D”, i.e. binary encoded as:</p>
@@ -85,5 +85,5 @@ world_binary_signif</code></pre>
 <pre><code>## [1] &quot;11111001100001101&quot;</code></pre>
 <pre class="r"><code>nchar(world_binary_signif)</code></pre>
 <pre><code>## [1] 17</code></pre>
-<p>It needs 17 bits, in terms of utf-8 it means it needs 4 bytes (in red). These 4 bytes contain the utf-8 machinery (the light gray bits) and the actual binary bits for the rune (in black). To go full circle ⭕️unes<code>function extract the description of the runeach runetwith a oleft_join</code> with the <code>de</code> tibble .</p>
+<p>It needs 17 bits, in terms of utf-8 it means it needs 4 bytes (in red). These 4 bytes contain the utf-8 machinery (the light gray bits) and the actual binary bits for the rune (in black). To go full ⭕️ the <code>runes</code> function extracts the description of each rune with a <code>left_join</code> with the <code>uni::code</code> tibble .</p>
 <p>Next time we’ll see that some emojis actually use several runes, but until then I need to finish the <code>emojitsu</code>.</p>

@@ -38,7 +38,7 @@ collectively know more about unicode and utf-8. I learned some of the basics fro
 the [Strings, bytes, runes and characters in Go](https://blog.golang.org/strings) post in the go
 blog, and [The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)](https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/).
 
-Typically when I want to understand something, I make an R 📦. For example a few years ago I wanted to understand C++. I guess I really want to understand this, as I am making not 1, not 2 but 3 pa📦if I count `emojitsu`). 
+Typically when I want to understand something, I make an R 📦. For example a few years ago I wanted to understand C++. I guess I really want to understand this, as I am making not 1, not 2 but 3 📦 (if I count `emojitsu`). 
 
  - `uni` : contains a tibble of unicode runes
  - `utf8splain` : to get to the 0 and 1 of utf-8 string encoding
@@ -81,7 +81,7 @@ library(utf8splain)
 runes( "hello 🌍")
 ```
 
-... and if you use a [crayon](htt 🖍ps://github.com/r-lib/crayon) compatible console, like
+... and if you use a [crayon 🖍](https://github.com/r-lib/crayon) compatible console, like
 a recent enough (maybe a daily build) of rstudio, you even get colour:
 
 <img src="/img/utf8splain/runes-crayon.png" width="100%" />
@@ -104,9 +104,9 @@ world_binary_signif
 nchar(world_binary_signif)
 ```
 
-It needs `r nchar(world_binary_signif)` bits, in terms of utf-8 it means it needs 4 bytes (in red). These 4
- bytes contain the utf-8 machinery (the light gray bits) and the actual binary bits for the rune (in black).
-To go full circle ⭕️unes` function extract the description of the runeach runetwith a oleft_join` with the `de` tibble .
+It needs `r nchar(world_binary_signif)` bits, in terms of utf-8 it means it needs 4 bytes (in red). 
+These 4 bytes contain the utf-8 machinery (the light gray bits) and the actual binary bits for the rune (in black).
+To go full ⭕️ the `runes` function extracts the description of each rune with a `left_join` with the `uni::code` tibble .
 
 Next time we'll see that some emojis actually use several runes, but until then I need to finish the
 `emojitsu`.
