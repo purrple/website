@@ -20,7 +20,6 @@ banner: "img/banners/utf8splain.png"
 library(tidyverse)
 ```
 
-
 I've been somewhat obsessing about emojis lately, it all started when I wanted to
 check which emojis were used [on twitter](http://romain.rbind.io/blog/2017/07/11/emojis-at-user2017/)
 during useR this year.
@@ -39,17 +38,17 @@ collectively know more about unicode and utf-8. I learned some of the basics fro
 the [Strings, bytes, runes and characters in Go](https://blog.golang.org/strings) post in the go
 blog, and [The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)](https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/).
 
-Typically when I want to understand something, I make an R 📦, I guess I really want
-to understand this, as I am making not 1, not 2 but 3 📦 📦 📦 (if I count `emojitsu`).
+Typically when I want to understand something, I make an R package, I guess I really want
+to understand this, as I am making not 1, not 2 but 3 packages (if I count `emojitsu`).
 
- - 📦 `uni` : contains a tibble of unicode runes
- - 📦 `utf8splain` : to get to the 0 and 1 of utf-8 string encoding
- - 📦 `emojitsu` : grammar of emoji, or at least programmatic manipulation of them.
+ - `uni` : contains a tibble of unicode runes
+ - `utf8splain` : to get to the 0 and 1 of utf-8 string encoding
+ - `emojitsu` : grammar of emoji, or at least programmatic manipulation of them.
 
-The 🌍 has changed now, and strings can no longer be considered as mere sequences of single
+The world has changed now, and strings can no longer be considered as mere sequences of single
 characters (bytes). The `uni::code` tibble contains the `r nrow(uni::code)` unicode runes
 (aka code points). btw, the generation of the `uni::code` tibble contains some interesting
-tidyverse 🏋, perhaps I'll ✍️ another post about that, but let's not digress more yet.
+tidyverse gymnatics, perhaps I'll write another post about that, but let's not digress more yet.
 
 ```{r}
 uni::code
@@ -84,7 +83,7 @@ runes( "hello 🌍" )
 
 ```
 
-... and if you use a [crayon 🖍](https://github.com/r-lib/crayon) compatible console, like
+... and if you use a [crayon](https://github.com/r-lib/crayon) compatible console, like
 a recent enough (maybe a daily build) of rstudio, you even get colour:
 
 <img src="/img/utf8splain/runes-crayon.png" width="100%" />
@@ -107,8 +106,9 @@ world_binary_signif
 nchar(world_binary_signif)
 ```
 
-It needs `r nchar(world_binary_signif)` bits, in terms of utf-8 it means it needs 4 bytes (in red). These 4 bytes contain the utf-8 machinery (the light gray bits) and the actual binary bits for the rune (in black). To go full ⭕️ the `runes` function extract the description of the runes using the
-`uni::code` data 🖼.  
+It needs `r nchar(world_binary_signif)` bits, in terms of utf-8 it means it needs 4 bytes (in red). These 4 bytes contain the utf-8 machinery (the light gray bits) and the actual binary bits for the rune (in black).
+To go full circle the `runes` function extract the description of the runes using the
+`uni::code` tibble .  
 
 Next time we'll see that some emojis actually use several runes, but until then I need to finish the
-`emojitsu` 📦.
+`emojitsu`.
