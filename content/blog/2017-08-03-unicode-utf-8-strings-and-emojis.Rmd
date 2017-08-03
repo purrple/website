@@ -108,8 +108,7 @@ nchar(world_binary_signif)
 ```
 
 It needs `r nchar(world_binary_signif)` bits, in terms of utf-8 it means it needs 4 bytes (in red). These 4 bytes contain the utf-8 machinery (the light gray bits) and the actual binary bits for the rune (in black). To go full ⭕️ the `runes` function extract the description of the runes using the 
-`uni::code` 🖼.  
+`uni::code` data 🖼.  
 
 Next time we'll see that some emojis actually use several runes, but until then I need to finish the 
 `emojitsu` 📦. 
-

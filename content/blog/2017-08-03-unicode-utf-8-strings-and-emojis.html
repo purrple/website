@@ -85,5 +85,5 @@ world_binary_signif</code></pre>
 <pre><code>## [1] &quot;11111001100001101&quot;</code></pre>
 <pre class="r"><code>nchar(world_binary_signif)</code></pre>
 <pre><code>## [1] 17</code></pre>
-<p>It needs 17 bits, in terms of utf-8 it means it needs 4 bytes (in red). These 4 bytes contain the utf-8 machinery (the light gray bits) and the actual binary bits for the rune (in black). To go full ⭕️ the <code>runes</code> function extract the description of the runes using the <code>uni::code</code> 🖼.</p>
+<p>It needs 17 bits, in terms of utf-8 it means it needs 4 bytes (in red). These 4 bytes contain the utf-8 machinery (the light gray bits) and the actual binary bits for the rune (in black). To go full ⭕️ the <code>runes</code> function extract the description of the runes using the <code>uni::code</code> data 🖼.</p>
 <p>Next time we’ll see that some emojis actually use several runes, but until then I need to finish the <code>emojitsu</code> 📦.</p>
