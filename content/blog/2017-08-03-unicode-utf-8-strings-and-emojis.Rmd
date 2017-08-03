@@ -76,3 +76,8 @@ For each rune:
   of the rune.
 
 It sounds like a lot of words, so the `utf8splain::runes` function is here to help you.
+
+```{r}
+library(utf8splain)
+runes( "hello 🌍")
+```

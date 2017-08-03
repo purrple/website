@@ -59,3 +59,14 @@ banner: "img/banners/utf8splain.png"
 <p>Each rune is just a number, and the job of utf-8 is to encode that number (i.e. its bits) into a sequence of bytes. To do this utf-8 uses a variable number of bytes.</p>
 <p>For each rune: - The number of leading 1 in the first byte indicate the number of bytes that the rune need - The following bytes all start with “10” - All the bits that are not used by this system are used to store the binary representation of the rune.</p>
 <p>It sounds like a lot of words, so the <code>utf8splain::runes</code> function is here to help you.</p>
+<pre class="r"><code>library(utf8splain)
+runes( &quot;hello 🌍&quot;)</code></pre>
+<pre><code>## utf-8 encoded string with 7 runes
+## 
+## U+0068             68                              01101000    Latin Small Letter H     
+## U+0065             65                              01100101    Latin Small Letter E     
+## U+006C             6C                              01101100    Latin Small Letter L     
+## U+006C             6C                              01101100    Latin Small Letter L     
+## U+006F             6F                              01101111    Latin Small Letter O     
+## U+0020             20                              00100000    Space                    
+## U+1F30D   F0 9F 8C 8D   11110000 10011111 10001100 10001101    Earth Globe Europe-Africa</code></pre>
