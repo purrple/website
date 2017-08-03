@@ -70,3 +70,20 @@ runes( &quot;hello 🌍&quot;)</code></pre>
 ## U+006F             6F                              01101111    Latin Small Letter O     
 ## U+0020             20                              00100000    Space                    
 ## U+1F30D   F0 9F 8C 8D   11110000 10011111 10001100 10001101    Earth Globe Europe-Africa</code></pre>
+<p>… and if you use a <a href="https://github.com/r-lib/crayon">crayon</a> compatible console, like a recent enough (maybe a daily build) of rstudio, you even get colour:</p>
+<p><img src="/img/utf8splain/runes-crayon.png" width="100%" /></p>
+<p>The first 6 characters are just ascii “h”, “e”, “l”, “l”, “o” and &quot; “. They only need 7 bits, so they can be utf-8 encoded using just one byte.</p>
+<p>The 7th rune 🌍 is the rune “U+1F30D”, i.e. binary encoded as:</p>
+<pre class="r"><code>world_decimal &lt;- strtoi( &quot;0x1F30D&quot;, base = 16)
+world_decimal</code></pre>
+<pre><code>## [1] 127757</code></pre>
+<pre class="r"><code>world_binary    &lt;- paste( substr(as.character( rev(intToBits(world_decimal)) ), 2, 2 ), collapse = &quot;&quot; )
+world_binary</code></pre>
+<pre><code>## [1] &quot;00000000000000011111001100001101&quot;</code></pre>
+<pre class="r"><code>world_binary_signif &lt;- sub( &quot;^0+&quot;, &quot;&quot;, world_binary )
+world_binary_signif</code></pre>
+<pre><code>## [1] &quot;11111001100001101&quot;</code></pre>
+<pre class="r"><code>nchar(world_binary_signif)</code></pre>
+<pre><code>## [1] 17</code></pre>
+<p>It needs 17 bits, in terms of utf-8 it means it needs 4 bytes (in red). These 4 bytes contain the utf-8 machinery (the light gray bits) and the actual binary bits for the rune (in black). To go full circle the <code>runes</code> function extract the description of the runes using the <code>uni::code</code> tibble .</p>
+<p>Next time we’ll see that some emojis actually use several runes, but until then I need to finish the <code>emojitsu</code>.</p>

@@ -81,3 +81,33 @@ It sounds like a lot of words, so the `utf8splain::runes` function is here to he
 library(utf8splain)
 runes( "hello 🌍")
 ```
+
+... and if you use a [crayon](https://github.com/r-lib/crayon) compatible console, like
+a recent enough (maybe a daily build) of rstudio, you even get colour:
+
+<img src="/img/utf8splain/runes-crayon.png" width="100%" />
+
+The first 6 characters are just ascii "h", "e", "l", "l", "o" and " ". They only need 7 bits, so
+they can be utf-8 encoded using just one byte.
+
+The 7th rune 🌍 is the rune "U+1F30D", i.e. binary encoded as:
+
+```{r}
+world_decimal <- strtoi( "0x1F30D", base = 16)
+world_decimal
+
+world_binary    <- paste( substr(as.character( rev(intToBits(world_decimal)) ), 2, 2 ), collapse = "" )
+world_binary
+
+world_binary_signif <- sub( "^0+", "", world_binary )
+world_binary_signif
+
+nchar(world_binary_signif)
+```
+
+It needs `r nchar(world_binary_signif)` bits, in terms of utf-8 it means it needs 4 bytes (in red). These 4 bytes contain the utf-8 machinery (the light gray bits) and the actual binary bits for the rune (in black).
+To go full circle the `runes` function extract the description of the runes using the
+`uni::code` tibble .
+
+Next time we'll see that some emojis actually use several runes, but until then I need to finish the
+`emojitsu`.
