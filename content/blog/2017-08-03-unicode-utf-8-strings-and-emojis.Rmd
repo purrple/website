@@ -30,3 +30,26 @@ But this post is not really about emojis, because my [emojitsu](https://github.c
 package is not ready yet, but here's a preview anyway.
 
 `r htmltools::HTML("{{< tweet 892375718247706626 >}}")`
+
+So I'll blog specifically about emojis later, but this has led me to digress down
+the 🐇 hole, because emojis are made of unicode runes typically encoded into utf-8 strings. Most of the
+concepts in that last sentence were quite mysterious to me not so long ago, and I believe we should
+collectively know more about unicode and utf-8. I learned some of the basics from
+the [Strings, bytes, runes and characters in Go](https://blog.golang.org/strings) post in the go
+blog, and [The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)](https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/).
+
+Typically when I want to understand something, I make an R package, I guess I really want
+to understand this, as I am making not 1, not 2 but 3 packages (if I count `emojitsu`).
+
+ - `uni` : contains a tibble of unicode runes
+ - `utf8splain` : to get to the 0 and 1 of utf-8 string encoding
+ - `emojitsu` : grammar of emoji, or at least programmatic manipulation of them.
+
+The world has changed now, and strings can no longer be considered as mere sequences of single
+characters (bytes). The `uni::code` tibble contains the `r nrow(uni::code)` unicode runes
+(aka code points). btw, the generation of the `uni::code` tibble contains some interesting
+tidyverse gymnatics, perhaps I'll write another post about that, but let's not digress more yet.
+
+```{r}
+uni::code
+```
