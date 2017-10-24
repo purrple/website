@@ -1,0 +1,49 @@
+---
+title: Rows don't exist
+author: Romain François
+date: '2017-10-20'
+slug: rows-don-t-exist
+categories: []
+tags:
+  - tidyverse
+  - Rcpp
+  - naniar
+  - dplyr
+draft: true
+---
+
+```{r include=FALSE}
+library(tibble)
+library(dplyr)
+```
+
+
+Every now and then, I get questions about row-wise operations in the `#tidyverse`, and most of the time I 
+end up coming up with a solution that is column-wise instead of row-wise. 
+
+Let's pretend we don't know about 
+`rowSums` and we want to count the number of values greater than 2 in each row of this tibble based on the 
+columns `x`, `y` and `z`
+
+```{r}
+d <- tribble( 
+  ~x, ~y, ~z, ~group, 
+  1, 2, 3, "a", 
+  2, 3, 2, "b", 
+  1, 2, 3, "a", 
+  3, 1, 2, "a"
+)
+```
+
+It is easy enough to want to use `apply(, 1)` for this task, i.e. first `select_if` the 
+columns of interest and then apply a function to each `row` 
+
+```{r}
+select_if(d, is.numeric) %>% 
+  apply( 1, function(x) sum(x>1) )
+```
+
+The first problem here is that we escape from the tidyverse and the first thing 
+`apply` will do is to create a disgraceful matrix from our carefully crafted tibble.
+Of course I'm exagerating, and of course matrices are fine, when they are fine. It's just not one of these
+cases. 
