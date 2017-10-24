@@ -1,8 +1,11 @@
 ---
-title:  a:class <- b
+title: Optional typing 
 author: "Romain François"
-date:  2014-07-28
-tags: ["R", "grammar", "beepr"]
+date: 2014-07-28
+tags: 
+   - R
+   - grammar
+   - beepr
 banner: "img/banners/static.png"
 ---
 
@@ -29,7 +32,7 @@ banner: "img/banners/static.png"
 <pre><code>x  :integer &lt;- 3L  
 x  :integer &lt;- &quot;foo&quot;  </code></pre>
 <p>It does not work if <code>x</code> does not already exist, which makes this kind of useless:</p>
-<pre class="r"><code>&gt; x :integer &lt;;- 3
+<pre><code>&gt; x :integer &lt;;- 3
 Erreur dans x:integer &lt;- 3 : objet &#39;x&#39; introuvable  </code></pre>
 <p>However, if <code>x</code> already exist, it does:</p>
 <pre><code>&gt; x &lt;- NULL

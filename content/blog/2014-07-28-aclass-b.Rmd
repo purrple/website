@@ -1,8 +1,11 @@
 ---
-title:  a:class <- b
+title: Optional typing 
 author: "Romain François"
-date:  2014-07-28
-tags: ["R", "grammar", "beepr"]
+date: 2014-07-28
+tags: 
+   - R
+   - grammar
+   - beepr
 banner: "img/banners/static.png"
 ---
 
@@ -49,7 +52,7 @@ x  :integer <- "foo"
 
 It does not work if `x` does not already exist, which makes this kind of useless:
 
-```{r eval=FALSE}
+```
 > x :integer <;- 3
 Erreur dans x:integer <- 3 : objet 'x' introuvable  
 ```
