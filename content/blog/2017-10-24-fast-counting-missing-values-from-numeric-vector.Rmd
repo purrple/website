@@ -1,0 +1,146 @@
+---
+title: Fast counting NA
+author: Romain François
+date: '2017-10-24'
+slug: fast-counting-na
+categories: []
+tags:
+  - Rcpp
+  - tbb
+  - c++
+---
+
+This is inspired by [this question](https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp) 
+From [@privefl](https://twitter.com/privefl) on Stack Overflow. 
+
+[(![](/img/na/so-question.png)](https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp)
+
+Initially, my reaction was "well yeah, it's harder to check for NA then it is to check for a specific value, that's the way it is with floating point arithmetic ..."
+
+It's true and I'll come back to it, but it is less true than the tools we have let you believe. I'll come back to that, but first let's digress. 
+Things we call `numeric` in R are `double` precision floating point numbers. They occupy 64 bits (8 bytes) in memory which are arranged
+according to the [IEEE 754 double-precision binary floating-point format: binary64](https://en.wikipedia.org/wiki/Double-precision_floating-point_format)
+standard. <span class="note">There are actually several standards as it is usually the case with standards, but `binary64` is the one that seems to have been
+almost universally adopted, so I just won't care about the other ones for the sake of simplificity of this post and I guess the sake of the complexity of this sentence that feels like it is never ending ... </span>
+
+[What Every Computer Scientist Should Know About Floating-Point Arithmetic](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html) will 
+give you more information, but I will illustrate `binary64` with one my weekend package project `seven31`. 
+<span class="note">The name of the package is a tribute to the famous [R FAQ 7.31](https://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-doesn_0027t-R-think-these-numbers-are-equal_003f) that is also coevered
+by this [question on stack overflow](https://stackoverflow.com/questions/9508518/why-are-these-numbers-not-equal) that also has
+several links </span>
+
+`seven31` has the functions `reveal` to show the bits of a `double` and the `compare` function to highlight bitwise 
+differences between two numbers. `reveal` shows the 3 parts of the 64 bits. <span class="note">and it looks better
+when you use it on rstudio or any other environment that supports ansi escape strings, for some 
+reason the escape strings are killed here. I'm not sure yet what is responsible for that, and I'll 
+be looking into alibis from rmarkdown, knitr, blogdown and rstudio ... some other time. </span>
+
+```{r}
+seven31::reveal( 1.0 )
+```
+
+### sign and exponent
+
+The first bit is the *sign* bit. 0 means positive, 1 means negative. 
+
+The 11 following bits encode the *exponent* by removing 1023 to the base 2 representation: 
+
+```{r}
+strtoi("01111111111", base = 2 )
+strtoi("01111111111", base = 2 ) - 1023
+```
+
+which is the number that is presented in the `()`. 1023 seems arbitrary, but not so much. There are 2^11 (=2048) different 
+possible exponent, but two of them have special meaning.
+
+- `00000000000` is reserved to represent positive and negative zeros. <span class="note">Yes there are two zeroes</span>
+
+```{r}
+seven31::reveal( 0, -0)
+```
+
+- `11111111111` is reserved for infinity, not a number and in particular for the case of R, missing values, but not so fast, we'll peel off that 
+layer of digression later. 
+
+```{r}
+seven31::reveal( NaN, Inf, -Inf, NA )
+```
+
+Removing these two special cases gives us 2046 possibilities, and it is no coincidence that this is twice `1023`. 
+
+### Fraction
+
+The last 52 bits, plus an additional implicit bit always set to 1, encode the *fraction*, i.e. the linear combination of powers of 2. 
+The fraction is read from left to right. The power associated with the implicit bit (again this is always 1) is the *exponent* 
+<span class="note">The thing we've seen before that is encoded with the 11 previous bits</span> and the power decreases as we go to the right. 
+
+Let's take the example of 2.75, which we can decompose as `2^{1} + O*2^{0} + 2^{-1} + 2^{-2}`. 
+
+```{r}
+seven31::reveal(2.75)
+```
+
+- The sign bit is 0, so we have a positive number
+- The exponent `10000000000` encodes the value `1` 
+- The fraction starts with `011` and then is followed by all `0` to the end. We have to prefix this with the implicit bit to get `1011`. 
+
+```{r}
+c(1,0,1,1) * 2 ^ c(1,0,-1,-2)
+
+sum( c(1,0,1,1) * 2 ^ c(1,0,-1,-2) )
+```
+
+### The implicit bit and the zeros
+
+The implicit bit has many advantages: 
+ - it doubles the number of values that can be associated with an exponent
+ - it gives us a unique way to represent each of the representable numbers, using the normalised version, i.e. where the fraction always starts
+   with a bit set to `1`. 
+
+However, this means that 0 cannot be represented exactly. This is unacceptable as `0` is one of the most [important numbers](https://en.wikipedia.org/wiki/0), hence the special case when the exponent is `00000000000`. 
+
+### NaN
+
+Similarly, the exponent `11111111111` is reserved for things that cannot be approximated to powers of two, because conceptually 
+they are not numbers. Theoretically this gives us `2^52` (i.e. 4.5 quadrillion) possibilities. In practice only a few are used. 
+
+Positive and negative infinity uses the all 0 fraction: 
+
+```{r}
+seven31::reveal( Inf, -Inf )
+```
+
+Fraction starting by `1` and followed by only `0` is the traditional math *not a number*  that can be used for things like square root of 
+negative numbers (let's not talk about complex) or infinbity minus infinity, ... 
+
+
+```{r}
+seven31::reveal( sqrt(-1), Inf-Inf )
+```
+
+
+### NA
+
+R uses the NaN space to encode missing values, which are conceptually not the same as other NaN, because rather than 
+saying that the number cannot be represented, it means that there is a number potentially representable, but we don't know 
+its value. 
+
+`NA` is encoded by using the bit pattern of 1954<span class="note">this looks too much like a 20th century year to be a coincidence
+and in fact <a href="http://adv-r.had.co.nz/C-interface.html">this is year Ross Ihaka was born</a></span> in the lower bits. 
+
+```{r}
+seven31::reveal( NA )
+strtoi( "0000000000000000000000000000000000000000011110100010", base = 2 )
+```
+
+## Testing for NA
+
+### The way R does it
+
+### The way Rcpp does it
+
+### An alternative way
+
+
+
+
