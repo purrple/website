@@ -174,3 +174,9 @@ body {
 .post .row a {
   margin-left: 40px ;
 }
+
+.note {
+  color:lightgray; 
+  font-size: 12px; 
+  font-style:italic;
+}
