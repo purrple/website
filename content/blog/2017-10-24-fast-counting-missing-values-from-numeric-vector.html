@@ -12,7 +12,7 @@ tags:
 
 
 
-<p>This is inspired by <a href="https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp">this question</a> From <span class="citation">[@privefl]</span>(<a href="https://twitter.com/privefl" class="uri">https://twitter.com/privefl</a>) on Stack Overflow.</p>
+<p>This is inspired by <a href="https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp">this question</a> From <a href="https://twitter.com/privefl">Florian</a> on Stack Overflow.</p>
 <p><a href="https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp">(<img src="/img/na/so-question.png" /></a></p>
 <p>Initially, my reaction was “well yeah, it’s harder to check for NA then it is to check for a specific value, that’s the way it is with floating point arithmetic …”</p>
 <p>It’s true and I’ll come back to it, but it is less true than the tools we have let you believe. I’ll come back to that, but first let’s digress. Things we call <code>numeric</code> in R are <code>double</code> precision floating point numbers. They occupy 64 bits (8 bytes) in memory which are arranged according to the <a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754 double-precision binary floating-point format: binary64</a> standard. <span class="note">There are actually several standards as it is usually the case with standards, but <code>binary64</code> is the one that seems to have been almost universally adopted, so I just won’t care about the other ones for the sake of simplificity of this post and I guess the sake of the complexity of this sentence that feels like it is never ending … </span></p>
@@ -87,16 +87,143 @@ tags:
 <pre><code>## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000011110100010 : NA</code></pre>
 <pre class="r"><code>strtoi( &quot;0000000000000000000000000000000000000000011110100010&quot;, base = 2 )</code></pre>
 <pre><code>## [1] 1954</code></pre>
+<p>However, there are actually two representations of <code>NA</code> as we get a <em>signaling</em> NA when we perform any operation with <code>NA</code>. I’m not aware of any use of signaling <code>NA</code> and I guess R is just an innocent bystander of whatever the fpu does, but it’s there and we will need to deal with it.</p>
+<pre class="r"><code>seven31::reveal( NA, NA + 1, NA/2, log(NA), exp(NA) )</code></pre>
+<pre><code>## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000011110100010 : NA
+## 0 11111111111 ( NaN ) 1000000000000000000000000000000000000000011110100010 : NA + 1
+## 0 11111111111 ( NaN ) 1000000000000000000000000000000000000000011110100010 : NA/2
+## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000011110100010 : log(NA)
+## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000011110100010 : exp(NA)</code></pre>
+<p>The first bit of the fraction is either set or unset, and I’m not aware of the specific reason</p>
 </div>
 <div id="testing-for-na" class="section level2">
 <h2>Testing for NA</h2>
+<p>Because NA is represented as a special NaN, it inherits some properties, for example it does not equal to itself, i.e. in C++ we cannot say <code>if( x == NA_REAL )</code> because <code>NA_REAL == NA_REAL</code> is <code>false</code>.</p>
+<pre class="r"><code>Rcpp::evalCpp( &quot;NA_REAL == NA_REAL&quot;)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
 <div id="the-way-r-does-it" class="section level3">
 <h3>The way R does it</h3>
+<p>The R api offers the <a href="https://github.com/wch/r-source/blob/2f116e3cebf6210b6d70f3e6fff88b2252b345cb/src/main/arithmetic.c#L118"><code>R_IsNA</code> function</a> to test for <code>NA</code></p>
+<pre class="c"><code>typedef union
+{
+    double value;
+    unsigned int word[2];
+} ieee_double;
+
+int R_IsNA(double x)
+{
+    if (isnan(x)) {
+      ieee_double y;
+      y.value = x;
+      return (y.word[lw] == 1954);
+    }
+    return 0;
+}</code></pre>
+<p>This first checks if this is a <code>NaN</code> of any kind with the <a href="http://www.cplusplus.com/reference/cmath/isnan/?kw=isnan"><code>isnan</code> function</a>, presumably checking the exponent bits, the if it is the case it uses the union hack to compare the lower 32 bits to Ross’s birth year.</p>
 </div>
 <div id="the-way-rcpp-does-it" class="section level3">
 <h3>The way Rcpp does it</h3>
+<p>Rcpp uses a <a href="https://github.com/RcppCore/Rcpp/blob/6f81b4684481dbd9bb554dd95e66725fc3b63a8c/inst/include/Rcpp/internal/na.h#L54">different strategy</a></p>
+<pre class="cpp"><code>static const rcpp_ulong_long_type SmallNA = 0x7FF00000000007A2;
+static const rcpp_ulong_long_type LargeNA = 0x7FF80000000007A2;
+
+struct NACanChange {
+    enum { value = sizeof(void*) == 8 };
+};
+
+template &lt;bool NACanChange&gt;
+bool Rcpp_IsNA__impl(double);
+
+template &lt;&gt;
+inline bool Rcpp_IsNA__impl&lt;true&gt;(double x) {
+    return memcmp(
+        (void*) &amp;x,
+        (void*) &amp;SmallNA,
+        sizeof(double)
+    ) == 0 or memcmp(
+        (void*) &amp;x,
+        (void*) &amp;LargeNA,
+        sizeof(double)
+    ) == 0;
+}</code></pre>
+<p>This compares the bit pattern of the value against both the bit pattern of the quiet and signaling NA, which it calls <code>SmallNA</code> and <code>LargeNA</code>.</p>
 </div>
 <div id="an-alternative-way" class="section level3">
 <h3>An alternative way</h3>
+<p>The idea here is to pretend the bits represent some integer type of 64 bits, we’ll use e.g. <code>uint64_t</code> <span class="note"> assuming this will be more precise and less prone to endless useless discussions as the weirdly named <code>long long</code></span> and then use integer comparison.</p>
+<p>We however have to first nuke the 13th bit before we compare.</p>
+<pre class="r"><code>Rcpp::cppFunction( &quot;double mask(){
+  uint64_t mask = ~( (uint64_t(1) &lt;&lt; 51 ) );
+  return *reinterpret_cast&lt;double*&gt;(&amp;mask) ;
+}&quot;)
+
+seven31::reveal( 
+  NA, 
+  NA + 1, 
+  mask()
+)</code></pre>
+<pre><code>## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000011110100010 : NA
+## 0 11111111111 ( NaN ) 1000000000000000000000000000000000000000011110100010 : NA + 1
+## 1 11111111111 ( NaN ) 0111111111111111111111111111111111111111111111111111 : mask()</code></pre>
+<p>We can unset the bit using a bitwise <code>&amp;</code> between the value and the mask. The idea of this proposed approach is to compare the bit pattern of the quiet NA with the bit pattern of the value after applying the bit mask. It might sound more work to us humans, but apparently, and we’ll get to benchmarking shortly, computers are better than us at flipping <code>0</code>s and <code>1</code>’s.</p>
 </div>
+</div>
+<div id="benchmarks" class="section level2">
+<h2>Benchmarks</h2>
+<p>The task is to count the number of <code>NA</code> in a numeric vector. I’ll use the stl algorithms <code>std::count</code> and <code>std::count_if</code> because I like them. Benchmarking them against raw loops is not part of this exercise.</p>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>The various versions are available in this <a href="https://gist.github.com/romainfrancois/47ff45a9c084ecd8893ea70efc882ff0">gist</a></p>
+<pre><code>&gt; bench(1e5)
+Unit: microseconds
+                  expr     min       lq       mean   median       uq       max neval cld
+                     R 154.354 180.7435 1163.07663 204.7635 388.2565 84133.718   100   a
+        count_baseline  28.492  38.7965   56.18033  44.6670  47.9475  1048.677   100   a
+         count_na_rapi 228.332 299.0865  344.50478 323.1225 360.9430  1181.584   100   a
+         count_na_rcpp 315.074 374.7255  422.69063 405.0850 444.1935  1345.352   100   a
+     count_na_proposed  59.312  67.2630   84.52644  72.3595  77.4710  1030.615   100   a
+    par_count_baseline  23.212  32.7935   81.42861  38.0210  53.2545  1788.471   100   a
+        par_count_rapi 110.723 136.3875  166.68644 150.1515 174.6015   871.742   100   a
+     par_count_na_rcpp 154.514 179.2490  210.85263 194.4715 217.2000  1070.035   100   a
+ par_count_na_proposed  39.007  53.4780   82.55541  61.2895  82.3975  1044.195   100   a
+
+
+&gt; bench(1e6)
+Unit: microseconds
+                  expr      min        lq      mean    median        uq      max neval      cld
+                     R 1875.361 2112.8835 3188.7986 2846.9530 3183.6135 6783.091   100       g 
+        count_baseline  515.749  611.5435  674.6513  656.9820  727.3860 1035.686   100  b      
+         count_na_rapi 2389.200 2645.3290 2902.3169 2829.9430 3033.8420 4937.296   100      f  
+         count_na_rcpp 3120.384 3525.3630 3895.4203 3829.9835 4057.1865 6455.599   100        h
+     count_na_proposed  759.485  853.1500  941.1813  940.3625  997.6140 1717.260   100   c     
+    par_count_baseline  293.698  363.0530  402.2780  396.3610  433.1535  581.647   100 a       
+        par_count_rapi 1031.302 1153.8500 1414.0163 1356.8435 1629.6385 3686.571   100    d    
+     par_count_na_rcpp 1462.124 1614.7535 1797.6803 1783.1680 1918.9350 2548.485   100     e   
+ par_count_na_proposed  392.947  470.7030  525.8884  525.2660  576.1705  775.663   100 ab     
+ 
+ 
+&gt; bench(1e7)
+Unit: milliseconds
+                  expr       min        lq      mean    median        uq        max neval     cld
+                     R 28.160836 29.604265 37.978571 39.757212 41.190611 206.602008   100       g
+        count_baseline  5.814813  6.223462  6.822613  6.628946  7.098646  10.003304   100  bc    
+         count_na_rapi 23.750143 24.493118 26.412370 25.767943 27.779770  42.620657   100      f 
+         count_na_rcpp 31.864211 33.586734 35.574865 35.587514 37.377092  42.523575   100       g
+     count_na_proposed  7.956405  8.208651  8.915667  8.416500  9.165068  17.072256   100   cd   
+    par_count_baseline  2.803966  3.695622  3.969127  3.797114  3.978292  15.018628   100 a      
+        par_count_rapi 10.408895 10.644652 11.532624 11.124726 11.883716  17.623947   100    d   
+     par_count_na_rcpp 14.732422 14.907101 15.976666 15.529074 16.575572  21.204417   100     e  
+ par_count_na_proposed  4.025824  4.180822  4.653866  4.352212  4.757907   9.028662   100 ab     </code></pre>
+<p>A few things:</p>
+<ul>
+<li><p>R’s version is actually not that bad, I would have been quick to dismiss it because conceptually it allocates memory for the logical vector that <code>is.na(x)</code> makes. It is definitely not as bad as I would have anticipated.</p></li>
+<li><p>The <code>R_IsNA</code> from R’s api outperforms Rcpp’s supposed improvement over it.</p></li>
+<li><p>Using the proposed approach does not equate the baseline (which does not do the same thing), it was after all unrealistic because of the quiet and signaling NA, there is indeed more work to do: we need to test if we are equal to either of the two forms of NA. It however makes counting NA faster.</p></li>
+</ul>
+</div>
+<div id="yeah-but" class="section level2">
+<h2>Yeah but …</h2>
+<p>This has been cutting some corners, e.g. the endianess is assumed in the proposed solution. The code would have to change slightly on platforms which reverse the two words of the double. But this can be done at compile time, there should be no runtime cost.</p>
+<p>Who cares anyway ? Good point. I do. I learned a few things while writing that post, and my typical rule of thumb is that I write when some past version of me would have benefited from reading.</p>
 </div>
