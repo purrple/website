@@ -1,0 +1,3 @@
+# Redirect domain aliases to primary domain
+https://romain.rbind.io/* https://purrple.cat/:splat 301!
+http://romain.rbind.io/* https://purrple.cat/:splat 301!
