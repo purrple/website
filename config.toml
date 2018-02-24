@@ -56,9 +56,7 @@ paginate = 10
     # Enable the contact form by entering your Formspree.io email
     email = "romain@purrple.cat"
 
-    about_us = """
-      Open Source R tools. More details soon. 
-    """
+    about_us = "Open Source R tools. More details soon."
     copyright = "Copyright (c) 2017-2018, purrple; all rights reserved."
 
     # Format dates with Go's time formatting
@@ -119,4 +117,4 @@ paginate = 10
 [params.recent_posts]
     enable = true
     title = "From the blog"
-    subtitle = "We mostly blog about things that are at least remotely related to R in some way. "
+    subtitle = "Mostly things that are at least remotely related to R in some way. "
