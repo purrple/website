@@ -56,13 +56,9 @@ paginate = 10
     # Enable the contact form by entering your Formspree.io email
     email = "romain@purrple.cat"
 
-    about_us = """<p>I am <a href='http://www.thinkr.fr'>ThinkR</a>'s consulting
-      datactive since february 2017. Passionated about anything related to R.
-      I take performance seriously, hence my historical involvment with the
-      design and implementation of
-      <a href="https://github.com/RcppCore/Rcpp">Rcpp</a>. I have written
-      the C++ internals of <a href="https://github.com/tidyverse/dplyr">dplyr</a></p>
-      """
+    about_us = """
+      Open Source R tools. More details soon. 
+    """
     copyright = "Copyright (c) 2017-2018, purrple; all rights reserved."
 
     # Format dates with Go's time formatting
