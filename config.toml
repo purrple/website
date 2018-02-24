@@ -120,7 +120,7 @@ paginate = 10
     title = "Our Clients"
     subtitle = ""
 
-[params.recent_posts]
+[params]
     enable = true
     title = "From the blog"
-    subtitle = "We mostly blog about things that are at least remotely related to R in some way. "
+    subtitle = "Mostly things that are at least remotely related to R in some way. "
