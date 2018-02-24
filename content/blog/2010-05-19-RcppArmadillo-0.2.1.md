@@ -127,7 +127,7 @@ possible, including Mac OSX (Snow Leopard), Debian, Ubuntu, Fedora 12
 </li>   
 <li>Dirk's blog : <a href="http://dirk.eddelbuettel.com/blog/code/rcpp/">http://dirk.eddelbuettel.com/blog/code/rcpp/ </a>
 </li>
-<li>Romain's blog : <a href="/tags/RcppArmadillo">https://romain.rbind.io/tags/RcppArmadillo</a>
+<li>Romain's blog : <a href="/tags/RcppArmadillo">https://purrple.cat/RcppArmadillo</a>
 </li>
 </ul>
 <h2>Support</h2>

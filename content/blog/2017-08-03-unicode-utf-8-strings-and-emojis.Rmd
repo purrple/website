@@ -21,7 +21,7 @@ library(tidyverse)
 ```
 
 I've been somewhat obsessing about emojis lately, it all started when I wanted to
-check which emojis were used [on twitter](http://romain.rbind.io/blog/2017/07/11/emojis-at-user2017/)
+check which emojis were used [on twitter](http://purrple.cat/blog/2017/07/11/emojis-at-user2017/)
 during useR this year.
 
 `r htmltools::HTML("{{< tweet 883199852347367424 >}}")`
