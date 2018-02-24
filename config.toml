@@ -1,5 +1,5 @@
 baseurl = "https://purrple.cat/"
-title = "Romain François - Consulting Datactive"
+title = "purrple"
 theme = "hugo-universal-theme"
 languageCode = "en-us"
 
@@ -31,8 +31,8 @@ paginate = 10
     viewMorePostLink = "/blog/"
     author = "Romain François"
     defaultKeywords = ["r"]
-    defaultDescription = "Romain François. Consulting Datactive"
-    githubContentURL = "https://github.com/rbind/romain/edit/master/content/"
+    defaultDescription = "purrple"
+    githubContentURL = "https://github.com/purrple/website/edit/master/content/"
     highlightjs = "github"
 
     # Google Maps API key (if not set will default to not passing a key.)
@@ -54,7 +54,7 @@ paginate = 10
     # - you're done. Happy mailing!
     #
     # Enable the contact form by entering your Formspree.io email
-    email = "romain@thinkr.fr"
+    email = "romain@purrple.cat"
 
     about_us = """<p>I am <a href='http://www.thinkr.fr'>ThinkR</a>'s consulting
       datactive since february 2017. Passionated about anything related to R.
@@ -63,21 +63,13 @@ paginate = 10
       <a href="https://github.com/RcppCore/Rcpp">Rcpp</a>. I have written
       the C++ internals of <a href="https://github.com/tidyverse/dplyr">dplyr</a></p>
       """
-    copyright = "Copyright (c) 2017, Romain Francois; all rights reserved."
+    copyright = "Copyright (c) 2017-2018, purrple; all rights reserved."
 
     # Format dates with Go's time formatting
     date_format = "2006/01/02"
 
     logo = "img/logo.png"
-    address = """
-        <strong>Romain François</strong><br/>
-        6 Impasse Joseph Vidal<br/>
-        34000 Montpellier<br/>
-        FRANCE
-      """
-    latitude = "43.604057"
-    longitude = "3.86920"
-
+    
 [Permalinks]
     blog = "/blog/:year/:month/:day/:slug/"
 
@@ -87,7 +79,7 @@ paginate = 10
     linkedin = "romain-francois"
     stackoverflow = "499163/romain-francois"
     researchgate = "Romain_Francois2"
-    email = "romain@thinkr.fr"
+    email = "romain@purrple.cat"
     mobile = "+33(0) 6 28 91 30 30"
     youtube = "UCd357E9PIj497TXmYRtKliw"
 
@@ -130,5 +122,5 @@ paginate = 10
 
 [params.recent_posts]
     enable = true
-    title = "From my blog"
-    subtitle = "I mostly blog about things that are at least remotely related to R in some way. "
+    title = "From the blog"
+    subtitle = "We mostly blog about things that are at least remotely related to R in some way. "
