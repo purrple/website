@@ -1,5 +1,13 @@
 /* your styles go here */
 
+h2{
+  font-family: 'Pacifico', cursive;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+}
+
 .box-image-text .image {
   min-height: 200px;
   max-height: 200px;
