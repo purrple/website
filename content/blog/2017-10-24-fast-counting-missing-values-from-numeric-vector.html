@@ -12,14 +12,27 @@ tags:
 
 
 
-<p>This is inspired by <a href="https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp">this question</a> From <a href="https://twitter.com/privefl">Florian</a> on Stack Overflow.</p>
-<p><a href="https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp">(<img src="/img/na/so-question.png" /></a></p>
+<p>This is inspired by <a href="https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp">this question</a>
+From <a href="https://twitter.com/privefl">Florian</a> on Stack Overflow.</p>
+<p><a href="https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp"><img src="/img/na/so-question.png" /></a></p>
 <p>Initially, my reaction was “well yeah, it’s harder to check for NA then it is to check for a specific value, that’s the way it is with floating point arithmetic …”</p>
-<p>It’s true and I’ll come back to it, but it is less true than the tools we have let you believe. I’ll come back to that, but first let’s digress. Things we call <code>numeric</code> in R are <code>double</code> precision floating point numbers. They occupy 64 bits (8 bytes) in memory which are arranged according to the <a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754 double-precision binary floating-point format: binary64</a> standard. <span class="note">There are actually several standards as it is usually the case with standards, but <code>binary64</code> is the one that seems to have been almost universally adopted, so I just won’t care about the other ones for the sake of simplificity of this post and I guess the sake of the complexity of this sentence that feels like it is never ending … </span></p>
-<p><a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a> will give you more information, but I will illustrate <code>binary64</code> with one my weekend package project <code>seven31</code>. <span class="note">The name of the package is a tribute to the famous <a href="https://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-doesn_0027t-R-think-these-numbers-are-equal_003f">R FAQ 7.31</a> that is also coevered by this <a href="https://stackoverflow.com/questions/9508518/why-are-these-numbers-not-equal">question on stack overflow</a> that also has several links </span></p>
-<p><code>seven31</code> has the functions <code>reveal</code> to show the bits of a <code>double</code> and the <code>compare</code> function to highlight bitwise differences between two numbers. <code>reveal</code> shows the 3 parts of the 64 bits. <span class="note">and it looks better when you use it on rstudio or any other environment that supports ansi escape strings, for some reason the escape strings are killed here. I’m not sure yet what is responsible for that, and I’ll be looking into alibis from rmarkdown, knitr, blogdown and rstudio … some other time. </span></p>
+<p>It’s true and I’ll come back to it, but it is less true than the tools we have let you believe. I’ll come back to that, but first let’s digress.
+Things we call <code>numeric</code> in R are <code>double</code> precision floating point numbers. They occupy 64 bits (8 bytes) in memory which are arranged
+according to the <a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754 double-precision binary floating-point format: binary64</a>
+standard. <span class="note">There are actually several standards as it is usually the case with standards, but <code>binary64</code> is the one that seems to have been
+almost universally adopted, so I just won’t care about the other ones for the sake of simplificity of this post and I guess the sake of the complexity of this sentence that feels like it is never ending … </span></p>
+<p><a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a> will
+give you more information, but I will illustrate <code>binary64</code> with one my weekend package project <code>seven31</code>.
+<span class="note">The name of the package is a tribute to the famous <a href="https://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-doesn_0027t-R-think-these-numbers-are-equal_003f">R FAQ 7.31</a> that is also coevered
+by this <a href="https://stackoverflow.com/questions/9508518/why-are-these-numbers-not-equal">question on stack overflow</a> that also has
+several links </span></p>
+<p><code>seven31</code> has the functions <code>reveal</code> to show the bits of a <code>double</code> and the <code>compare</code> function to highlight bitwise
+differences between two numbers. <code>reveal</code> shows the 3 parts of the 64 bits. <span class="note">and it looks better
+when you use it on rstudio or any other environment that supports ansi escape strings, for some
+reason the escape strings are killed here. I’m not sure yet what is responsible for that, and I’ll
+be looking into alibis from rmarkdown, knitr, blogdown and rstudio … some other time. </span></p>
 <pre class="r"><code>seven31::reveal( 1.0 )</code></pre>
-<pre><code>## 0 01111111111 (    0) 0000000000000000000000000000000000000000000000000000 : 1</code></pre>
+<pre><code>## 0 01111111111 (0) 0000000000000000000000000000000000000000000000000000 : 1</code></pre>
 <div id="sign-and-exponent" class="section level3">
 <h3>sign and exponent</h3>
 <p>The first bit is the <em>sign</em> bit. 0 means positive, 1 means negative.</p>
@@ -28,29 +41,33 @@ tags:
 <pre><code>## [1] 1023</code></pre>
 <pre class="r"><code>strtoi(&quot;01111111111&quot;, base = 2 ) - 1023</code></pre>
 <pre><code>## [1] 0</code></pre>
-<p>which is the number that is presented in the <code>()</code>. 1023 seems arbitrary, but not so much. There are 2^11 (=2048) different possible exponent, but two of them have special meaning.</p>
+<p>which is the number that is presented in the <code>()</code>. 1023 seems arbitrary, but not so much. There are 2^11 (=2048) different
+possible exponent, but two of them have special meaning.</p>
 <ul>
 <li><code>00000000000</code> is reserved to represent positive and negative zeros. <span class="note">Yes there are two zeroes</span></li>
 </ul>
 <pre class="r"><code>seven31::reveal( 0, -0)</code></pre>
-<pre><code>## 0 00000000000 ( zero) 0000000000000000000000000000000000000000000000000000 : 0
-## 1 00000000000 ( zero) 0000000000000000000000000000000000000000000000000000 : -0</code></pre>
+<pre><code>## 0 00000000000 (-1023) 0000000000000000000000000000000000000000000000000000 : 0
+## 1 00000000000 (-1023) 0000000000000000000000000000000000000000000000000000 : -0</code></pre>
 <ul>
-<li><code>11111111111</code> is reserved for infinity, not a number and in particular for the case of R, missing values, but not so fast, we’ll peel off that layer of digression later.</li>
+<li><code>11111111111</code> is reserved for infinity, not a number and in particular for the case of R, missing values, but not so fast, we’ll peel off that
+layer of digression later.</li>
 </ul>
 <pre class="r"><code>seven31::reveal( NaN, Inf, -Inf, NA )</code></pre>
-<pre><code>## 0 11111111111 ( NaN ) 1000000000000000000000000000000000000000000000000000 : NaN
-## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000000000000000 : Inf
-## 1 11111111111 ( NaN ) 0000000000000000000000000000000000000000000000000000 : -Inf
-## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000011110100010 : NA</code></pre>
+<pre><code>## 0 11111111111 (1024) 1000000000000000000000000000000000000000000000000000 : NaN
+## 0 11111111111 (1024) 0000000000000000000000000000000000000000000000000000 : Inf
+## 1 11111111111 (1024) 0000000000000000000000000000000000000000000000000000 : -Inf
+## 0 11111111111 (1024) 0000000000000000000000000000000000000000011110100010 : NA</code></pre>
 <p>Removing these two special cases gives us 2046 possibilities, and it is no coincidence that this is twice <code>1023</code>.</p>
 </div>
 <div id="fraction" class="section level3">
 <h3>Fraction</h3>
-<p>The last 52 bits, plus an additional implicit bit always set to 1, encode the <em>fraction</em>, i.e. the linear combination of powers of 2. The fraction is read from left to right. The power associated with the implicit bit (again this is always 1) is the <em>exponent</em> <span class="note">The thing we’ve seen before that is encoded with the 11 previous bits</span> and the power decreases as we go to the right.</p>
+<p>The last 52 bits, plus an additional implicit bit always set to 1, encode the <em>fraction</em>, i.e. the linear combination of powers of 2.
+The fraction is read from left to right. The power associated with the implicit bit (again this is always 1) is the <em>exponent</em>
+<span class="note">The thing we’ve seen before that is encoded with the 11 previous bits</span> and the power decreases as we go to the right.</p>
 <p>Let’s take the example of 2.75, which we can decompose as <code>2^{1} + O*2^{0} + 2^{-1} + 2^{-2}</code>.</p>
 <pre class="r"><code>seven31::reveal(2.75)</code></pre>
-<pre><code>## 0 10000000000 (    1) 0110000000000000000000000000000000000000000000000000 : 2.75</code></pre>
+<pre><code>## 0 10000000000 (1) 0110000000000000000000000000000000000000000000000000 : 2.75</code></pre>
 <ul>
 <li>The sign bit is 0, so we have a positive number</li>
 <li>The exponent <code>10000000000</code> encodes the value <code>1</code></li>
@@ -63,42 +80,54 @@ tags:
 </div>
 <div id="the-implicit-bit-and-the-zeros" class="section level3">
 <h3>The implicit bit and the zeros</h3>
-<p>The implicit bit has many advantages: - it doubles the number of values that can be associated with an exponent - it gives us a unique way to represent each of the representable numbers, using the normalised version, i.e. where the fraction always starts with a bit set to <code>1</code>.</p>
+<p>The implicit bit has many advantages:
+- it doubles the number of values that can be associated with an exponent
+- it gives us a unique way to represent each of the representable numbers, using the normalised version, i.e. where the fraction always starts
+with a bit set to <code>1</code>.</p>
 <p>However, this means that 0 cannot be represented exactly. This is unacceptable as <code>0</code> is one of the most <a href="https://en.wikipedia.org/wiki/0">important numbers</a>, hence the special case when the exponent is <code>00000000000</code>.</p>
 </div>
 <div id="nan" class="section level3">
 <h3>NaN</h3>
-<p>Similarly, the exponent <code>11111111111</code> is reserved for things that cannot be approximated to powers of two, because conceptually they are not numbers. Theoretically this gives us <code>2^52</code> (i.e. 4.5 quadrillion) possibilities. In practice only a few are used.</p>
+<p>Similarly, the exponent <code>11111111111</code> is reserved for things that cannot be approximated to powers of two, because conceptually
+they are not numbers. Theoretically this gives us <code>2^52</code> (i.e. 4.5 quadrillion) possibilities. In practice only a few are used.</p>
 <p>Positive and negative infinity uses the all 0 fraction:</p>
 <pre class="r"><code>seven31::reveal( Inf, -Inf )</code></pre>
-<pre><code>## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000000000000000 : Inf
-## 1 11111111111 ( NaN ) 0000000000000000000000000000000000000000000000000000 : -Inf</code></pre>
-<p>Fraction starting by <code>1</code> and followed by only <code>0</code> is the traditional math <em>not a number</em> that can be used for things like square root of negative numbers (let’s not talk about complex) or infinbity minus infinity, …</p>
+<pre><code>## 0 11111111111 (1024) 0000000000000000000000000000000000000000000000000000 : Inf
+## 1 11111111111 (1024) 0000000000000000000000000000000000000000000000000000 : -Inf</code></pre>
+<p>Fraction starting by <code>1</code> and followed by only <code>0</code> is the traditional math <em>not a number</em> that can be used for things like square root of
+negative numbers (let’s not talk about complex) or infinbity minus infinity, …</p>
 <pre class="r"><code>seven31::reveal( sqrt(-1), Inf-Inf )</code></pre>
 <pre><code>## Warning in sqrt(-1): NaNs produced</code></pre>
-<pre><code>## 1 11111111111 ( NaN ) 1000000000000000000000000000000000000000000000000000 : sqrt(-1)
-## 1 11111111111 ( NaN ) 1000000000000000000000000000000000000000000000000000 : Inf - Inf</code></pre>
+<pre><code>## 1 11111111111 (1024) 1000000000000000000000000000000000000000000000000000 : sqrt(-1)
+## 1 11111111111 (1024) 1000000000000000000000000000000000000000000000000000 : Inf - Inf</code></pre>
 </div>
 <div id="na" class="section level3">
 <h3>NA</h3>
-<p>R uses the NaN space to encode missing values, which are conceptually not the same as other NaN, because rather than saying that the number cannot be represented, it means that there is a number potentially representable, but we don’t know its value.</p>
-<p><code>NA</code> is encoded by using the bit pattern of 1954<span class="note">this looks too much like a 20th century year to be a coincidence and in fact <a href="http://adv-r.had.co.nz/C-interface.html">this is year Ross Ihaka was born</a></span> in the lower bits.</p>
+<p>R uses the NaN space to encode missing values, which are conceptually not the same as other NaN, because rather than
+saying that the number cannot be represented, it means that there is a number potentially representable, but we don’t know
+its value.</p>
+<p><code>NA</code> is encoded by using the bit pattern of 1954<span class="note">this looks too much like a 20th century year to be a coincidence
+and in fact <a href="http://adv-r.had.co.nz/C-interface.html">this is year Ross Ihaka was born</a></span> in the lower bits.</p>
 <pre class="r"><code>seven31::reveal( NA )</code></pre>
-<pre><code>## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000011110100010 : NA</code></pre>
+<pre><code>## 0 11111111111 (1024) 0000000000000000000000000000000000000000011110100010 : NA</code></pre>
 <pre class="r"><code>strtoi( &quot;0000000000000000000000000000000000000000011110100010&quot;, base = 2 )</code></pre>
 <pre><code>## [1] 1954</code></pre>
-<p>However, there are actually two representations of <code>NA</code> as we get a <em>signaling</em> NA when we perform any operation with <code>NA</code>. I’m not aware of any use of signaling <code>NA</code> and I guess R is just an innocent bystander of whatever the fpu does, but it’s there and we will need to deal with it.</p>
+<p>However, there are actually two representations of <code>NA</code> as we get a <em>signaling</em> NA when we
+perform any operation with <code>NA</code>. I’m not aware of any use of signaling <code>NA</code> and I guess R is just
+an innocent bystander of whatever the fpu does, but it’s there and we will need to deal with it.</p>
 <pre class="r"><code>seven31::reveal( NA, NA + 1, NA/2, log(NA), exp(NA) )</code></pre>
-<pre><code>## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000011110100010 : NA
-## 0 11111111111 ( NaN ) 1000000000000000000000000000000000000000011110100010 : NA + 1
-## 0 11111111111 ( NaN ) 1000000000000000000000000000000000000000011110100010 : NA/2
-## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000011110100010 : log(NA)
-## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000011110100010 : exp(NA)</code></pre>
+<pre><code>## 0 11111111111 (1024) 0000000000000000000000000000000000000000011110100010 : NA
+## 0 11111111111 (1024) 1000000000000000000000000000000000000000011110100010 : NA + 1
+## 0 11111111111 (1024) 1000000000000000000000000000000000000000011110100010 : NA/2
+## 0 11111111111 (1024) 0000000000000000000000000000000000000000011110100010 : log(NA)
+## 0 11111111111 (1024) 0000000000000000000000000000000000000000011110100010 : exp(NA)</code></pre>
 <p>The first bit of the fraction is either set or unset, and I’m not aware of the specific reason</p>
 </div>
 <div id="testing-for-na" class="section level2">
 <h2>Testing for NA</h2>
-<p>Because NA is represented as a special NaN, it inherits some properties, for example it does not equal to itself, i.e. in C++ we cannot say <code>if( x == NA_REAL )</code> because <code>NA_REAL == NA_REAL</code> is <code>false</code>.</p>
+<p>Because NA is represented as a special NaN, it inherits some properties, for example it does
+not equal to itself, i.e. in C++ we cannot say <code>if( x == NA_REAL )</code> because <code>NA_REAL == NA_REAL</code>
+is <code>false</code>.</p>
 <pre class="r"><code>Rcpp::evalCpp( &quot;NA_REAL == NA_REAL&quot;)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <div id="the-way-r-does-it" class="section level3">
@@ -119,7 +148,9 @@ int R_IsNA(double x)
     }
     return 0;
 }</code></pre>
-<p>This first checks if this is a <code>NaN</code> of any kind with the <a href="http://www.cplusplus.com/reference/cmath/isnan/?kw=isnan"><code>isnan</code> function</a>, presumably checking the exponent bits, the if it is the case it uses the union hack to compare the lower 32 bits to Ross’s birth year.</p>
+<p>This first checks if this is a <code>NaN</code> of any kind with the <a href="http://www.cplusplus.com/reference/cmath/isnan/?kw=isnan"><code>isnan</code> function</a>,
+presumably checking the exponent bits, the if it is the case it uses the union hack to compare the
+lower 32 bits to Ross’s birth year.</p>
 </div>
 <div id="the-way-rcpp-does-it" class="section level3">
 <h3>The way Rcpp does it</h3>
@@ -146,11 +177,14 @@ inline bool Rcpp_IsNA__impl&lt;true&gt;(double x) {
         sizeof(double)
     ) == 0;
 }</code></pre>
-<p>This compares the bit pattern of the value against both the bit pattern of the quiet and signaling NA, which it calls <code>SmallNA</code> and <code>LargeNA</code>.</p>
+<p>This compares the bit pattern of the value against both the bit pattern of the quiet and signaling NA,
+which it calls <code>SmallNA</code> and <code>LargeNA</code>.</p>
 </div>
 <div id="an-alternative-way" class="section level3">
 <h3>An alternative way</h3>
-<p>The idea here is to pretend the bits represent some integer type of 64 bits, we’ll use e.g. <code>uint64_t</code> <span class="note"> assuming this will be more precise and less prone to endless useless discussions as the weirdly named <code>long long</code></span> and then use integer comparison.</p>
+<p>The idea here is to pretend the bits represent some integer type of 64 bits, we’ll use e.g.
+<code>uint64_t</code> <span class="note"> assuming this will be more precise and less prone to endless useless
+discussions as the weirdly named <code>long long</code></span> and then use integer comparison.</p>
 <p>We however have to first nuke the 13th bit before we compare.</p>
 <pre class="r"><code>Rcpp::cppFunction( &quot;double mask(){
   uint64_t mask = ~( (uint64_t(1) &lt;&lt; 51 ) );
@@ -162,15 +196,19 @@ seven31::reveal(
   NA + 1, 
   mask()
 )</code></pre>
-<pre><code>## 0 11111111111 ( NaN ) 0000000000000000000000000000000000000000011110100010 : NA
-## 0 11111111111 ( NaN ) 1000000000000000000000000000000000000000011110100010 : NA + 1
-## 1 11111111111 ( NaN ) 0111111111111111111111111111111111111111111111111111 : mask()</code></pre>
-<p>We can unset the bit using a bitwise <code>&amp;</code> between the value and the mask. The idea of this proposed approach is to compare the bit pattern of the quiet NA with the bit pattern of the value after applying the bit mask. It might sound more work to us humans, but apparently, and we’ll get to benchmarking shortly, computers are better than us at flipping <code>0</code>s and <code>1</code>’s.</p>
+<pre><code>## 0 11111111111 (1024) 0000000000000000000000000000000000000000011110100010 : NA
+## 0 11111111111 (1024) 1000000000000000000000000000000000000000011110100010 : NA + 1
+## 1 11111111111 (1024) 0111111111111111111111111111111111111111111111111111 : mask()</code></pre>
+<p>We can unset the bit using a bitwise <code>&amp;</code> between the value and the mask. The idea of this proposed approach is to compare
+the bit pattern of the quiet NA with the bit pattern of the value after applying the bit mask.
+It might sound more work to us humans, but apparently, and we’ll get to benchmarking shortly, computers are better than us
+at flipping <code>0</code>s and <code>1</code>’s.</p>
 </div>
 </div>
 <div id="benchmarks" class="section level2">
 <h2>Benchmarks</h2>
-<p>The task is to count the number of <code>NA</code> in a numeric vector. I’ll use the stl algorithms <code>std::count</code> and <code>std::count_if</code> because I like them. Benchmarking them against raw loops is not part of this exercise.</p>
+<p>The task is to count the number of <code>NA</code> in a numeric vector. I’ll use the stl algorithms <code>std::count</code> and <code>std::count_if</code>
+because I like them. Benchmarking them against raw loops is not part of this exercise.</p>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>
@@ -217,13 +255,21 @@ Unit: milliseconds
  par_count_na_proposed  4.025824  4.180822  4.653866  4.352212  4.757907   9.028662   100 ab     </code></pre>
 <p>A few things:</p>
 <ul>
-<li><p>R’s version is actually not that bad, I would have been quick to dismiss it because conceptually it allocates memory for the logical vector that <code>is.na(x)</code> makes. It is definitely not as bad as I would have anticipated.</p></li>
+<li><p>R’s version is actually not that bad, I would have been quick to dismiss it because conceptually
+it allocates memory for the logical vector that <code>is.na(x)</code> makes. It is definitely not as bad as I would have
+anticipated.</p></li>
 <li><p>The <code>R_IsNA</code> from R’s api outperforms Rcpp’s supposed improvement over it.</p></li>
-<li><p>Using the proposed approach does not equate the baseline (which does not do the same thing), it was after all unrealistic because of the quiet and signaling NA, there is indeed more work to do: we need to test if we are equal to either of the two forms of NA. It however makes counting NA faster.</p></li>
+<li><p>Using the proposed approach does not equate the baseline (which does not do the same thing),
+it was after all unrealistic because of the quiet and signaling NA,
+there is indeed more work to do: we need to test if we are equal to either of the two forms of NA.
+It however makes counting NA faster.</p></li>
 </ul>
 </div>
 <div id="yeah-but" class="section level2">
 <h2>Yeah but …</h2>
-<p>This has been cutting some corners, e.g. the endianess is assumed in the proposed solution. The code would have to change slightly on platforms which reverse the two words of the double. But this can be done at compile time, there should be no runtime cost.</p>
-<p>Who cares anyway ? Good point. I do. I learned a few things while writing that post, and my typical rule of thumb is that I write when some past version of me would have benefited from reading.</p>
+<p>This has been cutting some corners, e.g. the endianess is assumed in the proposed solution. The code would have to
+change slightly on platforms which reverse the two words of the double. But this can be done at compile time, there
+should be no runtime cost.</p>
+<p>Who cares anyway ? Good point. I do. I learned a few things while writing that post, and my typical rule of thumb is
+that I write when some past version of me would have benefited from reading.</p>
 </div>

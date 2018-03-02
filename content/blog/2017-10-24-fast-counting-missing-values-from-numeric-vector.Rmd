@@ -13,7 +13,7 @@ tags:
 This is inspired by [this question](https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp) 
 From [Florian](https://twitter.com/privefl) on Stack Overflow. 
 
-[(![](/img/na/so-question.png)](https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp)
+[![](/img/na/so-question.png)](https://stackoverflow.com/questions/46892399/fast-checking-of-missing-values-in-rcpp)
 
 Initially, my reaction was "well yeah, it's harder to check for NA then it is to check for a specific value, that's the way it is with floating point arithmetic ..."
 
