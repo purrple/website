@@ -1,0 +1,186 @@
+---
+title: multiple lags with tidy evaluation
+author: Romain François
+date: '2018-03-02'
+slug: multiple-lags-with-tidy-evaluation
+categories: []
+tags:
+  - bangbang
+  - tidyeval
+  - dplyr
+  - purrr
+  - rlang
+---
+
+```{r, include = FALSE}
+library(dplyr)
+library(purrr)
+library(rlang)
+```
+
+## multiple lags
+
+This came up on twitter during [rstudio::conf](https://www.rstudio.com/conference/) as 
+a question from [Simon Jackson](https://twitter.com/drsimonj). That's a nice kind of question
+because it comes with example code, so I had a go at it, but I had not taken the time to 
+promote it to a blog post. Let's fix that. 
+
+`r blogdown::shortcode_html( "tweet", "959717388764803072")`
+
+Simon's [code](https://gist.github.com/drsimonj/2038ff9f9c67063f384f10fac95de566) is using 
+the combination of `mutate_at` and the lazyeval style `funs_` to make functions from strings. 
+
+```{r}
+d <- data_frame(x = seq_len(100))
+lags <- seq(10)
+lag_names <- paste("lag", formatC(lags, width = nchar(max(lags)), flag = "0"), 
+  sep = "_")
+lag_functions <- setNames(paste("dplyr::lag(., ", lags, ")"), lag_names)
+lag_names
+lag_functions
+```
+
+This is perfectly valid, but it has an `eval/parse` feel, and the `funs_` is not 
+inline with current tidy evaluation. 
+
+## jetlag
+
+My [first take](https://gist.github.com/romainfrancois/6a2203faacfa8ae849f29f83b56e01da) 
+was to create a function, called `jetlag` that would do the 
+whole operation using tidy evaluation. <span class="note">The name was probably reflecting my
+physical state at the time, as it turns out flying from Paris to San Diego with 
+a 6 hours connection in New York makes jetlag. </span>
+
+```{r}
+jetlag <- function(data, variable, n=10){
+  variable <- enquo(variable)
+  
+  indices <- seq_len(n)
+  quosures <- map( indices, ~quo(lag(!!variable, !!.x)) ) %>% 
+    set_names(sprintf("lag_%02d", indices))
+  
+  mutate( data, !!!quosures )
+  
+}
+jetlag(d, x, 3)
+```
+
+Let's break it down in steps. The function takes 3 parameters: 
+
+ - `data` a data frame we want to process
+ - `variable` a symbol that corresponds to a column name in `data`
+ - `n` the number of lags to create
+ 
+The first thing it does is to pass `variable` to `enquo`. This allows `variable` to be 
+passed by expression rather than by value. This is why when we call `jetlag` we
+don't have to pass `x` as a string, but just as a symbol. 
+ 
+Next, the function makes a list of quosures  by iterating with `map` over the 
+`seq_len(n)` sequence. 
+
+```{r}
+# this is the same as `enquo`, but outside of a function
+variable <- quo(variable)
+indices <- seq_len(3)
+quosures <- map( indices, ~quo(lag(!!variable, !!.x)) ) %>% 
+  set_names(sprintf("lag_%02d", indices))
+```
+
+The first `!!` unquotes `variable`, i.e. replaces `variable` by `x`, the second 
+`!!` replaces injects the value of the placeholder `.x`. 
+
+Piping into `set_names` gives names to the list, `mutate` can then use these names. 
+
+```{r}
+quosures
+names(quosures)
+```
+
+Finally, the `!!!` injects the expressions in `mutate`. In essencen, what `jetlag` is doing is
+programmatically build something similar to this repetitive expression: 
+
+```{r}
+mutate( d, 
+  lag_01 = lag(x, 1), 
+  lag_02 = lag(x, 2), 
+  lag_03 = lag(x, 3)
+)
+```
+
+but with hopefully with nicer (or at least shorter) syntax: 
+
+```{r}
+jetlag(d, x, 3)
+```
+
+## lags
+
+As this is often the case, I immediately posted this on twitter. 
+
+`r blogdown::shortcode_html( "tweet", "959811892922347520")`
+
+Only to realise it a few minutes later that this is not as 
+reusable/composable as it could be. In fact the interesting
+thing from this function is the creation of the list of quosures, not so much the 
+actual call to `mutate`. That's an example where doing *less* makes something *more*
+useful. 
+
+So my second take was to make it a 
+[smaller function](https://gist.github.com/romainfrancois/469ed8224ba4be48befec28cb1e1ff80), called `lags`
+that would just make the quosures. Naming functions is something 
+I often struggle with, so when it appears as obvious as just using plural, 
+I know I'm on the right track. 
+
+This was also an, opportunity to capture the name of the variable the lags 
+operate on, and use it as a component to the names of the columns to create. 
+
+```{r}
+lags <- function(var, n=10){
+  var <- enquo(var)
+  
+  indices <- seq_len(n)
+  map( indices, ~quo(lag(!!var, !!.x)) ) %>% 
+    set_names(sprintf("lag_%s_%02d", quo_text(var), indices))
+  
+}
+```
+
+`lags` only needs a name and a number of columns, it does not need `data` as the 
+previous attempt. This makes it easier to understand what is going on: 
+
+```{r}
+lags( xyz, 4 )
+```
+
+`lags` creates the quosures and then we can unquote splice them "manually". 
+
+```{r}
+mutate( d, !!!lags(x, 3) )
+```
+
+This also makes it slightly easier to use it on use it on multiple variables at once. 
+
+
+```{r}
+d <- data_frame( x = 1:10, y = letters[1:10])
+d %>% 
+  mutate( !!!lags(x, 3), !!!lags(y,3) )
+```
+
+## Back story
+
+Taking the time to write this as a blog post now was inspired by [Mara's](https://twitter.com/dataandme)
+promotion of one of my early [blog post](https://purrple.cat/blog/2017/06/28/filter-with-context/)
+about tidy evaluation when [dplyr 0.7](https://blog.rstudio.com/2017/06/13/dplyr-0-7-0/) was released. 
+
+`r blogdown::shortcode_html( "tweet", "968973417197309954")`
+
+Tidy evaluation is one of these things that feel natural once you are more familiar with the concepts, 
+I hope this example helps. I expect to be posting more of these as I come up with uses cases. 
+
+`r blogdown::shortcode_html( "tweet", "969121867729645568")`
+
+
+
+
+

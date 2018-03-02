@@ -1,0 +1,241 @@
+---
+title: multiple lags with tidy evaluation
+author: Romain François
+date: '2018-03-02'
+slug: multiple-lags-with-tidy-evaluation
+categories: []
+tags:
+  - bangbang
+  - tidyeval
+  - dplyr
+  - purrr
+  - rlang
+---
+
+
+
+<div id="multiple-lags" class="section level2">
+<h2>multiple lags</h2>
+<p>This came up on twitter during <a href="https://www.rstudio.com/conference/">rstudio::conf</a> as
+a question from <a href="https://twitter.com/drsimonj">Simon Jackson</a>. That’s a nice kind of question
+because it comes with example code, so I had a go at it, but I had not taken the time to
+promote it to a blog post. Let’s fix that.</p>
+{{< tweet "959717388764803072" >}}
+<p>Simon’s <a href="https://gist.github.com/drsimonj/2038ff9f9c67063f384f10fac95de566">code</a> is using
+the combination of <code>mutate_at</code> and the lazyeval style <code>funs_</code> to make functions from strings.</p>
+<pre class="r"><code>d &lt;- data_frame(x = seq_len(100))
+lags &lt;- seq(10)
+lag_names &lt;- paste(&quot;lag&quot;, formatC(lags, width = nchar(max(lags)), flag = &quot;0&quot;), 
+  sep = &quot;_&quot;)
+lag_functions &lt;- setNames(paste(&quot;dplyr::lag(., &quot;, lags, &quot;)&quot;), lag_names)
+lag_names</code></pre>
+<pre><code>##  [1] &quot;lag_01&quot; &quot;lag_02&quot; &quot;lag_03&quot; &quot;lag_04&quot; &quot;lag_05&quot; &quot;lag_06&quot; &quot;lag_07&quot;
+##  [8] &quot;lag_08&quot; &quot;lag_09&quot; &quot;lag_10&quot;</code></pre>
+<pre class="r"><code>lag_functions</code></pre>
+<pre><code>##                lag_01                lag_02                lag_03 
+##  &quot;dplyr::lag(.,  1 )&quot;  &quot;dplyr::lag(.,  2 )&quot;  &quot;dplyr::lag(.,  3 )&quot; 
+##                lag_04                lag_05                lag_06 
+##  &quot;dplyr::lag(.,  4 )&quot;  &quot;dplyr::lag(.,  5 )&quot;  &quot;dplyr::lag(.,  6 )&quot; 
+##                lag_07                lag_08                lag_09 
+##  &quot;dplyr::lag(.,  7 )&quot;  &quot;dplyr::lag(.,  8 )&quot;  &quot;dplyr::lag(.,  9 )&quot; 
+##                lag_10 
+## &quot;dplyr::lag(.,  10 )&quot;</code></pre>
+<p>This is perfectly valid, but it has an <code>eval/parse</code> feel, and the <code>funs_</code> is not
+inline with current tidy evaluation.</p>
+</div>
+<div id="jetlag" class="section level2">
+<h2>jetlag</h2>
+<p>My <a href="https://gist.github.com/romainfrancois/6a2203faacfa8ae849f29f83b56e01da">first take</a>
+was to create a function, called <code>jetlag</code> that would do the
+whole operation using tidy evaluation. <span class="note">The name was probably reflecting my
+physical state at the time, as it turns out flying from Paris to San Diego with
+a 6 hours connection in New York makes jetlag. </span></p>
+<pre class="r"><code>jetlag &lt;- function(data, variable, n=10){
+  variable &lt;- enquo(variable)
+  
+  indices &lt;- seq_len(n)
+  quosures &lt;- map( indices, ~quo(lag(!!variable, !!.x)) ) %&gt;% 
+    set_names(sprintf(&quot;lag_%02d&quot;, indices))
+  
+  mutate( data, !!!quosures )
+  
+}
+jetlag(d, x, 3)</code></pre>
+<pre><code>## # A tibble: 100 x 4
+##        x lag_01 lag_02 lag_03
+##    &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+##  1     1     NA     NA     NA
+##  2     2      1     NA     NA
+##  3     3      2      1     NA
+##  4     4      3      2      1
+##  5     5      4      3      2
+##  6     6      5      4      3
+##  7     7      6      5      4
+##  8     8      7      6      5
+##  9     9      8      7      6
+## 10    10      9      8      7
+## # ... with 90 more rows</code></pre>
+<p>Let’s break it down in steps. The function takes 3 parameters:</p>
+<ul>
+<li><code>data</code> a data frame we want to process</li>
+<li><code>variable</code> a symbol that corresponds to a column name in <code>data</code></li>
+<li><code>n</code> the number of lags to create</li>
+</ul>
+<p>The first thing it does is to pass <code>variable</code> to <code>enquo</code>. This allows <code>variable</code> to be
+passed by expression rather than by value. This is why when we call <code>jetlag</code> we
+don’t have to pass <code>x</code> as a string, but just as a symbol.</p>
+<p>Next, the function makes a list of quosures by iterating with <code>map</code> over the
+<code>seq_len(n)</code> sequence.</p>
+<pre class="r"><code># this is the same as `enquo`, but outside of a function
+variable &lt;- quo(variable)
+indices &lt;- seq_len(3)
+quosures &lt;- map( indices, ~quo(lag(!!variable, !!.x)) ) %&gt;% 
+  set_names(sprintf(&quot;lag_%02d&quot;, indices))</code></pre>
+<p>The first <code>!!</code> unquotes <code>variable</code>, i.e. replaces <code>variable</code> by <code>x</code>, the second
+<code>!!</code> replaces injects the value of the placeholder <code>.x</code>.</p>
+<p>Piping into <code>set_names</code> gives names to the list, <code>mutate</code> can then use these names.</p>
+<pre class="r"><code>quosures</code></pre>
+<pre><code>## $lag_01
+## &lt;quosure&gt;
+##   expr: ^lag(^variable, 1L)
+##   env:  0x7fdf8a95bea0
+## 
+## $lag_02
+## &lt;quosure&gt;
+##   expr: ^lag(^variable, 2L)
+##   env:  0x7fdf8a95cd88
+## 
+## $lag_03
+## &lt;quosure&gt;
+##   expr: ^lag(^variable, 3L)
+##   env:  0x7fdf8aab2238</code></pre>
+<pre class="r"><code>names(quosures)</code></pre>
+<pre><code>## [1] &quot;lag_01&quot; &quot;lag_02&quot; &quot;lag_03&quot;</code></pre>
+<p>Finally, the <code>!!!</code> injects the expressions in <code>mutate</code>. In essencen, what <code>jetlag</code> is doing is
+programmatically build something similar to this repetitive expression:</p>
+<pre class="r"><code>mutate( d, 
+  lag_01 = lag(x, 1), 
+  lag_02 = lag(x, 2), 
+  lag_03 = lag(x, 3)
+)</code></pre>
+<pre><code>## # A tibble: 100 x 4
+##        x lag_01 lag_02 lag_03
+##    &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+##  1     1     NA     NA     NA
+##  2     2      1     NA     NA
+##  3     3      2      1     NA
+##  4     4      3      2      1
+##  5     5      4      3      2
+##  6     6      5      4      3
+##  7     7      6      5      4
+##  8     8      7      6      5
+##  9     9      8      7      6
+## 10    10      9      8      7
+## # ... with 90 more rows</code></pre>
+<p>but with hopefully with nicer (or at least shorter) syntax:</p>
+<pre class="r"><code>jetlag(d, x, 3)</code></pre>
+<pre><code>## # A tibble: 100 x 4
+##        x lag_01 lag_02 lag_03
+##    &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+##  1     1     NA     NA     NA
+##  2     2      1     NA     NA
+##  3     3      2      1     NA
+##  4     4      3      2      1
+##  5     5      4      3      2
+##  6     6      5      4      3
+##  7     7      6      5      4
+##  8     8      7      6      5
+##  9     9      8      7      6
+## 10    10      9      8      7
+## # ... with 90 more rows</code></pre>
+</div>
+<div id="lags" class="section level2">
+<h2>lags</h2>
+<p>As this is often the case, I immediately posted this on twitter.</p>
+{{< tweet "959811892922347520" >}}
+<p>Only to realise it a few minutes later that this is not as
+reusable/composable as it could be. In fact the interesting
+thing from this function is the creation of the list of quosures, not so much the
+actual call to <code>mutate</code>. That’s an example where doing <em>less</em> makes something <em>more</em>
+useful.</p>
+<p>So my second take was to make it a
+<a href="https://gist.github.com/romainfrancois/469ed8224ba4be48befec28cb1e1ff80">smaller function</a>, called <code>lags</code>
+that would just make the quosures. Naming functions is something
+I often struggle with, so when it appears as obvious as just using plural,
+I know I’m on the right track.</p>
+<p>This was also an, opportunity to capture the name of the variable the lags
+operate on, and use it as a component to the names of the columns to create.</p>
+<pre class="r"><code>lags &lt;- function(var, n=10){
+  var &lt;- enquo(var)
+  
+  indices &lt;- seq_len(n)
+  map( indices, ~quo(lag(!!var, !!.x)) ) %&gt;% 
+    set_names(sprintf(&quot;lag_%s_%02d&quot;, quo_text(var), indices))
+  
+}</code></pre>
+<p><code>lags</code> only needs a name and a number of columns, it does not need <code>data</code> as the
+previous attempt. This makes it easier to understand what is going on:</p>
+<pre class="r"><code>lags( xyz, 4 )</code></pre>
+<pre><code>## $lag_xyz_01
+## &lt;quosure&gt;
+##   expr: ^lag(^xyz, 1L)
+##   env:  0x7fdf8b92e580
+## 
+## $lag_xyz_02
+## &lt;quosure&gt;
+##   expr: ^lag(^xyz, 2L)
+##   env:  0x7fdf8b92f430
+## 
+## $lag_xyz_03
+## &lt;quosure&gt;
+##   expr: ^lag(^xyz, 3L)
+##   env:  0x7fdf8b9315f0
+## 
+## $lag_xyz_04
+## &lt;quosure&gt;
+##   expr: ^lag(^xyz, 4L)
+##   env:  0x7fdf8b932d48</code></pre>
+<p><code>lags</code> creates the quosures and then we can unquote splice them “manually”.</p>
+<pre class="r"><code>mutate( d, !!!lags(x, 3) )</code></pre>
+<pre><code>## # A tibble: 100 x 4
+##        x lag_x_01 lag_x_02 lag_x_03
+##    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;
+##  1     1       NA       NA       NA
+##  2     2        1       NA       NA
+##  3     3        2        1       NA
+##  4     4        3        2        1
+##  5     5        4        3        2
+##  6     6        5        4        3
+##  7     7        6        5        4
+##  8     8        7        6        5
+##  9     9        8        7        6
+## 10    10        9        8        7
+## # ... with 90 more rows</code></pre>
+<p>This also makes it slightly easier to use it on use it on multiple variables at once.</p>
+<pre class="r"><code>d &lt;- data_frame( x = 1:10, y = letters[1:10])
+d %&gt;% 
+  mutate( !!!lags(x, 3), !!!lags(y,3) )</code></pre>
+<pre><code>## # A tibble: 10 x 8
+##        x y     lag_x_01 lag_x_02 lag_x_03 lag_y_01 lag_y_02 lag_y_03
+##    &lt;int&gt; &lt;chr&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
+##  1     1 a           NA       NA       NA &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;    
+##  2     2 b            1       NA       NA a        &lt;NA&gt;     &lt;NA&gt;    
+##  3     3 c            2        1       NA b        a        &lt;NA&gt;    
+##  4     4 d            3        2        1 c        b        a       
+##  5     5 e            4        3        2 d        c        b       
+##  6     6 f            5        4        3 e        d        c       
+##  7     7 g            6        5        4 f        e        d       
+##  8     8 h            7        6        5 g        f        e       
+##  9     9 i            8        7        6 h        g        f       
+## 10    10 j            9        8        7 i        h        g</code></pre>
+</div>
+<div id="back-story" class="section level2">
+<h2>Back story</h2>
+<p>Taking the time to write this as a blog post now was inspired by <a href="https://twitter.com/dataandme">Mara’s</a>
+promotion of one of my early <a href="https://purrple.cat/blog/2017/06/28/filter-with-context/">blog post</a>
+about tidy evaluation when <a href="https://blog.rstudio.com/2017/06/13/dplyr-0-7-0/">dplyr 0.7</a> was released.</p>
+{{< tweet "968973417197309954" >}}
+<p>Tidy evaluation is one of these things that feel natural once you are more familiar with the concepts,
+I hope this example helps. I expect to be posting more of these as I come up with uses cases.</p>
+{{< tweet "969121867729645568" >}}
+</div>
