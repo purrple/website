@@ -64,10 +64,11 @@ a {
 }
 
 p {
-  font-family: 'Roboto', sans-serif;
-  font-size: 20px ;
+  font-family: 'Lora', serif;
+  font-size: 25px ;
   margin-top: 20px ;
   margin-bottom: 20px ;
+  text-align: justify ;
 }
 
 .box-image-text .image {
@@ -141,14 +142,13 @@ p {
 
 pre {
   border: none ;
-  font-size: 14px ;
+  font-size: 12px ;
   margin: 0px ;
   padding: 0px ;
   background: #f2f2f2 ;
 }
 
 .hljs{
-  padding-left: 5px ;
   background: #f2f2f2 ;
 }
 
