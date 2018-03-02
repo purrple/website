@@ -10,6 +10,7 @@ tags:
   - dplyr
   - purrr
   - rlang
+banner: "img/banners/jetlag.jpg"
 ---
 
 ```{r, include = FALSE}
@@ -186,7 +187,7 @@ I hope this example helps. I expect to be posting more of these as I come up wit
 <img src="https://raw.githubusercontent.com/mkearney/rtweet/master/man/figures/logo.png" style="float:left; height: 80px; margin: 20px " />
 
 I remembered I tweeted about this during [rstudio::conf](https://www.rstudio.com/conference/), which is many tweets ago, 
-so [rtweet](https://github.com/mkearney/rtweet) made it pretty easy to travel back in time.  
+and [rtweet](https://github.com/mkearney/rtweet) made it pretty easy to travel back in time.  
 
 ```{r}
 library(rtweet)
