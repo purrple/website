@@ -7,7 +7,7 @@ languageCode = "en-us"
 defaultContentLanguage = "en"
 # Enable comments by entering your Disqus shortname
 
-disqusShortname = "romain-rbind-io"
+# disqusShortname = "romain-rbind-io"
 # Enable Google Analytics by entering your tracking code
 # googleAnalytics = ""
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]

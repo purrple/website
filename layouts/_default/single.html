@@ -16,26 +16,18 @@
         <div id="content">
             <div class="container">
 
+
+                <h2 class="post_title">{{ .Title }}</h2>
+                      
+
                 <div class="row">
 
-                    <!-- *** LEFT COLUMN *** -->
-                    <div class="col-md-1"></div>
-
-                    <div class="col-md-10" id="blog-post">
-
-                        <h2>{{ .Title }}</h2>
-
-                        <span class="article-duration">{{ .ReadingTime }} min read</span>
-                        
-                        {{ partial "article_meta.html" . }}
-
-                        {{ partial "tags.html" . }}
+                    <div class="col-md-8" id="blog-post">
 
                         <div id="post-content">
                           {{ .Content }}
                         </div>
-                        <!-- /#post-content -->
-
+                        
                         {{ partial "gallery.html" . }}
 
                         {{ partial "prev_next.html" . }}
@@ -47,10 +39,16 @@
                         {{ end }}
 
                     </div>
-                    <!-- /#blog-post -->
-
-                    <!-- *** LEFT COLUMN END *** -->
-
+                    
+                    <div class="col-md-4" id="blog-post">
+                      
+                      {{ partial "article_meta.html" . }}
+    
+                      {{ partial "tags.html" . }}
+                      
+                      {{ partial "twitter_timeline.html" . }}
+                    </div>
+                    
                 </div>
                 <!-- /.row -->
 

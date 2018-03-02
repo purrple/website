@@ -7,12 +7,11 @@ categories: []
 tags: []
 ---
 
-<div style="float: left; margin-right: 100px">
-`r htmltools::HTML("{{< tweet 968017631562301441 >}}")`
-</div>
 
 Typical sunday night, lost in several inception layers of I don't know 
 how I got here, what I am doing here and what I was looking for in the first place. 
+
+`r blogdown::shortcode_html("tweet", "967904124506386433")`
 
 So, some extensions allow arbitrary utf-8 characters in the domain name, but 
 more importantly you can have arbitrary characters in sub domains. Next thing you 
@@ -24,8 +23,6 @@ playing with the [`emo`](https://github.com/hadley/emo) package to make it
 easy to include and extract emojis, and the 
 [`utf8splain`](https://github.com/ThinkR-open/utf8splain) to extract some information 
 about unicode runes (aka code points). 
-
-<div style="clear: both" />
 
 ```{r}
 (s <- emo::ji_glue( "emojis :party: "))
@@ -72,7 +69,8 @@ package and I was able to offer [a pull request](https://github.com/r-lib/pkgdow
 because `pkgdown` was using the interface of `highlight` before I 
 broke it (for the greater good) last summer. </span>
 
-Aaaaaaanyway, to do this, I've had to use the encoded name (`r puny::code( emo::ji("package"), domain = TRUE )`) in both netlify: 
+Aaaaaaanyway, to do this, I've had to use the encoded name 
+(`r puny::code( emo::ji("package"), domain = TRUE )`) in both netlify: 
 
 ![](/img/puny/netlify.png)
 
