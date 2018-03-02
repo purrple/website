@@ -10,6 +10,7 @@ tags:
   - dplyr
   - purrr
   - rlang
+banner: "img/banners/jetlag.jpg"
 ---
 
 
@@ -98,17 +99,17 @@ quosures &lt;- map( indices, ~quo(lag(!!variable, !!.x)) ) %&gt;%
 <pre><code>## $lag_01
 ## &lt;quosure&gt;
 ##   expr: ^lag(^variable, 1L)
-##   env:  0x7fb752611e60
+##   env:  0x7fbfb7001ca0
 ## 
 ## $lag_02
 ## &lt;quosure&gt;
 ##   expr: ^lag(^variable, 2L)
-##   env:  0x7fb752612cd8
+##   env:  0x7fbfb426b788
 ## 
 ## $lag_03
 ## &lt;quosure&gt;
 ##   expr: ^lag(^variable, 3L)
-##   env:  0x7fb752768188</code></pre>
+##   env:  0x7fbfb8420238</code></pre>
 <pre class="r"><code>names(quosures)</code></pre>
 <pre><code>## [1] &quot;lag_01&quot; &quot;lag_02&quot; &quot;lag_03&quot;</code></pre>
 <p>Finally, the <code>!!!</code> injects the expressions in <code>mutate</code>. In essencen, what <code>jetlag</code> is doing is
@@ -179,22 +180,22 @@ previous attempt. This makes it easier to understand what is going on:</p>
 <pre><code>## $lag_xyz_01
 ## &lt;quosure&gt;
 ##   expr: ^lag(^xyz, 1L)
-##   env:  0x7fb753d0c4b0
+##   env:  0x7fbfb8c6ff10
 ## 
 ## $lag_xyz_02
 ## &lt;quosure&gt;
 ##   expr: ^lag(^xyz, 2L)
-##   env:  0x7fb753d0ea98
+##   env:  0x7fbfb9878388
 ## 
 ## $lag_xyz_03
 ## &lt;quosure&gt;
 ##   expr: ^lag(^xyz, 3L)
-##   env:  0x7fb753d0f948
+##   env:  0x7fbfb9878190
 ## 
 ## $lag_xyz_04
 ## &lt;quosure&gt;
 ##   expr: ^lag(^xyz, 4L)
-##   env:  0x7fb753d11148</code></pre>
+##   env:  0x7fbfb987aca0</code></pre>
 <p><code>lags</code> creates the quosures and then we can unquote splice them “manually”.</p>
 <pre class="r"><code>mutate( d, !!!lags(x, 3) )</code></pre>
 <pre><code>## # A tibble: 100 x 4
@@ -243,7 +244,7 @@ I hope this example helps. I expect to be posting more of these as I come up wit
 <h2>Shoutout to rtweet</h2>
 <p><img src="https://raw.githubusercontent.com/mkearney/rtweet/master/man/figures/logo.png" style="float:left; height: 80px; margin: 20px " /></p>
 <p>I remembered I tweeted about this during <a href="https://www.rstudio.com/conference/">rstudio::conf</a>, which is many tweets ago,
-so <a href="https://github.com/mkearney/rtweet">rtweet</a> made it pretty easy to travel back in time.</p>
+and <a href="https://github.com/mkearney/rtweet">rtweet</a> made it pretty easy to travel back in time.</p>
 <pre class="r"><code>library(rtweet)
 get_timeline(&quot;romain_francois&quot;, n = 2000 ) %&gt;% 
   filter( stringr::str_detect( text, &quot;lags&quot;) ) %&gt;% 

@@ -36,7 +36,7 @@
                             </div>
                         </div>
 
-                        <div class="content">
+                        <div class="content articlesummary">
                             <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
                             <p class="author-category">
                             {{ with .Params.author }}
@@ -44,7 +44,7 @@
                             {{ end }}
                             on {{ .Date.Format .Site.Params.date_format }}
                             </p>
-                            <p class="intro">{{ .Summary }}</p>
+                            <p class="intro">{{ substr .Summary 0 200 }} ...</p>
                             <p class="read-more">
                               <a href="{{ .Permalink }}" class="btn btn-template-main">{{ i18n "continueReading" }}</a>
                             </p>
