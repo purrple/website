@@ -234,6 +234,11 @@ pre {
   font-size: 16px ;
 }
 
+#article-nav {
+  font-size: 16px;
+  font-family: 'Pacifico', cursive;
+  color: #630453 ;
+}
 #article-nav-older, #article-nav-newer, .article-date span {
   flex: 1;
 }
