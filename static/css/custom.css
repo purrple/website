@@ -4,6 +4,7 @@ body {
 
 h2{
   font-family: 'Pacifico', cursive;
+  color: #630453 ;
 }
 
 .meta-row {
@@ -15,7 +16,9 @@ h2{
 }
 
 .post-date{
-  font-size: 20px ;  
+  font-size: 16px ;  
+  font-family: 'Pacifico', cursive;
+  color: #630453 ;
 }
 
 .post_title {
@@ -25,6 +28,39 @@ h2{
 iframe {
   margin-left: auto ;
   margin-right: auto ;
+}
+
+.patreon_container {
+  text-align: right ;
+  margin-bottom: 20px ;
+}
+
+a {
+  color: #630453 ;
+}
+
+.become-patron-button {
+  display: inline-block;
+  font-family: sans-serif;
+  background: #F96854 ;
+  color: white;
+  padding: .5rem 1rem;
+  border-radius: 3px;
+  text-decoration: none;
+  font-weight: 700;
+  user-select: none;
+  border: 1px solid #F96854 ; 
+  text-transform: uppercase;
+  text-decoration: none ;
+  width: 100% ;
+  text-align: center ;
+  margin-top: 10px ;
+  margin-bottom: 10px ;
+}
+
+.become-patron-button:hover {
+  color: white;
+  text-decoration: none ;
 }
 
 p {
@@ -111,9 +147,15 @@ pre {
   background: #f2f2f2 ;
 }
 
+.hljs{
+  padding-left: 5px ;
+  background: #f2f2f2 ;
+}
+
+
 .post-taxonomy-tag {
   padding: 5px;
-  color: #986dbd ;
+  color: #630453 ;
 }
 
 #post-content {
@@ -142,14 +184,13 @@ pre {
   display: flex;
   align-items: stretch;
   clear: both;
-  margin-top: 10px ;
   font-size: 16px ;
 }
 
 #article-nav-older, #article-nav-newer, .article-date span {
   flex: 1;
 }
-#article-nav-newer, .article-date .article-toolbar {
+#article-nav-newer {
   text-align: right;
 }
 .article-nav-link-wrap {
@@ -195,7 +236,11 @@ pre {
 }
 
 .meta-tags{
-  text-align: right ;
+  text-align: left ;
+  font-size: small ;
+  margin-bottom: 5px ;
+  margin-top: 5px ;
+  margin-left: 0 ;
 }
 
 .social-entry, .social-entry a {
@@ -209,9 +254,13 @@ pre {
 }
 
 .note {
-  color:lightgray; 
+  color: gray ; 
   font-size: 12px; 
   font-style:italic;
+}
+
+.note:hover {
+  color: black ; 
 }
 
 .huuuge{

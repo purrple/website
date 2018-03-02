@@ -1,22 +1,8 @@
 <div class="article-date">
   <span class="article-toolbar">
     
-    <div class="post-author">
-      <h2>
-        {{ if .Params.author }} {{ .Params.author }} {{ end }}
-      </h2>
-  
-    </div>
-    
-    <div class="post-date">
-      {{ .Date.Format .Site.Params.date_format }}
-    </div>
-    
     <div>
-      {{ with .Section }}
-        <a href="/{{ . }}/index.xml" type="application/rss+xml" target="_blank"><i class="fa fa-rss" aria-hidden="true" title="RSS feed"></i></a>
-      {{ end }}
-  
+      
       <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><i class="fa fa-cc" aria-hidden="true" title="Attribution-NonCommercial-ShareAlike 4.0 International"></i></a>
   
       <a href="https://twitter.com/home?{{ (querify "status" (print .Title " " .Permalink " via @" .Site.Params.social.twitter )) | safeURL }}" target="_blank">

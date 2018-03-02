@@ -4,7 +4,14 @@ author: Romain François
 date: '2018-02-26'
 slug: emoji-domain-names-with-the-puny-package
 categories: []
-tags: []
+tags:
+  - emojis
+  - emo
+  - puny
+  - package
+  - R
+  - dns
+  - utf8
 ---
 
 
