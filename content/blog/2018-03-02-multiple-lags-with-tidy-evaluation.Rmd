@@ -180,7 +180,18 @@ I hope this example helps. I expect to be posting more of these as I come up wit
 
 `r blogdown::shortcode_html( "tweet", "969121867729645568")`
 
+## Shoutout to rtweet
 
 
+<img src="https://raw.githubusercontent.com/mkearney/rtweet/master/man/figures/logo.png" style="float:left; height: 80px; margin: 20px " />
 
+I remembered I tweeted about this during [rstudio::conf](https://www.rstudio.com/conference/), which is many tweets ago, 
+so [rtweet](https://github.com/mkearney/rtweet) made it pretty easy to travel back in time.  
+
+```{r}
+library(rtweet)
+get_timeline("romain_francois", n = 2000 ) %>% 
+  filter( stringr::str_detect( text, "lags") ) %>% 
+  select( status_id, text )
+```
 

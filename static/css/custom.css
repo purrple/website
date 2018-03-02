@@ -39,6 +39,24 @@ a {
   color: #630453 ;
 }
 
+#copyright {
+    background: #630453 ;
+    color: white ;
+    padding: 50px 0;
+    font-size: 12px;
+    line-height: 28px;
+}
+
+#copyright p {
+  font-size: 12px ;
+}
+
+#copyright p a {
+  font-size: 12px ;
+  color: white ;
+  text-decoration: none ;
+}
+
 .become-patron-button {
   display: inline-block;
   font-family: sans-serif;
@@ -124,6 +142,31 @@ p {
 .navbar {
   background: #ffddfa ;
   border-bottom: 1px solid #eaeaea;
+}
+
+
+#footer {
+  background: #ffddfa ;
+  border-top: 1px solid #eaeaea;
+  margin-top: 20px ;
+}
+
+#footer h4 {
+  font-family: 'Pacifico', cursive;
+  color: #630453 ;
+}
+
+#footer .blog-entries .item .name h5 a {
+  text-transform: none ;
+  color: #630453 ;
+  font-family: 'Pacifico', cursive;
+  font-size: 16px ;
+}
+
+.social-entry, .social-entry a {
+  color: #630453 ;
+  font-size: 16px;
+  font-family: monospace;
 }
 
 .navbar ul.nav > li > a {
@@ -243,12 +286,6 @@ pre {
   margin-left: 0 ;
 }
 
-.social-entry, .social-entry a {
-  color: white ;
-  font-size: 16px ;
-  font-family: monospace ;
-}
-
 .post .row a {
   margin-left: 40px ;
 }
@@ -268,6 +305,3 @@ pre {
   color: #FFFFFF88 ;
   text-align: center ;
 }
-
-
-

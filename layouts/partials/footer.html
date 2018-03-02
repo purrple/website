@@ -21,15 +21,6 @@
             <div class="blog-entries">
                 {{ range first 3 (where .Site.Pages "Type" "blog") }}
                 <div class="item same-height-row clearfix">
-                    <div class="image same-height-always">
-                        <a href="{{ .Permalink }}">
-                          {{ if isset .Params "banner" }}
-                            <img src="{{ .Site.BaseURL}}{{ .Params.banner }}" class="img-responsive" alt="">
-                          {{ else }}
-                            <img src="{{ .Site.BaseURL}}img/placeholder.png" class="img-responsive" alt="">
-                          {{ end }}
-                        </a>
-                    </div>
                     <div class="name same-height-always">
                         <h5><a href="{{ .Permalink }}">{{ .Title }}</a></h5>
                     </div>
@@ -105,6 +96,8 @@ _________________________________________________________ -->
               <!-- Not removing this link is part of the licence conditions of the template. Thanks for understanding :) -->
 
               {{ i18n "portedBy" }} <a href="https://github.com/devcows/hugo-universal-theme">DevCows</a>.
+              
+              Modified for <a href="https://purrple.cat">purrple.cat</a>
 
             </p>
         </div>
