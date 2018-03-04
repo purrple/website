@@ -23,43 +23,30 @@
                 <div class="row">
                   <div class="col-md-8" id="blog-post">
                      <div class="post-author">
-                            <h2>
-                              {{ if .Params.author }} {{ .Params.author }} {{ end }}
-                            </h2>
-                          </div>
+                        <h2>{{ if .Params.author }} {{ .Params.author }} {{ end }}</h2>
+                      </div>
      
-                          <div class="post-date">
-                            {{ .Date.Format .Site.Params.date_format }}
-                          </div>
+                      <div class="post-date">
+                        {{ .Date.Format .Site.Params.date_format }}
+                      </div>
       
-                          {{ partial "tags.html" . }}
-                          
-                          {{ partial "article_meta.html" . }}
-                        
-                    </div>
-                  
-                </div>
-                
-                <hr/>
-
-
-                <div class="row">
-
-                    <div class="col-md-8" id="blog-post">
-
-                        <div id="post-content">
+                      {{ partial "tags.html" . }}
+                      
+                      {{ partial "article_meta.html" . }}
+                    
+                      <div id="post-content">
                           {{ .Content }}
-                        </div>
+                      </div>
                         
-                        {{ partial "gallery.html" . }}
+                      {{ partial "gallery.html" . }}
 
-                        {{ partial "prev_next.html" . }}
+                      {{ partial "prev_next.html" . }}
 
-                        {{ if .Site.DisqusShortname }}
-                        <div id="comments">
-                            {{ template "_internal/disqus.html" . }}
-                        </div>
-                        {{ end }}
+                      {{ if .Site.DisqusShortname }}
+                      <div id="comments">
+                          {{ template "_internal/disqus.html" . }}
+                      </div>
+                      {{ end }}
 
                     </div>
                     
