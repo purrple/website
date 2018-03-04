@@ -199,10 +199,20 @@ pre {
   background: #f2f2f2 ;
 }
 
-
+.post .text-right {
+  text-align: right ;
+  color: gray ;
+}
 .post-taxonomy-tag {
   padding: 5px;
   color: #630453 ;
+}
+.post .meta-tags {
+  text-align: right ;
+}
+.post .meta-tags .post-taxonomy-tag {
+  padding: 5px ;
+  color: gray ;
 }
 
 #post-content {
@@ -215,12 +225,9 @@ pre {
   font-weight: normal ;
 }
 
-#blog-listing-medium .post h2 a {
-  border-bottom: 1px solid #ddd;
-}
 
 #blog-listing-medium .post {
-  margin-bottom: 20px ;
+  margin-bottom: 10px ;
 }
 
 .year-summary {

@@ -23,9 +23,14 @@
 
                         {{ range .Pages }}
                         <section class="post">
-                            <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
-                            <span class="text-right">{{ .Date.Format .Site.Params.date_format }}</span>
-                            {{ partial "tags.html" . }}
+                          <div class="row">
+                            <div class="col-md-10">
+                              <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+                            </div>
+                            <div class="col-md-2">
+                              <span class="text-right">{{ .Date.Format "2006/01/02" }}</span>  
+                            </div>
+                          </div>
                         </section>
                         {{ end }}
                         {{ end }}
