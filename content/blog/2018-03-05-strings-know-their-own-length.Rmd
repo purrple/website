@@ -88,7 +88,7 @@ rstring_length_LENGTH( s )
 
 ## Back story
 
-This might be an obscure post, it's been on this [blog issues]() for a while now. I guess
+This might be an obscure post, it's been on this [blog issues](https://github.com/purrple/website/issues/1) for a while now. I guess
 I've not materialised it yet is because of my conception that this is either known
 by people for which this relevant, or it is not relevant to other people. Either 
 you already know, or you don't have to care. 
