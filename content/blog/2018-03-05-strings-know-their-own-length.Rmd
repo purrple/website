@@ -1,0 +1,101 @@
+---
+title: Strings know their own length
+author: Romain François
+date: '2018-03-05'
+slug: strings-know-their-own-length
+categories: []
+tags:
+  - R
+  - C
+  - C++
+  - rapi
+---
+
+```{r, include=FALSE}
+# knitr::knit_hooks$set( document = emo::ji_glue )
+```
+
+## Strings are arrays of bytes
+
+Strings are *hard*, especially when you start to add concepts like encoding and 
+locales, etc ... but that's not what we are talking about here. Let's `r emo::ji("rewind")`. 
+
+Strings are *simple*, they are just a consecutive sequences of characters, let's keep 
+hiding a lot under the carpet `r emo::ji("speak_no_evil")`, 
+strings are just a (null terminated) array of bytes. The length of the string is the number of
+non null bytes. 
+
+A simple way to get that information in C would be a loop (it's ok to write loops in C). 
+
+```c
+int string_length( const char* s){
+  int n = 0 ;
+  for( char* p = s; *p != 0; p++) n++ ;
+  return n ;
+}
+string_length( "head, shoulders, knees and toes") ;
+```
+
+This just counts the number of bytes (aka `char`) in the string, obviously in real life
+what a character is is more complicated than a `byte`<span class="note">some characters, like say emojis are 
+made of several bytes</span>, but we said this was another day's problem. 
+
+We don't have to write the loop manually because we know about the 
+C function `strlen` ;
+
+```c
+strlen( "head, shoulders, knees and toes" ) ;
+```
+
+## What about R strings
+
+You don't typically see individual strings in R because R has no 
+notion of scalars, you see character vectors of length one, perhaps through 
+the `Rcpp::CharacterVector` class. 
+
+You don't see them, but they exist internally as one of the SEXP types, namely `CHARSXP`. 
+When you have a character vector (a `STRSXP`) and you want a single string (a `CHARSXP`) 
+you may use the `STRING_ELT` macro. 
+
+Then if you want the actual string, you can use the `CHAR` macro. 
+
+```{r}
+Rcpp::cppFunction( '
+int rstring_length_strlen( SEXP sv ){
+  SEXP s = STRING_ELT(sv, 0) ;
+  return strlen( CHAR(s) ) ;
+}
+')
+s <- "head, shoulders, knees and toes"
+rstring_length_strlen( s )
+nchar(s)
+```
+
+But `CHAR` is not the only thing you can do to a `CHARSXP`, you can also 
+use the `LENGTH` macro, which retrieves information that is stored in the `SEXP` 
+alonside the actual string, so R strings already know their length. 
+
+
+```{r}
+Rcpp::cppFunction( '
+int rstring_length_LENGTH( SEXP sv ){
+  SEXP s = STRING_ELT(sv, 0) ;
+  return LENGTH( s ) ;
+}
+')
+rstring_length_LENGTH( s )
+```
+
+## Back story
+
+This might be an obscure post, it's been on this [blog issues]() for a while now. I guess
+I've not materialised it yet is because of my conception that this is either known
+by people for which this relevant, or it is not relevant to other people. Either 
+you already know, or you don't have to care. 
+
+I'll try to force myself to write about these types of things when I can identify that 
+at some point in the past, I would have benefited from knowing and I did not. 
+
+And that's quite the case, otherwise the `size` method of [`Rcpp::String`](https://github.com/RcppCore/Rcpp/blob/29f28c45c9a9aa33755a79f368f7158de4d2a49a/inst/include/Rcpp/String.h) would use 
+`length` when in fact there isn't even a `size` method `r emo::ji("scream")`. 
+

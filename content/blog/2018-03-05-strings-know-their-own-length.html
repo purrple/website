@@ -1,0 +1,80 @@
+---
+title: Strings know their own length
+author: Romain François
+date: '2018-03-05'
+slug: strings-know-their-own-length
+categories: []
+tags:
+  - R
+  - C
+  - C++
+  - rapi
+---
+
+
+
+<div id="strings-are-arrays-of-bytes" class="section level2">
+<h2>Strings are arrays of bytes</h2>
+<p>Strings are <em>hard</em>, especially when you start to add concepts like encoding and
+locales, etc … but that’s not what we are talking about here. Let’s ⏪.</p>
+<p>Strings are <em>simple</em>, they are just a consecutive sequences of characters, let’s keep
+hiding a lot under the carpet 🙊,
+strings are just a (null terminated) array of bytes. The length of the string is the number of
+non null bytes.</p>
+<p>A simple way to get that information in C would be a loop (it’s ok to write loops in C).</p>
+<pre class="c"><code>int string_length( const char* s){
+  int n = 0 ;
+  for( char* p = s; *p != 0; p++) n++ ;
+  return n ;
+}
+string_length( &quot;head, shoulders, knees and toes&quot;) ;</code></pre>
+<p>This just counts the number of bytes (aka <code>char</code>) in the string, obviously in real life
+what a character is is more complicated than a <code>byte</code><span class="note">some characters, like say emojis are
+made of several bytes</span>, but we said this was another day’s problem.</p>
+<p>We don’t have to write the loop manually because we know about the
+C function <code>strlen</code> ;</p>
+<pre class="c"><code>strlen( &quot;head, shoulders, knees and toes&quot; ) ;</code></pre>
+</div>
+<div id="what-about-r-strings" class="section level2">
+<h2>What about R strings</h2>
+<p>You don’t typically see individual strings in R because R has no
+notion of scalars, you see character vectors of length one, perhaps through
+the <code>Rcpp::CharacterVector</code> class.</p>
+<p>You don’t see them, but they exist internally as one of the SEXP types, namely <code>CHARSXP</code>.
+When you have a character vector (a <code>STRSXP</code>) and you want a single string (a <code>CHARSXP</code>)
+you may use the <code>STRING_ELT</code> macro.</p>
+<p>Then if you want the actual string, you can use the <code>CHAR</code> macro.</p>
+<pre class="r"><code>Rcpp::cppFunction( &#39;
+int rstring_length_strlen( SEXP sv ){
+  SEXP s = STRING_ELT(sv, 0) ;
+  return strlen( CHAR(s) ) ;
+}
+&#39;)
+s &lt;- &quot;head, shoulders, knees and toes&quot;
+rstring_length_strlen( s )</code></pre>
+<pre><code>## [1] 31</code></pre>
+<pre class="r"><code>nchar(s)</code></pre>
+<pre><code>## [1] 31</code></pre>
+<p>But <code>CHAR</code> is not the only thing you can do to a <code>CHARSXP</code>, you can also
+use the <code>LENGTH</code> macro, which retrieves information that is stored in the <code>SEXP</code>
+alonside the actual string, so R strings already know their length.</p>
+<pre class="r"><code>Rcpp::cppFunction( &#39;
+int rstring_length_LENGTH( SEXP sv ){
+  SEXP s = STRING_ELT(sv, 0) ;
+  return LENGTH( s ) ;
+}
+&#39;)
+rstring_length_LENGTH( s )</code></pre>
+<pre><code>## [1] 31</code></pre>
+</div>
+<div id="back-story" class="section level2">
+<h2>Back story</h2>
+<p>This might be an obscure post, it’s been on this <a href="">blog issues</a> for a while now. I guess
+I’ve not materialised it yet is because of my conception that this is either known
+by people for which this relevant, or it is not relevant to other people. Either
+you already know, or you don’t have to care.</p>
+<p>I’ll try to force myself to write about these types of things when I can identify that
+at some point in the past, I would have benefited from knowing and I did not.</p>
+<p>And that’s quite the case, otherwise the <code>size</code> method of <a href="https://github.com/RcppCore/Rcpp/blob/29f28c45c9a9aa33755a79f368f7158de4d2a49a/inst/include/Rcpp/String.h"><code>Rcpp::String</code></a> would use
+<code>length</code> when in fact there isn’t even a <code>size</code> method 😱.</p>
+</div>
