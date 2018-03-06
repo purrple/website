@@ -1,0 +1,62 @@
+---
+title: first dplyr mondays
+author: Romain François
+date: '2018-03-06'
+slug: first-dplyr-mondays
+categories: []
+tags:
+  - dplyr
+---
+
+## dplyr mondays
+
+I'll be working on [dplyr](https://github.com/tidyverse/dplyr) on at least mondays for the next few weeks. 
+One day a week is a strong commitment, but having it set in stone in my agenda will help me 
+commit to it. 
+
+[dplyr](https://github.com/tidyverse/dplyr) is definitely the best project I've had the chance to work on
+professionally. I can't help but feel somewhat ashamed about disappearing on it for no reason that I 
+can fully explain myself. I know however that once I feel bad, it makes it much harder to 
+come back or even simply reach out, especially online. 
+
+The success of [dplyr](http://dplyr.tidyverse.org) is well established, and the project certainly has matured. 
+Having a conversation about dplyr between the four authors at [rstudio::conf](https://www.rstudio.com/conference/)
+was definitely one of my personnal highlights from the conference. This might be an oversimplification
+but in essence [Hadley](https://twitter.com/hadleywickham) continued to lead, 
+[Lionel](https://twitter.com/_lionelhenry) added tidy evaluation, and
+[Kirill](https://twitter.com/krlmlr) took over the various back ends, especially the data frame back end
+I initially worked on. 
+
+It turns out [dplyr](http://dplyr.tidyverse.org) still needs me, so `#dplyrmondays` are an attempt to 
+structure some of my time to commit (and hopfully `r emo::ji("laughing")` push) to `dplyr`.
+
+`r blogdown::shortcode_html( "tweet", "970577847453659137")`
+
+## int i=0
+
+<img src="/img/dplyrmondays/branches.png" style="float:right" />
+
+Yesterday was the first iteration of `#dplyrmondays`. As much as I'm always eager to 
+invent new things and discover uncharted territories, this is not something you do on day 0, 
+so I've used my time to look at a few [issues](https://github.com/tidyverse/dplyr/issues). 
+
+I opened one [issue](https://github.com/tidyverse/dplyr/issues/3392) related to the `BH`
+`r emo::ji("package")` and opened 4 `r emo::ji("down_arrow")` requests. 
+
+![](/img/dplyrmondays/pull_requests.png)
+
+One of [them](https://github.com/tidyverse/dplyr/pull/3394) in particular led to flushing 
+out an insidious bug that I first [attributed](https://github.com/tidyverse/broom/issues/287) 
+to `broom::augment`, but then the `r emo::ji("basketball")` was bounced back to the 
+`stats::model.frame` function. Thanks to [Michael Chirico](https://github.com/MichaelChirico) for promoting it to 
+an [R-devel thread](http://r.789695.n4.nabble.com/model-frame-strips-class-as-promised-but-fails-to-strip-OBJECT-in-C-td4748687.html), I only did 
+the lazy thing and `r emo::ji( "bird")`ed about it. 
+
+`r blogdown::shortcode_html("tweet", "970664676467052544")`
+
+Four issues (and then some comments to other issues) feels minimal, but this includes 
+getting back on track with the codebase and setup a more formal way of contributing, 
+i.e. through pull requests, reviews, and systematic testing. 
+
+Today is another day, so I'll work on another project. See you next monday. 
+
