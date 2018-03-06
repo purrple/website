@@ -24,11 +24,11 @@ Having a conversation about dplyr between the four authors at [rstudio::conf](ht
 was definitely one of my personnal highlights from the conference. This might be an oversimplification
 but in essence [Hadley](https://twitter.com/hadleywickham) continued to lead, 
 [Lionel](https://twitter.com/_lionelhenry) added tidy evaluation, and
-[Kirill](https://twitter.com/krlmlr) took over the various back ends, especially the data frame back end
+[Kirill](https://twitter.com/krlmlr) took over the various back ends, e.g. the data frame back end
 I initially worked on. 
 
 It turns out [dplyr](http://dplyr.tidyverse.org) still needs me, so `#dplyrmondays` are an attempt to 
-structure some of my time to commit (and hopfully `r emo::ji("laughing")` push) to `dplyr`.
+structure some of my time to commit (and hopefully `r emo::ji("laughing")` push) to `dplyr`.
 
 `r blogdown::shortcode_html( "tweet", "970577847453659137")`
 
