@@ -6,6 +6,7 @@ slug: first-dplyr-mondays
 categories: []
 tags:
   - dplyr
+banner: "img/dplyrmondays/mondays.png"
 ---
 
 ## dplyr mondays

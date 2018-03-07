@@ -1,0 +1,59 @@
+---
+title: arrow, rrrow, rcher, spurrrow
+author: Romain François
+date: '2018-03-07'
+slug: arrow-rrrow-rcher-spurrrow
+categories: []
+tags:
+  - arrow
+  - R
+  - c++
+  - python
+banner: "img/banners/purrrow.png"
+---
+
+
+
+<div id="the-naming-conundrum" class="section level2">
+<h2>The naming conundrum</h2>
+<p>Here I am again at the conundrum of choosing a name for a thing. This is hard, I like when it’s over and I have the perfect name, and I feel finally free to try to match the personnality of code to the name.</p>
+<p>On tuesdays, I’ll be working with <a href="https://twitter.com/wesmckinn">Wes</a> on <a href="https://arrow.apache.org">Apache Arrow</a>, specifically on adding R as a front end to the C++ library.</p>
+{{< tweet "970937034448736257" >}}
+<p>The <a href="https://arrow.apache.org/docs/python/">python front end</a> is called <code>pyarrow</code>, but I guess names are less of an issue with python as the first thing I’ve seen on many scripts using <code>pyarrow</code> is <code>import pyarrow as pa</code>.</p>
+<p>There are some proof of concepts of R and Arrow - <a href="https://github.com/jimhester/rarrow">rarrow</a> from <a href="https://twitter.com/jimhester_">Jim</a> - <a href="https://github.com/clarkfitzg/Rarrow">Rarrow</a> from <a href="https://twitter.com/clarkfitzg">Clark</a></p>
+<p>So it looks like <code>[rR]arrow</code> is the natural pattern to use to name the bindings. I have mixed feelings about this, so I coined <code>rrrow</code> instead, making the regex <code>[rR]a?rrow</code>.</p>
+{{< tweet "970972890727419905" >}}
+<p>I like <code>rrrow</code> because it’s weird, it has 3 consecutive <code>r</code> like <a href="http://purrr.tidyverse.org">some other R package you might have heard of</a>, and <a href="https://twitter.com/CMastication">JD</a> did find the perfect imagery for it.</p>
+{{< tweet "971090980656091136" >}}
+<p>Here is an extract from my conversation with Wes about it:</p>
+<div class="figure">
+<img src="/img/rrrow/rrrow-naming.png" />
+
+</div>
+<p><code>arrow</code> makes a lot of sense actually, we’re already in R so we don’t need a prefix reminder.</p>
+<p>I kind of like <code>rcher</code> too, without the capital R though in the interest of saving ⌨️ time, and I ❤️ the idea of pretty much outsource the marketing to <a href="https://twitter.com/dataandme">Mara</a> who has the super power to tweet archer gifs faster than … well I don’t remember the typical expression for something fast, but pretty fast …</p>
+</div>
+<div id="more-things-to-learn" class="section level2">
+<h2>More things to learn</h2>
+<p>I don’t just sit around and think about naming things all day, I also sometimes procrastinate, but not today, I’ll procrastinate tomorrow.</p>
+<p>Arrow is already a mature and somewhat complex project with many moving parts, so being tasked to “do the r thing” is kind of intimidating at first, I’ll try to not let myself go to anxiety too soon.</p>
+<p>I spent my first <code>#arrowtuesday</code> reading documentation, installing things, and generally get a feel of the project, mostly through the python front end.</p>
+{{< tweet "970952867032027136" >}}
+<p>I need to learn about python, here’s my current amazon cart. I’ve been meaning to read Wes’s book for some time and I’m not the onmly member of my 👪 who wants to learn about 🐍</p>
+<div class="figure">
+<img src="/img/rrrow/amazon.png" />
+
+</div>
+</div>
+<div id="plan" class="section level2">
+<h2>Plan</h2>
+<p>In essence the task is to make the arrow data structures accessible to R, and be inline with the principles of Arrow of limiting the copies to a minimum.</p>
+<p>The tools we have at our disposal in R for this are external pointers, they let us get hold of an instance of a C++ class with enough hooks to destruct the object once the wrapping R object around it (the external pointer, aka <code>EXTPTRSXP</code>) goes out of scope.</p>
+<p>Rcpp has modules around external pointers, but I’m not really satisfied with it because they take forever to compile and still at the moment require a lot of boiler plate work when used with a C++ library that gies beyond hello world.</p>
+<p>Using external pointers is the path <a href="https://twitter.com/jimhester_">Jim</a> has followed with <a href="https://github.com/jimhester/rarrow">rarrow</a>, it’s the right tool.</p>
+<p>But we need to go further, because external pointers only give you ways to get hold of an object and maintain its life cycle, as soon as you want to do anything in R with the data, you have to convert it to R data types. However, there’s <a href="https://www.r-project.org/dsc/2017/slides/dsc2017.pdf">ALTREP</a> on the horizon.</p>
+<p><code>ALTREP</code> is a big deal, it makes it possible to decouple the metadata of R objects (all the stuff that goes in the <code>SEXPREC</code> bits) from the actual data, so whereas now the actual data directly follows the header, ALTREP adds abstractions that we can use to add indirections.</p>
+<p>This is still somewhat obscure to me, but in short if the data can be elsewhere, it can definitely come from some Arrow structure. Exciting times ahead, I’m leaving this here, the thread has some references about 📦 using ALTREP.</p>
+{{< tweet "971011937545998336" >}}
+<p>See you next tuesday for more R and Arrow stuff.</p>
+</div>

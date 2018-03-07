@@ -6,48 +6,30 @@ slug: first-dplyr-mondays
 categories: []
 tags:
   - dplyr
+banner: "img/dplyrmondays/mondays.png"
 ---
 
 
 
 <div id="dplyr-mondays" class="section level2">
 <h2>dplyr mondays</h2>
-<p>I’ll be working on <a href="https://github.com/tidyverse/dplyr">dplyr</a> on at least mondays for the next few weeks.
-One day a week is a strong commitment, but having it set in stone in my agenda will help me
-commit to it.</p>
-<p><a href="https://github.com/tidyverse/dplyr">dplyr</a> is definitely the best project I’ve had the chance to work on
-professionally. I can’t help but feel somewhat ashamed about disappearing on it for no reason that I
-can fully explain myself. I know however that once I feel bad, it makes it much harder to
-come back or even simply reach out, especially online.</p>
-<p>The success of <a href="http://dplyr.tidyverse.org">dplyr</a> is well established, and the project certainly has matured.
-Having a conversation about dplyr between the four authors at <a href="https://www.rstudio.com/conference/">rstudio::conf</a>
-was definitely one of my personnal highlights from the conference. This might be an oversimplification
-but in essence <a href="https://twitter.com/hadleywickham">Hadley</a> continued to lead,
-<a href="https://twitter.com/_lionelhenry">Lionel</a> added tidy evaluation, and
-<a href="https://twitter.com/krlmlr">Kirill</a> took over the various back ends, e.g. the data frame back end
-I initially worked on.</p>
-<p>It turns out <a href="http://dplyr.tidyverse.org">dplyr</a> still needs me, so <code>#dplyrmondays</code> are an attempt to
-structure some of my time to commit (and hopefully 😆 push) to <code>dplyr</code>.</p>
+<p>I’ll be working on <a href="https://github.com/tidyverse/dplyr">dplyr</a> on at least mondays for the next few weeks. One day a week is a strong commitment, but having it set in stone in my agenda will help me commit to it.</p>
+<p><a href="https://github.com/tidyverse/dplyr">dplyr</a> is definitely the best project I’ve had the chance to work on professionally. I can’t help but feel somewhat ashamed about disappearing on it for no reason that I can fully explain myself. I know however that once I feel bad, it makes it much harder to come back or even simply reach out, especially online.</p>
+<p>The success of <a href="http://dplyr.tidyverse.org">dplyr</a> is well established, and the project certainly has matured. Having a conversation about dplyr between the four authors at <a href="https://www.rstudio.com/conference/">rstudio::conf</a> was definitely one of my personnal highlights from the conference. This might be an oversimplification but in essence <a href="https://twitter.com/hadleywickham">Hadley</a> continued to lead, <a href="https://twitter.com/_lionelhenry">Lionel</a> added tidy evaluation, and <a href="https://twitter.com/krlmlr">Kirill</a> took over the various back ends, e.g. the data frame back end I initially worked on.</p>
+<p>It turns out <a href="http://dplyr.tidyverse.org">dplyr</a> still needs me, so <code>#dplyrmondays</code> are an attempt to structure some of my time to commit (and hopefully 😆 push) to <code>dplyr</code>.</p>
 {{< tweet "970577847453659137" >}}
 </div>
 <div id="int-i0" class="section level2">
 <h2>int i=0</h2>
 <p><img src="/img/dplyrmondays/branches.png" style="float:right" /></p>
-<p>Yesterday was the first iteration of <code>#dplyrmondays</code>. As much as I’m always eager to
-invent new things and discover uncharted territories, this is not something you do on day 0,
-so I’ve used my time to look at a few <a href="https://github.com/tidyverse/dplyr/issues">issues</a>.</p>
-<p>I opened one <a href="https://github.com/tidyverse/dplyr/issues/3392">issue</a> related to the <code>BH</code>
-📦 and opened 4 ⬇️ requests.</p>
-<p><img src="/img/dplyrmondays/pull_requests.png" /></p>
-<p>One of <a href="https://github.com/tidyverse/dplyr/pull/3394">them</a> in particular led to flushing
-out an insidious bug that I first <a href="https://github.com/tidyverse/broom/issues/287">attributed</a>
-to <code>broom::augment</code>, but then the 🏀 was bounced back to the
-<code>stats::model.frame</code> function. Thanks to <a href="https://github.com/MichaelChirico">Michael Chirico</a> for promoting it to
-an <a href="http://r.789695.n4.nabble.com/model-frame-strips-class-as-promised-but-fails-to-strip-OBJECT-in-C-td4748687.html">R-devel thread</a>, I only did
-the lazy thing and 🐦ed about it.</p>
+<p>Yesterday was the first iteration of <code>#dplyrmondays</code>. As much as I’m always eager to invent new things and discover uncharted territories, this is not something you do on day 0, so I’ve used my time to look at a few <a href="https://github.com/tidyverse/dplyr/issues">issues</a>.</p>
+<p>I opened one <a href="https://github.com/tidyverse/dplyr/issues/3392">issue</a> related to the <code>BH</code> 📦 and opened 4 ⬇️ requests.</p>
+<div class="figure">
+<img src="/img/dplyrmondays/pull_requests.png" />
+
+</div>
+<p>One of <a href="https://github.com/tidyverse/dplyr/pull/3394">them</a> in particular led to flushing out an insidious bug that I first <a href="https://github.com/tidyverse/broom/issues/287">attributed</a> to <code>broom::augment</code>, but then the 🏀 was bounced back to the <code>stats::model.frame</code> function. Thanks to <a href="https://github.com/MichaelChirico">Michael Chirico</a> for promoting it to an <a href="http://r.789695.n4.nabble.com/model-frame-strips-class-as-promised-but-fails-to-strip-OBJECT-in-C-td4748687.html">R-devel thread</a>, I only did the lazy thing and 🐦ed about it.</p>
 {{< tweet "970664676467052544" >}}
-<p>Four issues (and then some comments to other issues) feels minimal, but this includes
-getting back on track with the codebase and setup a more formal way of contributing,
-i.e. through pull requests, reviews, and systematic testing.</p>
+<p>Four issues (and then some comments to other issues) feels minimal, but this includes getting back on track with the codebase and setup a more formal way of contributing, i.e. through pull requests, reviews, and systematic testing.</p>
 <p>Today is another day, so I’ll work on another project. See you next monday.</p>
 </div>

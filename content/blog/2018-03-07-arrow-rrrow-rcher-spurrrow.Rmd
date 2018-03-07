@@ -1,0 +1,110 @@
+---
+title: arrow, rrrow, rcher, spurrrow
+author: Romain François
+date: '2018-03-07'
+slug: arrow-rrrow-rcher-spurrrow
+categories: []
+tags:
+  - arrow
+  - R
+  - c++
+  - python
+banner: "img/banners/purrrow.png"
+---
+
+## The naming conundrum
+
+Here I am again at the conundrum of choosing a name for a thing. This is hard, I like when it's over and
+I have the perfect name, and I feel finally free to try to match the personnality of code
+to the name. 
+
+On tuesdays, I'll be working with [Wes](https://twitter.com/wesmckinn) on 
+[Apache Arrow](https://arrow.apache.org), specifically on adding R as a front end to the C++
+library. 
+
+`r blogdown::shortcode_html("tweet", "970937034448736257")`
+
+The [python front end](https://arrow.apache.org/docs/python/) is called `pyarrow`, but 
+I guess names are less of an issue with python as the first thing I've seen on many 
+scripts using `pyarrow` is `import pyarrow as pa`. 
+
+There are some proof of concepts of R and Arrow
+ - [rarrow](https://github.com/jimhester/rarrow) from [Jim](https://twitter.com/jimhester_)
+ - [Rarrow](https://github.com/clarkfitzg/Rarrow) from [Clark](https://twitter.com/clarkfitzg)
+
+So it looks like `[rR]arrow` is the natural pattern to use to name the bindings. I have mixed feelings 
+about this, so I coined `rrrow` instead, making the regex `[rR]a?rrow`. 
+
+`r blogdown::shortcode_html("tweet", "970972890727419905")`
+
+I like `rrrow` because it's weird, it has 3 consecutive `r` like 
+[some other R package you might have heard of](http://purrr.tidyverse.org), and 
+[JD](https://twitter.com/CMastication) did find the perfect imagery for it. 
+
+`r blogdown::shortcode_html("tweet", "971090980656091136")`
+
+Here is an extract from my conversation with Wes about it: 
+
+![](/img/rrrow/rrrow-naming.png)
+
+`arrow` makes a lot of sense actually, we're already in R so we don't need a prefix reminder. 
+
+I kind of like `rcher` too, without the capital R though in the interest of 
+saving `r emo::ji("keyboard")` time, and I `r emo::ji("heart")` the idea of pretty much 
+outsource the marketing to [Mara](https://twitter.com/dataandme) who has the super power to 
+tweet archer gifs faster than ... well I don't remember the typical expression for something fast, but pretty fast ...
+
+## More things to learn
+
+I don't just sit around and think about naming things all day, I also sometimes
+procrastinate, but not today, I'll procrastinate tomorrow. 
+
+Arrow is already a mature and somewhat complex project with many moving parts, so 
+being tasked to "do the r thing" is kind of intimidating at first, I'll try to not let myself
+go to anxiety too soon. 
+
+I spent my first `#arrowtuesday` reading documentation, installing things, and generally get a feel 
+of the project, mostly through the python front end. 
+
+`r blogdown::shortcode_html("tweet", "970952867032027136")`
+
+I need to learn about python, here's my current amazon cart. I've been meaning to read
+Wes's book for some time and I'm not the onmly member of my `r emo::ji("family")` who wants
+to learn about `r emo::ji("snake")`
+
+![](/img/rrrow/amazon.png)
+
+## Plan
+
+In essence the task is to make the arrow data structures accessible to R, and be inline 
+with the principles of Arrow of limiting the copies to a minimum. 
+
+The tools we have at our disposal in R for this are external pointers, they let us
+get hold of an instance of a C++ class with enough hooks to destruct the object once the 
+wrapping R object around it (the external pointer, aka `EXTPTRSXP`) goes out of scope. 
+
+Rcpp has modules around external pointers, but I'm not really satisfied with it
+because they take forever to compile and still at the moment require a lot of boiler plate 
+work when used with a C++ library that gies beyond hello world. 
+
+Using external pointers is the path [Jim](https://twitter.com/jimhester_) has
+followed with [rarrow](https://github.com/jimhester/rarrow), it's the right tool. 
+
+But we need to go further, because external pointers only give you ways to get hold of 
+an object and maintain its life cycle, as soon as you want to do anything in R with the 
+data, you have to convert it to R data types. However, there's [ALTREP](https://www.r-project.org/dsc/2017/slides/dsc2017.pdf)
+on the horizon. 
+
+`ALTREP` is a big deal, it makes it possible to decouple the metadata of R objects
+(all the stuff that goes in the `SEXPREC` bits) from the actual data, so whereas 
+now the actual data directly follows the header, ALTREP adds abstractions that we can use to add 
+indirections. 
+
+This is still somewhat obscure to me, but in short if the data can be elsewhere, 
+it can definitely come from some Arrow structure. Exciting times ahead, I'm leaving this
+here, the thread has some references about `r emo::ji("package")` using ALTREP. 
+
+`r blogdown::shortcode_html("tweet", "971011937545998336")`
+
+See you next tuesday for more R and Arrow stuff. 
+
