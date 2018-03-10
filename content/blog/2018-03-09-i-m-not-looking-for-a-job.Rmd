@@ -1,0 +1,229 @@
+---
+title: I’m (not) looking for a job
+author: Romain François
+date: '2018-03-08'
+slug: i-m-not-looking-for-a-job
+categories: []
+tags: []
+---
+
+## TL;DR
+
+This is a very personal post where I'm articulating some thoughts about my career so far, 
+my immediate change of direction, and how you can [help me](https://www.patreon.com/romainfrancois). 
+I'm typically not a disclaimer
+user because I believe it's pretty obvious I'm speaking in my own name, but let me for once
+express that I have a lot of respect for the companies that have been crazy enough to 
+give me a salary, and that I take full responsaibility for any flaws I'm about to discuss here. 
+
+My contract with [ThinkR](https://thinkr.fr) has ended on feb 23rd, and I'm now repurposing 
+my time to focus exclusively on open source work. I'll discuss that in details below, but for now 
+since we're in the `TL;DR` section, here's a link to my [patreon page](https://www.patreon.com/romainfrancois)
+where you have an opportunity to help me stay free and work on cool open source stuff. 
+
+If you follow me here or on [twitter](https://twitter.com/romain_francois), you might have 
+picked up I've been teasing about this blog post for a few days now, 
+not because I want to setup some cliffhanger, but because it is not an easy one to write. 
+
+However, it has been stuck in my `r emo::ji("brain")` for a few months now. Time to set it free. 
+
+## Once upon a time
+
+I was a bright kid, and everybody in the family was surprised when I picked up reading on my own, 
+after some tests I skipped two classes and things still were easy. I'm not writing to brag, 
+quite the opposite. I attribute most of character traits and flaws to essentially 
+surviving through school being two years younger than everybody else. 
+
+![](/img/job/rcattoddler.jpg)
+
+I did not really pay too much attention in school because things were easy, I just knew
+how to do the bare minimum, at the end of high school I knew I would pass because I was solid in maths, 
+so I did not bother doing the second page of the physics exam. Things like that. 
+
+I kind of went with the flow of what I liked and knew how to do, so I ended up doing maths 
+in grad school in [Aix en Provence](http://www.aixenprovencetourism.com) and 
+[Montpellier](http://www.montpellier.fr). 
+
+But there was only so much abstract maths I could cope with, so after failing one year
+while discovering stand up comedy, I was guided towards stats and this changed everything. 
+I might not be able to stretch that metaphor too far, but `r emo::ji("mic")`
+and stats are two sides of the same coin for me. In both you collect large amount of data, 
+and you translate it to something interesting, sometimes it's `r emo::ji("thinking")`, 
+sometimes it's `r emo::ji("rofl")`, same thing. Although there's no `comedyverse` 
+tools. 
+
+## The R magnet
+
+I first learned about [R](https://www.r-project.org) in Montpellier for a homework 
+assignment about PCA with the `state.x77` dataset. The assignment was in S+, which was
+installed in the university machines, but professor [Jean François Durand](http://jf-durand-pls.com)
+handed us what felt like a contraband `r emo::ji("cd")` of something that looked like S+. This 
+was R one point something. 
+
+Later that year we went to [CIRAD](https://www.cirad.fr) with a few classmates to download 
+a more recent copy of R and most of CRAN, in particular we wanted the 
+[akima](https://cran.r-project.org/package=akima) `r emo::ji("package")` for a 
+spatial statistics assignment. 
+
+I never really took the time to think about it, but I guess these two assignments
+are what got me interrested in R in the first place. This is when I started to 
+check what's inside, digest lots of documentation and code, register to the mailing list, 
+R was like a big magnet I was attracted to, and even though the community was perhaps not 
+as welcoming as it has become now, I wanted to be a part of it. 
+The more I knew, the more I wanted to know ... I'm in my early 20ies, and this is the first time
+I work hard for something, no matter what the difficulty was, I developped this passion 
+about R, and open source in general, but mostly R. 
+
+I finished my curriculum at the [ISUP](http://isup.sorbonne-universite.fr/fr/index.html), 
+but I still feel that the university in Montpellier already equiped me with the tools 
+I needed. ISUP is one of the oldest schools of statistics , and it did carry a lot
+of baggage at the time. I remember being furious about the absence of R in the program, 
+to the point that I felt I had to teach it to my classmates, so I organized like an 
+underground training session in the computer room. Everybody chipped in and they offered
+me two tickets to go see a play in a nice theater in Paris. 
+
+Whenever there was an assignment in SAS or whatever, I would essentially discard that 
+piece of information, and do it in R instead. R was going to be a huge part of my life. 
+
+Also, the curriculum was very geared towards theoretical statistics, lots of ink and 
+paper, e.g. I thought I knew what bootstrap was (for loops and resampling and cool 
+graphics) so I was not ready for that deluge of theory around it. In a way, I 
+guess I was already choosing data science. 
+
+I've heard things are better now, but I'm not sure what to believe about the airquotes around 
+*data science* in the front page. 
+
+[![](/img/job/data-science.png)](http://isup.sorbonne-universite.fr/fr/index.html)
+
+For my inernship at the end of ISUP, I worked with [inria](https://www.inria.fr) on 
+improving [mixmod](http://www.mixmod.org/?lang=fr). This is how I learned C++. This 
+was not really a stats internship, this did not really involve R, this was more like a
+computer science internship. In the context oof ISUP, I was setting myself up 
+for failure by going through with this internship. 
+
+One of the professors took it way too personally and rejected my defense of this internship 
+the first time. Everybody thought I was joking when I announced that I failed, 
+that did not really help with the pain. I did it again a few weeks later with less
+lines of code in the slides and more lines of maths, and I passed with flying colors. 
+
+## Not a Doctor
+
+After that, amputed of some self confidence and without giving it much thought, and also 
+being busy preparing for the arrival of my first `r emo::ji("baby")`, I accepted to 
+carry on with the same team and embarked *no questions asked* on the way to a thesis
+on a different topic. This was a terrible plan. 
+Not being able to say *no* is generally a very bad idea. 
+I don't think I should be a source of wisdom, but here we go: 
+
+> Learn to say no. Use that skill often.
+
+The 10 months this lasted were very hard on me, I felt stuck between the 
+university and the industry partner, constantly going from one office to 
+another and act as a messenger. I don't think I did anything of any value 
+during these few months. 
+
+> Think about what you like, and do that. 
+
+My daughter was born and I was getting a sense of accomplishment through 
+the R graph gallery, a website I put together to showcase graphics 
+produced by R alongside the code. This was lots of very fragile php code
+on top of a mysql database and poor web design, but people liked it.
+This would have been sooooo much nicer if 
+[blogdown](https://bookdown.org/yihui/blogdown/) existed at the time. 
+
+The deployment was such a pain too, I had to enter things for new 
+graphics in the mysql database, and update the site through ftp. 
+It lived in a *real* server to run the php code, at some point 
+during one my my disapearing episodes, I forgot
+to renew it so the last version essentially vanished. I might be able 
+to find it again, but [Yan Holtz](https://holtzyan.wordpress.com) 
+picked the project and he is now maintaining 
+a version on top of wordpress. Life 
+is so much sweater now with things like 
+[github](https://github.com) and [netlify](https://www.netlify.com). 
+
+Anyway, through some `r emo::ji("top_hat")` `r emo::ji( "rabbit2")`, I negociated 
+to go to [useR! 2006](https://www.r-project.org/conferences/useR-2006/) 
+in Vienna with a poster about my work on mixmod. 
+Life changing experience, useR was much smaller at the time but still this was 
+quite intimidating, and you already had the feeling of being bombarded with 
+information, new things to learn. Brian Ripley was attending, his keynote was 
+about i18n (or l12n) of R, and I had the opportunity to have a nice quick chat with him. 
+
+## Consulting
+
+Overall, the conference was reinforcing my desire to be part of the community, 
+some people knew about the graph gallery, so I talked more about it than about my poster. 
+This is also where I met with people from [Mango](https://www.mango-solutions.com). I was like 
+*wait, I can write R code all day and be paid for it, that sounds cool*. That sounded 
+better than what I was doing. I didn't think about it twice. 
+
+A few months `r emo::ji("fast_forward")`, I was in a pub in Chippenham doing an interview. 
+We moved to [Bath](https://visitbath.co.uk) with a 6 months old `r emo::ji("baby")`, and apparently 
+I was a consultant now. 
+
+This was my first real job, I travelled to many places, attended conferences, learned a lot of 
+things, most of what I know about being a consultant comes from the two years at this job, most 
+of the struggles too. Not too much open source, although I was quite extreme about *using* 
+open source as much as possible. Dumping windows to install some funky (or maybe even not that funky)
+linux distribution was a good way in 2006 to create some friction with people and software. 
+
+I only took me 2 years to develop enough anxiety to break down, and again that is totally on me, 
+mango was a small (6 when I joined, twice that when I left) company, people were nice and friendly,
+we went to the pub frequently and played Badminton, they were super helpful for the whole 
+expat with a baby process. 
+
+What triggered the break down was that I had to organize an *Advanced R Training Course*. I 
+did not know what it meant, I still don't really know, but in my head it meant something 
+I'm not good enough to deliver, it meant people are going to ask me questions I won't have answers
+for, it meant I was going to make a fool of myself. And learning more stuff for such an occasion 
+might not be a good plan, because essentially the more you learn, the more you realize how much 
+more you need to learn, and this is daunting in the process of teaching advanced professionnal 
+expert level *(add yours)* training. Don't get me wrong though, learning more stuff is 
+generally a good idea, but not really when you do it as part of preparing one of the millions 
+things you think you have to master tomorrow. 
+
+I really enjoy when I'm a room with people transmitting things that I know about R, but at the same time
+preparing the materials is something I always struggle with, always, no matter the topic, no matter 
+how much I know about it. Knowing something and be able to teach it are two very different games. 
+
+I took some time off, but I did not really recover, on top of that my partner at the time did not really 
+feel integrated in the UK, and we kind of wanted our daughter to go to a french school. 
+
+So we came back to France, and I was like *Ok, so I'll just do the same exact thing, consulting and training*
+but as an independent freelancer, how hard could it be, right ? Mango was super helpful in the 
+transition process, they even gave me an extra gig. My former employer was my first client, that was nice. 
+
+I also had a few contacts, this materialised to few consulting gigs. And anyway, the worst come the worst 
+I can always go hunt for a job. I was very naive to believe that I could pull it off. On top of not being 
+a consultant (more on that below), dealing with paperwork, invoices, spending time on the phone, 
+estimate the time something will take me, multiply that by two, but still be way off, 
+come up with how much I think my time is worth, ... I was not ready for any of that. 
+
+This lasted 8 years, and let's just say it has not been the best financial journey, I was structureless, 
+not really giving careful thought about the job. Not thinking is kind of a pattern of me, I just realized it now
+because of *thinking* about it. 
+
+> Think
+
+I've had some nice projects as a freelancer consultant, organized a few training sessions, 
+travelled to many places again, but for the most part, let's be real for a minute,
+when you do consulting, most of the time, not only you work on projects you don't choose,
+but on top of that you work on something someone else did not want to do. Sometimes 
+you're lucky and that's a nice project, sometimes you might learn something from it,
+but most of the time you'd rather be doing something else. 
+
+For me, that was seeking asylum in open source projects, I already developped a taste
+for connecting R with other languages, that started with Java. My first trip to the 
+land of the R internals was because of [rJava](https://CRAN.R-project.org/package=rJava). I liked 
+the `r emo::ji("package")` but the jni inspired low level was a bit daunting.  
+
+I discovered Google's 
+[protocol buffers]()
+
+
+
+
+
+
+
