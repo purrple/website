@@ -7,6 +7,19 @@ h2{
   color: #630453 ;
 }
 
+blockquote{
+  font-family: 'Pacifico', cursive !important ;
+  font-size: 30px !important ;
+  padding: 40px;
+  border-radius: 25px;
+  font-size: 14px;
+  border: 1px solid #ffddfa;
+  background: #ffddfa ;
+  color: #630453 ;
+  text-align: center ;
+}
+
+
 .meta-row {
   margin-bottom: 30px ;
 }
