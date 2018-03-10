@@ -1,0 +1,259 @@
+---
+title: Anagrams
+author: Romain François
+date: '2018-03-10'
+slug: anagrams
+categories: []
+tags: []
+---
+
+
+
+<p>This was 🤯 to find out that <code>tidyr</code> is an anagram of <code>dirty</code> and if we allow multi words anagrams, <a href="https://twitter.com/dataandme">Mara</a> cracked the hidden message in naming of the (not enough known) <code>multidplyr</code> 📦.</p>
+{{< tweet "972158335146487808" >}}
+<p>This was enough to get my attention, and change some hours of my week end. A few commits later, there you have an <a href="https://github.com/romainfrancois/anagram">anagram</a> package with an eponym function.</p>
+<pre class="r"><code>library(anagram)
+anagram( &quot;python&quot; )</code></pre>
+<pre><code>## [1] &quot;phyton&quot; &quot;python&quot; &quot;typhon&quot;</code></pre>
+<pre class="r"><code>anagram( &quot;art&quot; )</code></pre>
+<pre><code>## [1] &quot;art&quot; &quot;rat&quot; &quot;tar&quot; &quot;tra&quot;</code></pre>
+<p>As a first attempt, the package only deals with single words anagrams, so it would not have revealed <code>my dull trip</code> but I guess there are still some interesting things in the way it is setup.</p>
+<div id="what-do-you-read-my-lord-words-words-words" class="section level2">
+<h2>What do you read, my lord? Words, words, words</h2>
+<p>The first thing is to get the list of english words, I have used the <a href="https://github.com/dwyl/english-words">dwyl/english-words</a> repo on github. The original link it uses as a source lands on a <em>Not Found</em> page so I might have to look for an alternative source later, but for now this will do.</p>
+<p>I’ve ingested the data in the <code>alpha_words</code> tibble in the package, just because there is a <code>stringr::words</code> I did not want to 🤼‍♀️ with.</p>
+<pre class="r"><code>words_alpha &lt;- read_lines(&quot;https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt&quot;)
+
+alpha_words &lt;- tibble(
+  word = words_alpha,
+  size = nchar(word),
+  first = substr(word, 1, 1)
+)
+
+use_data(alpha_words, overwrite = TRUE)</code></pre>
+<p>Making the <code>first</code> and <code>size</code> columns for later use to easily group by the number of characters and the first letter. By the way, the file only contains <code>[:alpha:]</code> characters, so no 🤔 about hard string stuff like encoding and locale, we can stay in ascii, this simplifies things for later.</p>
+<p>In the <code>data-raw</code> I’ve also created an <em>internal</em> data set with a slightly different structure.</p>
+<pre class="r"><code>empties &lt;- tibble(
+  first = letters,
+  words = map(letters, ~character(0))
+)
+
+words_internal &lt;- alpha_words %&gt;%
+  group_by(size, first) %&gt;%
+  summarise( words = list(word) ) %&gt;%
+  nest() %&gt;%
+  mutate(
+    data = map( data, ~ {
+      anti_join( empties, .x, by = &quot;first&quot;) %&gt;%
+        bind_rows(.x) %&gt;%
+        arrange(first)
+    })
+  )
+
+use_data( words_internal, internal = TRUE, overwrite = TRUE)</code></pre>
+<p>This tibble has one line per word size, and for each of these sizes, the list column <code>data</code> is a list column of tibbles.</p>
+<pre class="r"><code>anagram:::words_internal</code></pre>
+<pre><code>## # A tibble: 29 x 2
+##     size data             
+##    &lt;int&gt; &lt;list&gt;           
+##  1     1 &lt;tibble [26 × 2]&gt;
+##  2     2 &lt;tibble [26 × 2]&gt;
+##  3     3 &lt;tibble [26 × 2]&gt;
+##  4     4 &lt;tibble [26 × 2]&gt;
+##  5     5 &lt;tibble [26 × 2]&gt;
+##  6     6 &lt;tibble [26 × 2]&gt;
+##  7     7 &lt;tibble [26 × 2]&gt;
+##  8     8 &lt;tibble [26 × 2]&gt;
+##  9     9 &lt;tibble [26 × 2]&gt;
+## 10    10 &lt;tibble [26 × 2]&gt;
+## # ... with 19 more rows</code></pre>
+<pre class="r"><code>pluck( anagram:::words_internal, &quot;data&quot;, 5 )</code></pre>
+<pre><code>## # A tibble: 26 x 2
+##    first words        
+##    &lt;chr&gt; &lt;list&gt;       
+##  1 a     &lt;chr [1,173]&gt;
+##  2 b     &lt;chr [1,141]&gt;
+##  3 c     &lt;chr [1,196]&gt;
+##  4 d     &lt;chr [801]&gt;  
+##  5 e     &lt;chr [421]&gt;  
+##  6 f     &lt;chr [684]&gt;  
+##  7 g     &lt;chr [737]&gt;  
+##  8 h     &lt;chr [571]&gt;  
+##  9 i     &lt;chr [301]&gt;  
+## 10 j     &lt;chr [260]&gt;  
+## # ... with 16 more rows</code></pre>
+<p>Each of these tibbles have exactly 26 rows (one for each letter) and the list column <code>words</code> contains all the words that start with the associated letter. The reason for such a convoluted data structure (which btw is still a perfectly valid tibble) is speed, we want to limit the number of words we consider when we hunt for anagramness. For example, here are the 13 letter words that start with the letter “j”.</p>
+<pre class="r"><code>filter( anagram:::words_internal, size == 13) %&gt;% 
+  pluck(&quot;data&quot;, 1) %&gt;% 
+  filter( first == &quot;j&quot;) %&gt;% 
+  pluck( &quot;words&quot;, 1)</code></pre>
+<pre><code>##  [1] &quot;jabberwockian&quot; &quot;jacamaralcyon&quot; &quot;jacobinically&quot; &quot;jacobitically&quot;
+##  [5] &quot;jansenistical&quot; &quot;jargonisation&quot; &quot;jargonization&quot; &quot;jatrorrhizine&quot;
+##  [9] &quot;jawbreakingly&quot; &quot;jeewhillijers&quot; &quot;jeewhillikens&quot; &quot;jeffersonians&quot;
+## [13] &quot;jejunectomies&quot; &quot;jejunoileitis&quot; &quot;jejunostomies&quot; &quot;jellification&quot;
+## [17] &quot;jellylikeness&quot; &quot;jennerization&quot; &quot;jerahmeelites&quot; &quot;jerrybuilding&quot;
+## [21] &quot;jitterbugging&quot; &quot;jobbernowlism&quot; &quot;jocoseriosity&quot; &quot;johnsonianism&quot;
+## [25] &quot;jointlessness&quot; &quot;jollification&quot; &quot;jonvalization&quot; &quot;journeyworker&quot;
+## [29] &quot;jovicentrical&quot; &quot;judaeophilism&quot; &quot;judaistically&quot; &quot;judgmatically&quot;
+## [33] &quot;judicializing&quot; &quot;judiciousness&quot; &quot;juggernautish&quot; &quot;juglandaceous&quot;
+## [37] &quot;juicelessness&quot; &quot;juncaginaceae&quot; &quot;jurisdictions&quot; &quot;jurisprudence&quot;
+## [41] &quot;jusquaboutist&quot; &quot;justiciarship&quot; &quot;justification&quot; &quot;justificative&quot;
+## [45] &quot;justificatory&quot; &quot;juxtalittoral&quot; &quot;juxtaposition&quot; &quot;juxtapositive&quot;
+## [49] &quot;juxtatropical&quot;</code></pre>
+<p>We could easily get the same information from the <code>alpha_words</code> dataset, e.g.</p>
+<pre class="r"><code>filter( anagram::alpha_words, size == 13, substr(word, 1, 1) == &quot;j&quot;) %&gt;% 
+  pull(word)</code></pre>
+<pre><code>##  [1] &quot;jabberwockian&quot; &quot;jacamaralcyon&quot; &quot;jacobinically&quot; &quot;jacobitically&quot;
+##  [5] &quot;jansenistical&quot; &quot;jargonisation&quot; &quot;jargonization&quot; &quot;jatrorrhizine&quot;
+##  [9] &quot;jawbreakingly&quot; &quot;jeewhillijers&quot; &quot;jeewhillikens&quot; &quot;jeffersonians&quot;
+## [13] &quot;jejunectomies&quot; &quot;jejunoileitis&quot; &quot;jejunostomies&quot; &quot;jellification&quot;
+## [17] &quot;jellylikeness&quot; &quot;jennerization&quot; &quot;jerahmeelites&quot; &quot;jerrybuilding&quot;
+## [21] &quot;jitterbugging&quot; &quot;jobbernowlism&quot; &quot;jocoseriosity&quot; &quot;johnsonianism&quot;
+## [25] &quot;jointlessness&quot; &quot;jollification&quot; &quot;jonvalization&quot; &quot;journeyworker&quot;
+## [29] &quot;jovicentrical&quot; &quot;judaeophilism&quot; &quot;judaistically&quot; &quot;judgmatically&quot;
+## [33] &quot;judicializing&quot; &quot;judiciousness&quot; &quot;juggernautish&quot; &quot;juglandaceous&quot;
+## [37] &quot;juicelessness&quot; &quot;juncaginaceae&quot; &quot;jurisdictions&quot; &quot;jurisprudence&quot;
+## [41] &quot;jusquaboutist&quot; &quot;justiciarship&quot; &quot;justification&quot; &quot;justificative&quot;
+## [45] &quot;justificatory&quot; &quot;juxtalittoral&quot; &quot;juxtaposition&quot; &quot;juxtapositive&quot;
+## [49] &quot;juxtatropical&quot;</code></pre>
+<p>But the way <code>words_internal</code> is structured makes it faster and easier to access internally (for example in C++).</p>
+</div>
+<div id="the-r-function" class="section level2">
+<h2>The R function</h2>
+<p>Most of the code is in the C++ layer, the R function <code>anagram</code> is just a front end for things that are not worth doing in C++. It starts by forcing lower case and rejecting anything that is not made of letters in the <code>a-z</code> range.</p>
+<p>Then it extracts from <code>words_internal</code> the words of the same size as the target word.</p>
+<pre class="r"><code>#&#39; @importFrom assertthat assert_that
+#&#39; @importFrom stringr str_to_lower str_detect str_split
+#&#39; @importFrom dplyr filter pull
+#&#39; @importFrom purrr pluck
+#&#39; @importFrom magrittr %&gt;%
+#&#39; @export
+anagram &lt;- function(word){
+  word &lt;- str_to_lower(word)
+  assert_that(!str_detect(word, &quot;[^a-z]&quot;))
+
+  words &lt;- filter( words_internal, size == nchar(word) ) %&gt;%
+    pull(data) %&gt;%
+    pluck(1, &quot;words&quot;)
+
+  anagram_get( word, words )
+}</code></pre>
+</div>
+<div id="the-c-function" class="section level2">
+<h2>The C++ function</h2>
+<p>The associated C++ function <a href="https://github.com/romainfrancois/anagram/blob/master/src/anagram.cpp#L6">anagram_get</a> takes the target <code>word</code> and the list of potential anagrams <code>words</code> and returns a <code>std::vector&lt;std::string&gt;</code>. The choice of a container from the STL rather than a simple <code>Rcpp::CharacterVector</code> is because we don’t know in advance the size, and Rcpp vectors are not meant to change size, they can but it’s too expensive.</p>
+<pre class="cpp"><code>std::vector&lt;std::string&gt; anagram_get( String word, List words ){
+  const char* s = word.get_cstring() ;
+  int n = LENGTH(word.get_sexp()) ;</code></pre>
+<p>We start by extracting the C string and its length, see <a href="https://purrple.cat/blog/2018/03/05/strings-know-their-own-length/">this post</a> for why it uses <code>LENGTH</code>.</p>
+<p>Next we allocate some data structures.</p>
+<pre class="cpp"><code>  // counting how many times each letter from &#39;a&#39; to &#39;z&#39; appears in the word
+  std::array&lt;int, 128&gt; counts ;
+  std::fill( std::begin(counts), std::end(counts), 0 ) ;
+  for( int i=0; i&lt;n; i++){
+    counts[ s[i] ]++ ;
+  }
+  
+  std::array&lt;bool,128&gt; seen ;
+  std::fill( std::begin(seen), std::end(seen), false ) ;</code></pre>
+<p>The idea is to count how many times each letter occurs in the target word, so that we can compare these counts with the counts from the candidate anagrams. This is what the <code>counts</code> array does. This uses an array of size 128, which is enough for holding any ascii character. We could use an array of size 26 because all we care about is the lower case letters from a to z, but that would mean we would have to constantly substract the value of <code>'a'</code>.</p>
+<pre class="r"><code>Rcpp::evalCpp( &quot;(int)&#39;a&#39;&quot; )</code></pre>
+<pre><code>## [1] 97</code></pre>
+<p>If we had used a 26 size array, we would have <code>counts[ s[i] - 'a' ]++ ;</code>, and the <code>-'a'</code> would also feature in many other places. I have not benchmarked, I can live with using a bit more memory for simpler code.</p>
+<p>Then, the results vector, where we will collect the anagrams.</p>
+<pre class="cpp"><code>  std::vector&lt;std::string&gt; results ;</code></pre>
+<p>Then, we have a loop over the characters of the target word, each of the letters of the word might be a the first letter of the anagrams. If it contains the same letter several times, we only want to collect once words that start with the letter, this is where the <code>seen</code> array is used.</p>
+<pre class="cpp"><code>  for( int i=0; i&lt;n; i++){
+    char c = s[i] ;
+
+    // skip if we have already seen this as the first letter
+    if( seen[c] ) continue ;
+    seen[c] = true ;</code></pre>
+<p>Now that we know the first letter, we can extract the words that start with it from the <code>words</code> parameter, remember this comes from the <code>words_internal</code> weird structure we made in <code>data-raw/</code>.</p>
+<pre class="cpp"><code>    // words that start with the c character
+    // -&#39;a&#39; to align &quot;a&quot; with the first element of the list
+    CharacterVector all_words = words[c - &#39;a&#39;] ;</code></pre>
+<p>The last piece is when everything fits together. For each candidate word, we essentially compare occurence of its letters against the <code>counts</code> of the target word.</p>
+<p>First, we copy the <code>counts</code>, then for each character we decrement its count, if at any time, we have a negative count, it means that the candidate have a character that is not in the target, so we give up. If on the other hand, we survive the loop, it means that the candidate contains exactly the same characters as the target, but in a different order, guess what, we have an anagram.</p>
+<pre class="cpp"><code>    std::for_each( std::begin(all_words), std::end(all_words), [&amp;counts, n, &amp;results](auto st){
+      // copy the counts into a local array
+      std::array&lt;int,128&gt; local_counts ;
+      std::copy( std::begin(counts), std::end(counts), std::begin(local_counts) ) ;
+
+      // For every character in the current word, we
+      // decrement its count in the `local_counts` array
+      //
+      // if at any point we get a negative count it means
+      // that the current word is not an anagram of the target word
+      const char* w = CHAR(st) ;
+      for(int j=0; j&lt;n; j++, w++){
+        if( --local_counts[*w] &lt; 0 ) return ;
+      }
+
+      // if we survive the loop, we have an anagram
+      results.push_back( std::string(st) ) ;
+    }) ;</code></pre>
+</div>
+<div id="next" class="section level2">
+<h2>Next</h2>
+<p>As is, the <a href="https://github.com/romainfrancois/anagram">anagram</a> package is probably not that useful. I might keep up with it, and make the changes so that it handles multiple words anagrams, like <code>my dull trip</code> as an anagram to <code>multidplyr</code>. But that’s an entirely different algorithm I guess.</p>
+<p>I just hope however that walking through the code is useful.</p>
+</div>
+<div id="full-c-code" class="section level2">
+<h2>Full C++ code</h2>
+<p>Just in case it changes in the repo, here is the full code for the C++ function.</p>
+<pre class="cpp"><code>#include &lt;Rcpp.h&gt;
+using namespace Rcpp;
+#include &lt;array&gt;
+
+// [[Rcpp::export]]
+std::vector&lt;std::string&gt; anagram_get( String word, List words ){
+  const char* s = word.get_cstring() ;
+  int n = LENGTH(word.get_sexp()) ;
+
+  // counting how many times each letter from &#39;a&#39; to &#39;z&#39; appears in the word
+  std::array&lt;int, 128&gt; counts ;
+  std::fill( std::begin(counts), std::end(counts), 0 ) ;
+  for( int i=0; i&lt;n; i++){
+    counts[ s[i] ]++ ;
+  }
+  std::array&lt;bool,128&gt; seen ;
+  std::fill( std::begin(seen), std::end(seen), false ) ;
+
+  std::vector&lt;std::string&gt; results ;
+
+  for( int i=0; i&lt;n; i++){
+    char c = s[i] ;
+
+    // skip if we have already seen this as the first letter
+    if( seen[c] ) continue ;
+    seen[c] = true ;
+
+    // words that start with the c character
+    // -&#39;a&#39; to align &quot;a&quot; with the first element of the list
+    CharacterVector all_words = words[c - &#39;a&#39;] ;
+
+    std::for_each( std::begin(all_words), std::end(all_words), [&amp;counts, n, &amp;results](auto st){
+      // copy the counts into a local array
+      std::array&lt;int,128&gt; local_counts ;
+      std::copy( std::begin(counts), std::end(counts), std::begin(local_counts) ) ;
+
+      // For every character in the current word, we
+      // decrement its count in the `local_counts` array
+      //
+      // if at any point we get a negative count it means
+      // that the current word is not an anagram of the target word
+      const char* w = CHAR(st) ;
+      for(int j=0; j&lt;n; j++, w++){
+        if( --local_counts[*w] &lt; 0 ) return ;
+      }
+
+      // if we survive the loop, we have an anagram
+      results.push_back( std::string(st) ) ;
+    }) ;
+
+  }
+
+  return results ;
+}</code></pre>
+</div>

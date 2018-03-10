@@ -1,0 +1,313 @@
+---
+title: Anagrams
+author: Romain François
+date: '2018-03-10'
+slug: anagrams
+categories: []
+tags: []
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+```
+
+
+This was `r emo::ji("exploding_head")` to find out that `tidyr` is an 
+anagram of `dirty` and if we allow multi words anagrams, [Mara](https://twitter.com/dataandme)
+cracked the hidden message in naming of the (not enough known) `multidplyr` `r emo::ji("package")`. 
+
+`r blogdown::shortcode_html("tweet", "972158335146487808")`
+
+This was enough to get my attention, and change some hours of my week end. A few commits later, 
+there you have an [anagram](https://github.com/romainfrancois/anagram) package with an eponym 
+function. 
+
+```{r}
+library(anagram)
+anagram( "python" )
+anagram( "art" )
+```
+
+As a first attempt, the package only deals with single words anagrams, so it would not have 
+revealed `my dull trip` but I guess there are still some interesting things in the way
+it is setup. 
+
+## What do you read, my lord? Words, words, words 
+
+The first thing is to get the list of english words, I have used 
+the [dwyl/english-words](https://github.com/dwyl/english-words) repo 
+on github. The original link it uses as a source lands on a *Not Found* 
+page so I might have to look for an alternative source later, but for now this will do. 
+
+I've ingested the data in the `alpha_words` tibble in the package, just because there is a 
+`stringr::words` I did not want to `r emo::ji("wrestle")` with. 
+
+```{r, eval=FALSE}
+words_alpha <- read_lines("https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt")
+
+alpha_words <- tibble(
+  word = words_alpha,
+  size = nchar(word),
+  first = substr(word, 1, 1)
+)
+
+use_data(alpha_words, overwrite = TRUE)
+
+```
+
+Making the `first` and `size` columns for later use to easily group by the 
+number of characters and the first letter. By the way, the file only contains 
+`[:alpha:]` characters, so no `r emo::ji("thinking")` about hard string stuff like 
+encoding and locale, we can stay in ascii, this simplifies things for later. 
+
+In the `data-raw` I've also created an *internal*  data set with a slightly different structure. 
+
+```{r, eval=FALSE}
+empties <- tibble(
+  first = letters,
+  words = map(letters, ~character(0))
+)
+
+words_internal <- alpha_words %>%
+  group_by(size, first) %>%
+  summarise( words = list(word) ) %>%
+  nest() %>%
+  mutate(
+    data = map( data, ~ {
+      anti_join( empties, .x, by = "first") %>%
+        bind_rows(.x) %>%
+        arrange(first)
+    })
+  )
+
+use_data( words_internal, internal = TRUE, overwrite = TRUE)
+```
+
+This tibble has one line per word size, and for each of these sizes, the list column `data`
+is a list column of tibbles. 
+
+```{r}
+anagram:::words_internal
+pluck( anagram:::words_internal, "data", 5 )
+```
+
+Each of these tibbles have exactly 26 rows (one for each letter) and the list column `words` contains
+all the words that start with the associated letter. The reason for such a convoluted data structure
+(which btw is still a perfectly valid tibble) is speed, we want to limit the number of words we 
+consider when we hunt for anagramness. For example, here are the 13 letter words that start with the letter "j". 
+
+```{r}
+filter( anagram:::words_internal, size == 13) %>% 
+  pluck("data", 1) %>% 
+  filter( first == "j") %>% 
+  pluck( "words", 1)
+```
+
+We could easily get the same information from the `alpha_words` dataset, e.g. 
+
+```{r}
+filter( anagram::alpha_words, size == 13, substr(word, 1, 1) == "j") %>% 
+  pull(word)
+```
+
+But the way `words_internal` is structured makes it faster and easier to access internally (for example in C++). 
+
+## The R function
+
+Most of the code is in the C++ layer, the R function `anagram` is just a front end for things that are not worth
+doing in C++. It starts by forcing lower case and rejecting anything that is not made of letters in the `a-z` range. 
+
+Then it extracts from `words_internal` the words of the same size as the target word. 
+
+```{r}
+#' @importFrom assertthat assert_that
+#' @importFrom stringr str_to_lower str_detect str_split
+#' @importFrom dplyr filter pull
+#' @importFrom purrr pluck
+#' @importFrom magrittr %>%
+#' @export
+anagram <- function(word){
+  word <- str_to_lower(word)
+  assert_that(!str_detect(word, "[^a-z]"))
+
+  words <- filter( words_internal, size == nchar(word) ) %>%
+    pull(data) %>%
+    pluck(1, "words")
+
+  anagram_get( word, words )
+}
+```
+
+## The C++ function
+
+The associated C++ function [anagram_get](https://github.com/romainfrancois/anagram/blob/master/src/anagram.cpp#L6) 
+takes the target `word` and the list of potential anagrams `words` and returns a `std::vector<std::string>`. The choice 
+of a container from the STL rather than a simple `Rcpp::CharacterVector` is because we don't know in advance the size, 
+and Rcpp vectors are not meant to change size, they can but it's too expensive. 
+
+```cpp
+std::vector<std::string> anagram_get( String word, List words ){
+  const char* s = word.get_cstring() ;
+  int n = LENGTH(word.get_sexp()) ;
+```
+
+We start by extracting the C string and its length, see [this post](https://purrple.cat/blog/2018/03/05/strings-know-their-own-length/)
+for why it uses `LENGTH`. 
+
+Next we allocate some data structures. 
+
+```cpp
+  // counting how many times each letter from 'a' to 'z' appears in the word
+  std::array<int, 128> counts ;
+  std::fill( std::begin(counts), std::end(counts), 0 ) ;
+  for( int i=0; i<n; i++){
+    counts[ s[i] ]++ ;
+  }
+  
+  std::array<bool,128> seen ;
+  std::fill( std::begin(seen), std::end(seen), false ) ;
+```
+
+The idea is to count how many times each letter occurs in the target word, so that we can 
+compare these counts with the counts from the candidate anagrams. This is what the `counts` array does. 
+This uses an array of size 128, which is enough for holding any ascii character. We could use an 
+array of size 26 because all we care about is the lower case letters from a to z, but that would mean
+we would have to constantly substract the value of `'a'`. 
+
+```{r}
+Rcpp::evalCpp( "(int)'a'" )
+```
+
+If we had used a 26 size array, we would have `counts[ s[i] - 'a' ]++ ;`, and the `-'a'` would also 
+feature in many other places. I have not benchmarked, I can live with using a bit more memory
+for simpler code. 
+
+Then, the results vector, where we will collect the anagrams. 
+
+```cpp
+  std::vector<std::string> results ;
+```
+
+Then, we have a loop over the characters of the target word, each of the letters of the word might be a 
+the first letter of the anagrams. If it contains the same letter several times, we only want to 
+collect once words that start with the letter, this is where the `seen` array is used. 
+
+```cpp
+  for( int i=0; i<n; i++){
+    char c = s[i] ;
+
+    // skip if we have already seen this as the first letter
+    if( seen[c] ) continue ;
+    seen[c] = true ;
+```
+
+Now that we know the first letter, we can extract the words that start with it from the `words` 
+parameter, remember this comes from the `words_internal` weird structure we made in `data-raw/`. 
+
+```cpp
+    // words that start with the c character
+    // -'a' to align "a" with the first element of the list
+    CharacterVector all_words = words[c - 'a'] ;
+```
+
+The last piece is when everything fits together. For each candidate word, we essentially compare 
+occurence of its letters against the `counts` of the target word. 
+
+First, we copy the `counts`, then for each character we decrement its count, if at any time, 
+we have a negative count, it means that the candidate have a character that is not in the target, 
+so we give up. If on the other hand, we survive the loop, it means that the candidate contains 
+exactly the same characters as the target, but in a different order, guess what, we have an anagram. 
+
+```cpp
+    std::for_each( std::begin(all_words), std::end(all_words), [&counts, n, &results](auto st){
+      // copy the counts into a local array
+      std::array<int,128> local_counts ;
+      std::copy( std::begin(counts), std::end(counts), std::begin(local_counts) ) ;
+
+      // For every character in the current word, we
+      // decrement its count in the `local_counts` array
+      //
+      // if at any point we get a negative count it means
+      // that the current word is not an anagram of the target word
+      const char* w = CHAR(st) ;
+      for(int j=0; j<n; j++, w++){
+        if( --local_counts[*w] < 0 ) return ;
+      }
+
+      // if we survive the loop, we have an anagram
+      results.push_back( std::string(st) ) ;
+    }) ;
+```
+
+## Next
+
+As is, the [anagram](https://github.com/romainfrancois/anagram) package is probably not that useful. 
+I might keep up with it, and make the changes so that it handles multiple words anagrams, like `my dull trip`
+as an anagram to `multidplyr`. But that's an entirely different algorithm I guess. 
+
+I just hope however that walking through the code is useful. 
+
+## Full C++ code
+
+Just in case it changes in the repo, here is the full code for the C++ function. 
+
+```cpp
+#include <Rcpp.h>
+using namespace Rcpp;
+#include <array>
+
+// [[Rcpp::export]]
+std::vector<std::string> anagram_get( String word, List words ){
+  const char* s = word.get_cstring() ;
+  int n = LENGTH(word.get_sexp()) ;
+
+  // counting how many times each letter from 'a' to 'z' appears in the word
+  std::array<int, 128> counts ;
+  std::fill( std::begin(counts), std::end(counts), 0 ) ;
+  for( int i=0; i<n; i++){
+    counts[ s[i] ]++ ;
+  }
+  std::array<bool,128> seen ;
+  std::fill( std::begin(seen), std::end(seen), false ) ;
+
+  std::vector<std::string> results ;
+
+  for( int i=0; i<n; i++){
+    char c = s[i] ;
+
+    // skip if we have already seen this as the first letter
+    if( seen[c] ) continue ;
+    seen[c] = true ;
+
+    // words that start with the c character
+    // -'a' to align "a" with the first element of the list
+    CharacterVector all_words = words[c - 'a'] ;
+
+    std::for_each( std::begin(all_words), std::end(all_words), [&counts, n, &results](auto st){
+      // copy the counts into a local array
+      std::array<int,128> local_counts ;
+      std::copy( std::begin(counts), std::end(counts), std::begin(local_counts) ) ;
+
+      // For every character in the current word, we
+      // decrement its count in the `local_counts` array
+      //
+      // if at any point we get a negative count it means
+      // that the current word is not an anagram of the target word
+      const char* w = CHAR(st) ;
+      for(int j=0; j<n; j++, w++){
+        if( --local_counts[*w] < 0 ) return ;
+      }
+
+      // if we survive the loop, we have an anagram
+      results.push_back( std::string(st) ) ;
+    }) ;
+
+  }
+
+  return results ;
+}
+```
+
+
+
+
