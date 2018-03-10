@@ -12,7 +12,8 @@ tags: []
 <p>This was 🤯 to find out that <code>tidyr</code> is an anagram of <code>dirty</code> and if we allow multi words anagrams, <a href="https://twitter.com/dataandme">Mara</a> cracked the hidden message in naming of the (not enough known) <code>multidplyr</code> 📦.</p>
 {{< tweet "972158335146487808" >}}
 <p>This was enough to get my attention, and change some hours of my week end. A few commits later, there you have an <a href="https://github.com/romainfrancois/anagram">anagram</a> package with an eponym function.</p>
-<pre class="r"><code>library(anagram)
+<pre class="r"><code># devtools::install_github(&quot;romainfrancois/anagram&quot;)
+library(anagram)
 anagram( &quot;python&quot; )</code></pre>
 <pre><code>## [1] &quot;phyton&quot; &quot;python&quot; &quot;typhon&quot;</code></pre>
 <pre class="r"><code>anagram( &quot;art&quot; )</code></pre>
@@ -21,7 +22,7 @@ anagram( &quot;python&quot; )</code></pre>
 <div id="what-do-you-read-my-lord-words-words-words" class="section level2">
 <h2>What do you read, my lord? Words, words, words</h2>
 <p>The first thing is to get the list of english words, I have used the <a href="https://github.com/dwyl/english-words">dwyl/english-words</a> repo on github. The original link it uses as a source lands on a <em>Not Found</em> page so I might have to look for an alternative source later, but for now this will do.</p>
-<p>I’ve ingested the data in the <code>alpha_words</code> tibble in the package, just because there is a <code>stringr::words</code> I did not want to 🤼‍♀️ with.</p>
+<p>I’ve ingested the data in the <code>alpha_words</code> tibble in the package, just because there is a <code>stringr::words</code> I did not want to 🤼 with.</p>
 <pre class="r"><code>words_alpha &lt;- read_lines(&quot;https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt&quot;)
 
 alpha_words &lt;- tibble(

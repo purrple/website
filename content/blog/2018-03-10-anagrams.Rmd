@@ -23,6 +23,7 @@ there you have an [anagram](https://github.com/romainfrancois/anagram) package w
 function. 
 
 ```{r}
+# devtools::install_github("romainfrancois/anagram")
 library(anagram)
 anagram( "python" )
 anagram( "art" )
