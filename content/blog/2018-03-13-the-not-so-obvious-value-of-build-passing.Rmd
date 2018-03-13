@@ -1,0 +1,75 @@
+---
+title: The not so obvious value of build passing
+author: Romain François
+date: '2018-03-13'
+slug: the-not-so-obvious-value-of-build-passing
+categories: []
+tags:
+  - dplyr
+  - travis
+  - github
+  - dplyrmondays
+---
+
+## dplyr monday, week 2
+
+Yesterday was my second iteration of `#dplyrmondays`, a schedule I'm trying to 
+respect to give clarity about when I'm working on `dplyr`. 
+
+`r blogdown::shortcode_html("tweet", "973104251479175168")`
+
+So, there is some going back to last week's issues and pending pull requests, 
+follow ups on [Kirill](https://twitter.com/krlmlr) comments, generally 
+`r emo::ji("swim")` the code base to prepare for a `r emo::ji("call")` with 
+[Kirill](https://twitter.com/krlmlr) and [Lionel](https://twitter.com/_lionelhenry) 
+in the afternoon. 
+
+## The insidious build-passed
+
+The thing I wanted to do first is to bring the repo back to a <img src="/img/build-passing.png" />
+travis badge. This is a nice way to motivate users who want to give a shot at testing 
+the development version, and it's a nice reward. 
+
+However, that's not why I wanted to work on this first. The reason is that having 
+a <img src="/img/travis/build-failing.png" /> is a perfect back door for more problems 
+down the line. 
+
+I survived all of [last week's monday](https://purrple.cat/blog/2018/03/06/first-dplyr-mondays/)
+with a <img src="/img/travis/build-failing.png" /> on the master branch, I did not pay too much 
+attention and wanted to start fixing things that were already `reprex`ed in 
+issues so nicely crafted by the community `r emo::ji("folded_hands")`. 
+
+First of all, you keep receiving these *Still failing* emails from Travis, and sometimes 
+I can't help it but interpret this as an allegory of life. I just spent some time fixing 
+a problem, I don't want a reminder that I'm still failing. 
+
+![](/img/travis/still-failing.png)
+
+The real problem however is that because you know it was broken already, you just don't pay attention
+so you don't have a way to quickly assert if you have just added a new `r emo::ji("ladybug")`, and 
+then you live in fear. 
+
+This is also a problem for the person who reviews the contribution, might be you, might not be you, that's irrelevant. 
+The last thing you want is to give more work to someone, especially if that someone is you. 
+
+> Keep your repo travis green
+
+It turns out the problem was trivial enough, it was just a matter of finding the 
+information in the travis logs and follow R's recommendation for the 
+interface that `.onDetach` expects. 
+
+`r blogdown::shortcode_html("tweet", "973130890242134018")`
+
+![](/img/travis/onDetach.png)
+
+## Next steps
+
+Great, now [dplyr](http://dplyr.tidyverse.org) has its <img src="/img/travis/build-passing.png" />
+badge again and I can break things again, or at least we can quickly identify when I do so. 
+
+Other things happened yesterday, but that's enough words about it. 
+
+I might start to think about ways to make it easier to extract information from 
+travis. It's a lot of scrolling right now and it might be the reason why sometimes
+we don't fix things quickly enough. 
+

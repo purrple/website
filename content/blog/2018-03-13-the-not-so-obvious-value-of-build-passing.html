@@ -1,0 +1,49 @@
+---
+title: The not so obvious value of build passing
+author: Romain François
+date: '2018-03-13'
+slug: the-not-so-obvious-value-of-build-passing
+categories: []
+tags:
+  - dplyr
+  - travis
+  - github
+  - dplyrmondays
+---
+
+
+
+<div id="dplyr-monday-week-2" class="section level2">
+<h2>dplyr monday, week 2</h2>
+<p>Yesterday was my second iteration of <code>#dplyrmondays</code>, a schedule I’m trying to respect to give clarity about when I’m working on <code>dplyr</code>.</p>
+{{< tweet "973104251479175168" >}}
+<p>So, there is some going back to last week’s issues and pending pull requests, follow ups on <a href="https://twitter.com/krlmlr">Kirill</a> comments, generally 🏊🏽 the code base to prepare for a 📲 with <a href="https://twitter.com/krlmlr">Kirill</a> and <a href="https://twitter.com/_lionelhenry">Lionel</a> in the afternoon.</p>
+</div>
+<div id="the-insidious-build-passed" class="section level2">
+<h2>The insidious build-passed</h2>
+<p>The thing I wanted to do first is to bring the repo back to a <img src="/img/build-passing.png" /> travis badge. This is a nice way to motivate users who want to give a shot at testing the development version, and it’s a nice reward.</p>
+<p>However, that’s not why I wanted to work on this first. The reason is that having a <img src="/img/travis/build-failing.png" /> is a perfect back door for more problems down the line.</p>
+<p>I survived all of <a href="https://purrple.cat/blog/2018/03/06/first-dplyr-mondays/">last week’s monday</a> with a <img src="/img/travis/build-failing.png" /> on the master branch, I did not pay too much attention and wanted to start fixing things that were already <code>reprex</code>ed in issues so nicely crafted by the community 🙏.</p>
+<p>First of all, you keep receiving these <em>Still failing</em> emails from Travis, and sometimes I can’t help it but interpret this as an allegory of life. I just spent some time fixing a problem, I don’t want a reminder that I’m still failing.</p>
+<div class="figure">
+<img src="/img/travis/still-failing.png" />
+
+</div>
+<p>The real problem however is that because you know it was broken already, you just don’t pay attention so you don’t have a way to quickly assert if you have just added a new 🐞, and then you live in fear.</p>
+<p>This is also a problem for the person who reviews the contribution, might be you, might not be you, that’s irrelevant. The last thing you want is to give more work to someone, especially if that someone is you.</p>
+<blockquote>
+<p>Keep your repo travis green</p>
+</blockquote>
+<p>It turns out the problem was trivial enough, it was just a matter of finding the information in the travis logs and follow R’s recommendation for the interface that <code>.onDetach</code> expects.</p>
+{{< tweet "973130890242134018" >}}
+<div class="figure">
+<img src="/img/travis/onDetach.png" />
+
+</div>
+</div>
+<div id="next-steps" class="section level2">
+<h2>Next steps</h2>
+<p>Great, now <a href="http://dplyr.tidyverse.org">dplyr</a> has its <img src="/img/travis/build-passing.png" /> badge again and I can break things again, or at least we can quickly identify when I do so.</p>
+<p>Other things happened yesterday, but that’s enough words about it.</p>
+<p>I might start to think about ways to make it easier to extract information from travis. It’s a lot of scrolling right now and it might be the reason why sometimes we don’t fix things quickly enough.</p>
+</div>
