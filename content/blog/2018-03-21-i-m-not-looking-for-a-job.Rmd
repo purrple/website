@@ -1,7 +1,7 @@
 ---
 title: I’m (not) looking for a job
 author: Romain François
-date: '2018-03-08'
+date: '2018-03-21'
 slug: i-m-not-looking-for-a-job
 categories: []
 tags: []
@@ -184,7 +184,7 @@ generally a good idea, but not really when you do it as part of preparing one of
 things you think you have to master tomorrow. 
 
 I really enjoy when I'm a room with people transmitting things that I know about R, but at the same time
-preparing the materials is something I always struggle with, always, no matter the topic, no matter 
+preparing the materials is something I *always* struggle with, always, no matter the topic, no matter 
 how much I know about it. Knowing something and be able to teach it are two very different games. 
 
 I took some time off, but I did not really recover, on top of that my partner at the time did not really 
@@ -194,21 +194,21 @@ So we came back to France, and I was like *Ok, so I'll just do the same exact th
 but as an independent freelancer, how hard could it be, right ? Mango was super helpful in the 
 transition process, they even gave me an extra gig. My former employer was my first client, that was nice. 
 
-I also had a few contacts, this materialised to few consulting gigs. And anyway, the worst come the worst 
+I also had a few contacts, this materialised to few consulting contracts. And anyway, the worst come the worst 
 I can always go hunt for a job. I was very naive to believe that I could pull it off. On top of not being 
 a consultant (more on that below), dealing with paperwork, invoices, spending time on the phone, 
 estimate the time something will take me, multiply that by two, but still be way off, 
 come up with how much I think my time is worth, ... I was not ready for any of that. 
 
-This lasted 8 years, and let's just say it has not been the best financial journey, I was structureless, 
+By some miracle, this lasted 8 years, and let's just say it has not been the best financial journey, I was structureless, 
 not really giving careful thought about the job. Not thinking is kind of a pattern of me, I just realized it now
 because of *thinking* about it. 
 
 > Think
 
 I've had some nice projects as a freelancer consultant, organized a few training sessions, 
-travelled to many places again, but for the most part, let's be real for a minute,
-when you do consulting, most of the time, not only you work on projects you don't choose,
+travelled to many places again, but for the most part, when you do consulting, 
+most of the time, not only you work on projects you don't choose,
 but on top of that you work on something someone else did not want to do. Sometimes 
 you're lucky and that's a nice project, sometimes you might learn something from it,
 but most of the time you'd rather be doing something else. 
@@ -216,14 +216,58 @@ but most of the time you'd rather be doing something else.
 For me, that was seeking asylum in open source projects, I already developped a taste
 for connecting R with other languages, that started with Java. My first trip to the 
 land of the R internals was because of [rJava](https://CRAN.R-project.org/package=rJava). I liked 
-the `r emo::ji("package")` but the jni inspired low level was a bit daunting.  
+the `r emo::ji("package")` but the jni inspired low level was a bit daunting, so I helped
+with the reflection based api with the `J` function and the use of the `$` method to 
+access fields and methods. 
 
-I discovered Google's 
-[protocol buffers]()
+I discovered Google's [protocol buffers](https://developers.google.com/protocol-buffers/) and 
+I liked it, that usually means I'm likely to do a package about it, and I could reuse 
+things that I learned from working on `rJava`. `protobuf` has a C++ library, so it was very natural 
+to use it to bring them to R. There was a thing called `Rcpp` that existed at the time, 
+so I started using it to build `RProtoBuf` (btw, what's up with the naming conventions we used back then). 
 
+[Rcpp](https://github.com/RcppCore/Rcpp) was not what it is today, it was actually more work to 
+use it than not to use it, data was copied on the way in from R objects to C++ structures, like
+`std::vector<double>` and on the way back from the C++ structures to R objects, the interface was
+weird, all the classes started with the `Rcpp` prefix, ... anyway there was a lot to be unhappy about. 
 
+Again, thanks to previous work on `RJava`, I knew about 
+[`R_PreserveObject` and `R_ReleaseObject`](https://github.com/wch/r-source/blob/0ba66a2bc236ae5b009af910688575aa4adddd2c/src/include/Rinternals.h#L1272), 
+and starting to use them is one of the two best things that ever happened to `Rcpp`
+(the other one is attributes from [JJ](https://twitter.com/fly_upside_down) ). 
 
+```cpp
+/* preserve objects across GCs */
+void R_PreserveObject(SEXP);
+void R_ReleaseObject(SEXP);
+```
 
+That changed everything, we could now have nice syntax, without paying for expensive
+data copies. When an `Rcpp` object (e.g. a `NumericVector`) is constructed, its underlying R object 
+goes through `R_PreserveObject` to protect it from the garbage collector, and when the 
+object is destructed, a call is made to `R_ReleaseObject` to remove that protection. 
 
+One way or another, I ended up working almost full time on Rcpp for several months, and 
+then users started to show up so we had to support them through mailing list and stack overflow
+and things like that. That's a lot of work. I liked it, I did not really pay 
+attention to the fact that I was essentially doing all this work for free. For sure
+down the line, I organised a few training sessions about `Rcpp` and I had some contracts 
+around it, but I think it is fair to say that I never really got return on my time 
+investment on the project. We did not really know that this was going to power many 
+cran packages at the time. 
 
+Developping `Rcpp` was for me a way to learn about R internals and C++ at the same time, 
+while doing something that would be generally useful to others. I usually try to 
+install some community side effects when I learn something. 
+
+And then this happened. 
+
+[![](/img/job/stack-overflow-hadley-R-C.png)](https://stackoverflow.com/questions/4106174/where-can-i-learn-how-to-write-c-code-to-speed-up-slow-r-functions)
+
+I believe answering that question from [Hadley](https://twitter.com/hadleywickham) on stack overflow had a huge 
+impact on a personnal level for sure, but also most importantly on the community. 2010 was a pre-dplyr pre-magrittr-pipe
+R world, and `plyr` was running the show. I never really got on the `plyr` `r emo::ji( "bullet_train")`, catching Hadley's
+attention about `Rcpp` is one of the things that led to [`dplyr`](https://github.com/tidyverse/dplyr). 
+
+Working on `dplyr` is definitely the best experience. 
 
