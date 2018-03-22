@@ -1,0 +1,84 @@
+---
+title: Quick and dirty branchmark
+author: Romain François
+date: '2018-03-22'
+slug: quick-and-dirty-branchmark
+categories: []
+tags:
+  - benchmark
+  - naniar
+  - Performance
+---
+
+A few months ago, I played with [Nicholas](https://twitter.com/nj_tierney)'s 
+[naniar](https://github.com/njtierney/naniar) `r emo::ji("package")` with performance in mind. 
+
+In the mean time, I have been busy doing other things and [Jim](https://twitter.com/jimhester_)'s 
+patch was merged instead. Fair enough, the patch is R-only and much simpler, mine 
+was using parallel c++ with `Rcpp` and `RcppParallel`. 
+
+I spent some time revisiting the `cpp-test` branch this afternoon, well tbh most of the 
+time was spent trying to please `git rebase`. rebase is amazing, but when there are lots 
+of commits in each branch, it can take some time and a few `git rebase --continue`
+attempts. It's worth learning about it though, it makes git history cleaner. 
+
+`r blogdown::shortcode_html("tweet", "975661828545146881" )`
+
+Once properly rebased, and with a few extra edits, I finally had a version in 
+the `cpp-test` branch I wanted to compare with the current version (in the `master` branch). 
+That's the second time this week I've needed a tool to compare 
+performance of two branches of some repo. 
+
+`r blogdown::shortcode_html("tweet", "976096954554966016" )`
+
+Thanks to the wonders of twitter, I know that I should take a look at 
+the [Rperform](https://github.com/analyticalmonk/Rperform) package. I have not taken that time yet, 
+and used a pattern involving [callr](https://github.com/r-lib/callr) and 
+[withr](https://github.com/r-lib/withr) for a quick and dirty branchmark (that's a benchmark to test 
+accross branches). 
+
+```{r, eval=FALSE}
+library(devtools)
+library(withr)
+
+with_libpaths("timings/master", install_github( "njtierney/naniar", ref = "master" ) )
+with_libpaths("timings/cpp-test", install_github( "njtierney/naniar", ref = "cpp-test" ) )
+
+fun <- function(){
+  library(naniar)
+  d <- purrr::map_df(1:10000, ~airquality)
+  print(system.time(res <- add_n_miss(d)))
+  res
+}
+
+r1 <- callr::r(fun, libpath = "timings/master"  , show = TRUE)
+r2 <- callr::r(fun, libpath = "timings/cpp-test", show = TRUE)
+identical(r1,r2)
+```
+
+So initially I install the two versions (`master` and `cpp-test`) of the `naniar` package 
+in their own libraries, using `with_libpaths`, and then using `callr::r` to evaluate 
+the code to benchmark against each of the versions. 
+
+That's what happens on my `r emo::ji("computer")`, a pretty decent macbook pro late 2017 
+equipped with an i7. 
+
+```r
+> r1 <- callr::r(fun, libpath = "timings/master"  , show = TRUE)
+   user  system elapsed 
+  0.183   0.036   0.219 
+ 
+> r2 <- callr::r(fun, libpath = "timings/cpp-test", show = TRUE)
+   user  system elapsed 
+  0.013   0.010   0.004 
+ 
+> identical(r1,r2)
+[1] TRUE
+```
+
+Probably also worth noting that I have `-O3` setup in my `~/.R/Makevars`, so the 
+C++ code is correctly optimised. 
+
+```
+CXX11FLAGS = -Wno-unused-result -O3
+```

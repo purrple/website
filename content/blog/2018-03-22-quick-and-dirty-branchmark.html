@@ -1,0 +1,51 @@
+---
+title: Quick and dirty branchmark
+author: Romain François
+date: '2018-03-22'
+slug: quick-and-dirty-branchmark
+categories: []
+tags:
+  - benchmark
+  - naniar
+  - Performance
+---
+
+
+
+<p>A few months ago, I played with <a href="https://twitter.com/nj_tierney">Nicholas</a>’s <a href="https://github.com/njtierney/naniar">naniar</a> 📦 with performance in mind.</p>
+<p>In the mean time, I have been busy doing other things and <a href="https://twitter.com/jimhester_">Jim</a>’s patch was merged instead. Fair enough, the patch is R-only and much simpler, mine was using parallel c++ with <code>Rcpp</code> and <code>RcppParallel</code>.</p>
+<p>I spent some time revisiting the <code>cpp-test</code> branch this afternoon, well tbh most of the time was spent trying to please <code>git rebase</code>. rebase is amazing, but when there are lots of commits in each branch, it can take some time and a few <code>git rebase --continue</code> attempts. It’s worth learning about it though, it makes git history cleaner.</p>
+{{< tweet "975661828545146881" >}}
+<p>Once properly rebased, and with a few extra edits, I finally had a version in the <code>cpp-test</code> branch I wanted to compare with the current version (in the <code>master</code> branch). That’s the second time this week I’ve needed a tool to compare performance of two branches of some repo.</p>
+{{< tweet "976096954554966016" >}}
+<p>Thanks to the wonders of twitter, I know that I should take a look at the <a href="https://github.com/analyticalmonk/Rperform">Rperform</a> package. I have not taken that time yet, and used a pattern involving <a href="https://github.com/r-lib/callr">callr</a> and <a href="https://github.com/r-lib/withr">withr</a> for a quick and dirty branchmark (that’s a benchmark to test accross branches).</p>
+<pre class="r"><code>library(devtools)
+library(withr)
+
+with_libpaths(&quot;timings/master&quot;, install_github( &quot;njtierney/naniar&quot;, ref = &quot;master&quot; ) )
+with_libpaths(&quot;timings/cpp-test&quot;, install_github( &quot;njtierney/naniar&quot;, ref = &quot;cpp-test&quot; ) )
+
+fun &lt;- function(){
+  library(naniar)
+  d &lt;- purrr::map_df(1:10000, ~airquality)
+  print(system.time(res &lt;- add_n_miss(d)))
+  res
+}
+
+r1 &lt;- callr::r(fun, libpath = &quot;timings/master&quot;  , show = TRUE)
+r2 &lt;- callr::r(fun, libpath = &quot;timings/cpp-test&quot;, show = TRUE)
+identical(r1,r2)</code></pre>
+<p>So initially I install the two versions (<code>master</code> and <code>cpp-test</code>) of the <code>naniar</code> package in their own libraries, using <code>with_libpaths</code>, and then using <code>callr::r</code> to evaluate the code to benchmark against each of the versions.</p>
+<p>That’s what happens on my 💻, a pretty decent macbook pro late 2017 equipped with an i7.</p>
+<pre class="r"><code>&gt; r1 &lt;- callr::r(fun, libpath = &quot;timings/master&quot;  , show = TRUE)
+   user  system elapsed 
+  0.183   0.036   0.219 
+ 
+&gt; r2 &lt;- callr::r(fun, libpath = &quot;timings/cpp-test&quot;, show = TRUE)
+   user  system elapsed 
+  0.013   0.010   0.004 
+ 
+&gt; identical(r1,r2)
+[1] TRUE</code></pre>
+<p>Probably also worth noting that I have <code>-O3</code> setup in my <code>~/.R/Makevars</code>, so the C++ code is correctly optimised.</p>
+<pre><code>CXX11FLAGS = -Wno-unused-result -O3</code></pre>
