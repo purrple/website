@@ -29,6 +29,10 @@
                       <div class="post-date">
                         {{ .Date.Format .Site.Params.date_format }}
                       </div>
+                      
+                      <span class="article-duration">
+                        {{ .ReadingTime }} min read
+                      </span>
       
                       {{ partial "tags.html" . }}
                       
