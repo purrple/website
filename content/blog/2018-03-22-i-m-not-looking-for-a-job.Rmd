@@ -14,25 +14,25 @@ This is a very personal post where I'm articulating some thoughts about my caree
 my immediate shift of direction, and how you can [help me](https://www.patreon.com/romainfrancois). 
 I'm typically not a disclaimer user because I believe it's pretty obvious I'm speaking in my own name, but let me for once
 express that I have a lot of respect for the companies I worked for, 
-and that I take full responsaibility for any flaws I'm about to discuss here. 
+and that I take full responsability for any flaws I'm about to discuss here. 
 
-My contract with [ThinkR](https://thinkr.fr) has ended on feb 23rd, and I'm now repurposing 
-my time to focus exclusively on open source work. I'll discuss that in details below, 
+My contract with [ThinkR](https://thinkr.fr) ended on feb 23rd, and I'm now repurposing 
+my time to focus exclusively on open source work. I'll discuss that in detail below, 
 but for now, here's a link to my [patreon page](https://www.patreon.com/romainfrancois)
 where you have an opportunity to help me stay free and work serenely on cool open source stuff. 
 
 ## Once upon a time
 
 I was a bright kid, and everybody in the family was surprised when I picked up reading on my own
-(that's at least the story I've heard manby times), 
-after some tests I skipped two classes and things still were easy. I'm not writing this to brag, 
-quite the opposite. I attribute most of character traits and flaws to essentially 
+(that's at least the story I've heard many times). 
+After some tests I skipped two classes and things still were easy. I'm not writing this to brag, 
+quite the opposite. I attribute most of my character traits and flaws to essentially 
 surviving through school being two years younger than everybody else. 
 
 ![](/img/job/rcattoddler.jpg)
 
 I did not really pay too much attention in school because things were easy, I just knew
-how to do the bare minimum, at the end of high school I knew I would pass because I was solid in maths, 
+how to do the bare minimum. At the end of high school I knew I would pass because I was solid in maths, 
 so I did not bother doing the second page of the physics exam. Things like that. 
 
 I kind of went with the flow of what I liked and knew how to do, so I ended up doing maths 
@@ -55,17 +55,17 @@ handed us what felt like a contraband `r emo::ji("cd")` of something that looked
 was R one point something. 
 
 Later that year we went to [CIRAD](https://www.cirad.fr) with a few classmates to download 
-a more recent copy of R and most of CRAN, in particular we wanted the 
+a more recent copy of R and most of CRAN. In particular we wanted the 
 [akima](https://cran.r-project.org/package=akima) `r emo::ji("package")` for a 
 spatial statistics assignment. 
 
 I never really took the time to think about it, but I guess these two assignments
-are what got me interrested in R in the first place. This is when I started to 
-check what's inside, digest lots of documentation and code, register to the mailing list, 
+are what got me interested in R in the first place. This is when I started to 
+check what's inside, digest lots of documentation and code, and register to the mailing list. 
 R was like a big magnet I was attracted to, and even though the community was perhaps not 
 as welcoming as it has become now, I wanted to be a part of it. 
-The more I knew, the more I wanted to know ... I'm in my early 20ies, and this is the first time
-I work hard for something, no matter what the difficulty was, I developped this passion 
+The more I knew, the more I wanted to know ... I was in my early 20s, and this was the first time
+I worked hard for something, no matter what the difficulty was. I developed this passion 
 about R, and open source in general, but mostly R. 
 
 I finished my curriculum at the [ISUP](http://isup.sorbonne-universite.fr/fr/index.html), 
@@ -77,7 +77,7 @@ underground training session in the computer room. Everybody chipped in and they
 me two tickets to go see a play in a nice theater in Paris. 
 
 Whenever there was an assignment in SAS or whatever, I would essentially discard that 
-piece of information, and do it in R instead. R was going to be a huge part of my life. 
+piece of information and do it in R instead. R was going to be a huge part of my life. 
 
 Also, the curriculum was very geared towards theoretical statistics, lots of ink and 
 paper, e.g. I thought I knew what bootstrap was (for loops and resampling and cool 
@@ -111,24 +111,24 @@ I don't think I should be a source of wisdom, but here we go:
 
 The 10 months this lasted were very hard on me, I felt stuck between the 
 university and the industry partner, constantly going from one office to 
-another and act as a messenger. I don't think I did anything of any value 
+another and acting as a messenger. I don't think I did anything of any value 
 during these few months. 
 
 > Think about what you like, and do that. 
 
 My daughter was born and I was getting a sense of accomplishment through 
 the R graph gallery, a website I put together to showcase graphics 
-produced by R alongside the code. This was lots of very fragile php code
+produced by R alongside the code. This was a lot of very fragile php code
 on top of a mysql database and poor web design, but people liked it.
 This would have been sooooo much nicer if 
 [blogdown](https://bookdown.org/yihui/blogdown/) existed at the time. 
 
 The deployment was such a pain too, I had to enter things for new 
 graphics in a mysql database, and update the site through ftp. 
-It lived in a *real* server to run the php code, at some point 
+It lived in a *real* server to run the php code, and at some point 
 during one my my disappearing episodes, I forgot
 to renew it so the last version essentially vanished. Life 
-is so much sweater now with things like 
+is so much sweeter now with things like 
 [github](https://github.com) and [netlify](https://www.netlify.com). 
 
 I might be able 
@@ -145,8 +145,8 @@ information, new things to learn.
 
 ## Consulting
 
-Overall, the conference was reinforcing my desire to be part of the community, 
-some people knew about the graph gallery, so I talked more about it than about my poster. 
+Overall, the conference was reinforcing my desire to be part of the community. 
+Some people knew about the graph gallery, so I talked more about it than about my poster. 
 This is also where I met with people from [Mango](https://www.mango-solutions.com). I was like 
 *wait, I can write R code all day and be paid for it, that sounds cool*. That sounded 
 better than what I was doing. I didn't think about it twice. 
@@ -155,14 +155,14 @@ A few months `r emo::ji("fast_forward")`, I was in a pub in Chippenham doing an 
 We moved to [Bath](https://visitbath.co.uk) with a 6 months old `r emo::ji("baby")`, and apparently 
 I was a consultant now. 
 
-This was my first real job, I travelled to many places, attended conferences, learned a lot of 
-things, most of what I know about being a consultant comes from the two years at this job, most 
+This was my first real job, I travelled to many places, attended conferences, and learned a lot of 
+things. Most of what I know about being a consultant comes from the two years at this job, most 
 of the struggles too. Not too much open source, although I was quite extreme about *using* 
 open source as much as possible. Dumping windows to install some funky (or maybe even not that funky)
 linux distribution was a good way in 2006 to create some friction with people and software. 
 
-I only took me 2 years to develop enough anxiety to break down, and again that is totally on me, 
-mango was a small (6 when I joined, twice that when I left) company, people were nice and friendly,
+It only took me 2 years to develop enough anxiety to break down, and again that is totally on me. 
+Mango was a small (6 when I joined, twice that when I left) company, people were nice and friendly,
 we went to the pub frequently and played Badminton, they were super helpful for the whole 
 expat with a baby process. 
 
@@ -182,16 +182,16 @@ how much I know about it. Knowing something and be able to teach it are two very
 
 I took some time off, but I did not really recover, and we kind of wanted our daughter to go to a french school. 
 So we came back to France, and I was like *Ok, so I'll just do the same exact thing, consulting and training*
-but as an independent freelancer, how hard could it be, right ? Mango was super helpful in the 
+but as an independent freelancer, how hard could it be, right? Mango was super helpful in the 
 transition process, they even gave me an extra gig. My former employer was my first client, that was nice. 
 
-I also had a few contacts, this materialised to few consulting contracts. And anyway, the worst come the worst 
+I also had a few contacts, this materialised to few consulting contracts. And anyway, worst comes to worst 
 I can always go hunt for a job. I was very naive to believe that I could pull it off. On top of not being 
 a consultant (more on that below), dealing with paperwork, invoices, spending time on the phone, 
-estimate the time something will take me, multiply that by two, but still be way off, 
-come up with how much I think my time is worth, ... I was not ready for any of that. 
+estimating the time something will take me, multiplying that by two, but still being way off, 
+coming up with how much I think my time is worth, ... I was not ready for any of that. 
 
-By some miracle, this lasted 8 years, and let's just say it has not been the best financial journey, I was structureless, 
+By some miracle, this lasted 8 years, and let's just say it has not been the best financial journey. I was structureless, 
 not really giving careful thought about the job. Not thinking is kind of a pattern of me, I just realized it now
 because of *thinking* about it, that's refreshing. 
 
@@ -199,14 +199,14 @@ because of *thinking* about it, that's refreshing.
 
 I've had some nice projects as a freelancer, organized a few training sessions, 
 travelled to many places again, but for the most part, when you do consulting, 
-not only you work on projects you don't choose,
+not only do you work on projects you don't choose,
 but on top of that you work on something someone else did not want to do. Sometimes 
 you're lucky and that's a nice project, sometimes you might learn something from it,
 but most of the time you'd rather be doing something else. 
 
 ## Open source Asylum
 
-For me, that was seeking asylum in open source projects, I already developped a taste
+For me, that was seeking asylum in open source projects, I already developed a taste
 for connecting R with other languages, that started with Java. My first trip to the 
 land of the R internals was because of [rJava](https://CRAN.R-project.org/package=rJava). I liked 
 the `r emo::ji("package")` but the jni inspired low level interface was a bit hard to grasp, so I helped
@@ -219,10 +219,10 @@ things that I learned from working on `rJava`. `protobuf` has a C++ library, so 
 to use it to bring them to R. There was a thing called `Rcpp` that existed at the time, 
 so I started using it to build `RProtoBuf`. 
 
-[Rcpp](https://github.com/RcppCore/Rcpp) was not what it is today, 
+[Rcpp](https://github.com/RcppCore/Rcpp) was not what it is today: 
 data was copied on the way in from R objects to C++ structures, like
 `std::vector<double>` and on the way back from the C++ structures to R objects, the interface was
-weird, all the classes started with the `Rcpp` prefix, ... anyway there was a lot to be unhappy about. 
+weird, all the classes started with the `Rcpp` prefix, ... anyways there was a lot to be unhappy about. 
 
 Again, thanks to previous work on `RJava`, I knew about 
 [`R_PreserveObject` and `R_ReleaseObject`](https://github.com/wch/r-source/blob/0ba66a2bc236ae5b009af910688575aa4adddd2c/src/include/Rinternals.h#L1272), 
@@ -242,14 +242,14 @@ object is destructed, a call is made to `R_ReleaseObject` to remove that protect
 
 I ended up working almost full time on Rcpp for several months, and 
 then users started to show up so we had to support them through mailing list and stack overflow
-and things like that. That's a lot of work. I liked it, I did not really pay 
+and things like that. That's a lot of work. I liked it but did not really pay 
 attention to the fact that I was essentially doing all this work for free. For sure
 down the line, I organised a few training sessions about `Rcpp` and I had some contracts 
 around it, but I think it is fair to say that I never really got return on my time 
 investment on the project. We did not really know that this was going to power many 
 cran packages at the time. 
 
-Developping `Rcpp` was for me a way to learn about R internals and C++ at the same time, 
+Developing `Rcpp` was for me a way to learn about R internals and C++ at the same time, 
 while doing something that would be generally useful to others. I usually try to 
 install some community side effects when I learn something. 
 
@@ -258,12 +258,12 @@ And then this happened.
 [![](/img/job/stack-overflow-hadley-R-C.png)](https://stackoverflow.com/questions/4106174/where-can-i-learn-how-to-write-c-code-to-speed-up-slow-r-functions)
 
 I believe answering that question from [Hadley](https://twitter.com/hadleywickham) on stack overflow had a huge 
-impact on a personnal level for sure, but also most importantly on the community. 2010 was a pre-dplyr pre-magrittr-pipe
-R world, and `plyr` was running the show. I never really got on the `plyr` `r emo::ji( "bullet_train")`, catching Hadley's
+impact on a personal level for sure, but also most importantly on the community. 2010 was a pre-dplyr pre-magrittr-pipe
+R world, and `plyr` was running the show. I never really got on the `plyr` `r emo::ji( "bullet_train")` and catching Hadley's
 attention about `Rcpp` is one of the things that led to [`dplyr`](https://github.com/tidyverse/dplyr). 
 
 Working on `dplyr` is definitely the best thing that ever happened to me. There were clear goals, but 
-a lot of freedom for the implementation, since speed was high on the list, I naturally 
+a lot of freedom for the implementation, and since speed was high on the list, I naturally 
 ended up using a lot (too much perhaps) of `Rcpp`. And `r emo::ji("cherry")` on the `r emo::ji("cake")`, 
 I could invoice my time. 
 
@@ -278,24 +278,24 @@ or a very slow `r emo::ji("snail")` progress.
 Then the feeling of guilt, why would I be allowed to work on cool (paid nor not paid)
 projects while I was feeling guilty of not being able to make progress on the others. 
 I then ended up spending less and less time on the things that I liked 
-because the things I didn't were resultlessly eating all of it. 
+because the things I didn't were relentlessly eating all of my time. 
 
 Eventually the cool projects were too far, and I could not find the energy to get back at 
-them, and the shame of having disappeared did not help me reaching out, all I would have had to offer
+them, and the shame of having disappeared did not help me reaching out. All I would have had to offer
 was excuses, sorry I've been busy and all that. shame. 
 
 Being late at delivering also means no money, no stability etc ... and feeding 
 my imposter syndrome `r emo::ji("demon")`. 
 
-The job offer from ThinkR felt like a blessing, I would have a salary, people
-to interract with, challenging work, and a 80/20 setup so that I could spend 20% 
-of my time on whatever. I has been a nice adventure, the job is interresting and 
+The job offer from ThinkR felt like a blessing. I would have a salary, people
+to interract with, challenging work, and an 80/20 setup so that I could spend 20% 
+of my time on whatever. It has been a nice adventure, the job is interesting and 
 the company is ubiquitous in the `r emo::ji("france")` R community, something 
 I've never been able to do on my own. 
 
-The old demons were still present though, I can only blame myself for that, 
+The old demons were still present though. I can only blame myself for that, 
 but that gluttoned my 20%. I'm not saying I've not been present and encouraged 
-to be during my year, e.g. event though I did not get to go to [useR!](https://user2017.brussels) last year
+to be during my year, e.g. even though I did not get to go to [useR!](https://user2017.brussels) last year
 for `r emo::ji("baby")` reasons, I have been active on twitter, which triggered 
 curiosity about emojis, planting the seed of future work on the `emo` `r emo::ji("package")`. 
 
@@ -304,7 +304,7 @@ the [tweetstorm](https://github.com/ThinkR-open/tweetstorm) shiny app (I only re
 that the word meant something else), which we then used in shiny training courses. 
 Same story with the [prenoms](https://github.com/ThinkR-open/prenoms) package, the 
 shiny app about the french [legislatives](https://github.com/ThinkR-open/legislatives2017) 
-elections, the [collage](https://github.com/ThinkR-open/collage) package, which were 
+elections, and the [collage](https://github.com/ThinkR-open/collage) package, which were 
 then a part of how I would build training material. 
 
 This was more evenings and weekends than 20% though, because I did not manage to do 
@@ -318,8 +318,8 @@ I'm forced to realize that being a private consultant is not what I am,
 and not what I want to be, and for the most part if I believe the conversations
 I typically have at conferences, not really what is expected of me. 
 
-My initial one-year contract ended a month ago, and I chose to not renew it, so that I can 
-take over control of my time. But this time, I'm putting a lot of thoughts into 
+My initial one-year contract with ThinkR ended a month ago, and I chose to not renew it so that I can 
+take over control of my time. But this time, I'm putting a lot of thought into 
 what I want to do with it. 
 
 Some people do open source on the side, some people are lucky enough to work 
@@ -336,26 +336,26 @@ open source work is neither a stepping stone nor a treat, but real day job kind 
 My goal now is to spend 100% of my time doing open source work. 
 I've been thinking about this a lot, so here's how I am organizing my weeks now: 
 
- - on monday, I'll work on [dplyr](https://github.com/tidyverse/dplyr). There's 
+ - on Mondays, I'll work on [dplyr](https://github.com/tidyverse/dplyr). There's 
   still plenty of work to do here, for now I've been dealing with issues and bugs, 
   but eventually there is still room for innovation. 
   
- - on tuesday, I'll work on [Apache Arrow](https://github.com/apache/arrow), to 
+ - on Tuesdays, I'll work on [Apache Arrow](https://github.com/apache/arrow) to 
   add R as one of the supported languages, following the steps of the python front end. 
 
- - on friday, I'll work on [ergo](https://github.com/rstats-go), to bridge R and  
+ - on Fridays, I'll work on [ergo](https://github.com/rstats-go), which will bridge R and  
    [go](https://golang.org). For now that means writing a proposal to get funding. 
 
 This has worked well so far. It involves some context switching, but forcing myself 
 to block these days gives me enough focus. 
 
-That leaves wednesday and thursday that are not associated with strong commitments, 
+That leaves Wednesdays and Thursdays not associated with strong commitments; 
 I'll use these days to get involved in miscellaneous projects, not necessarily my own. 
 
 ## Help
 
 I have setup a [patreon](https://www.patreon.com/romainfrancois) page to give the 
-community a way to help me stay free, and continue to get involved in open source 
+community a way to help me stay free and continue to get involved in open source 
 projects with some serenity. 
 
 [![](/img/job/confettis.png)](https://www.patreon.com/romainfrancois)
@@ -366,15 +366,15 @@ concrete possibility for people or companies to chip in. I believe I'm much more
 to the community when I'm free.
 
 I know we have now more formal ways to get funding, but these typically 
-are *project* oriented, you write a project proposal, you submit it and perhaps
+are *project* oriented: you write a project proposal, you submit it and perhaps
 you get some funding. This is what I will do for `ergo`, but this does 
 not apply to miscellaneous small projects and various efforts to support the community. 
 
-Platforms such as patreon are *people* oriented, and are better match for 
-supporting someone who works creatively, you support someone's process instead of the 
+Platforms such as patreon are *people* oriented and thus are a better match for 
+supporting someone who works creatively, as you support someone's process instead of the 
 end result. 
 
-Every donation is welcome and useful, I arbitrarily setup donation suggestions as powers of 2 (`2^(0:10)`) with emoji 
+Every donation is welcome and useful. I arbitrarily setup donation suggestions as powers of 2 (`2^(0:10)`) with emoji 
 titles and some indication of what you'd help me cover. The first few goals I've 
 setup are all about covering expenses related to how I work, things like internet connection 
 and renting a space in a coworking office. 
