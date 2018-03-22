@@ -5,6 +5,7 @@ date: '2018-03-22'
 slug: i-m-not-looking-for-a-job
 categories: []
 tags: []
+banner: "img/banners/confettis.png"
 ---
 
 ## TL;DR
