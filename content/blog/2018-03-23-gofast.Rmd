@@ -1,0 +1,196 @@
+---
+title: gofast
+author: Romain François
+date: '2018-03-23'
+slug: gofast
+categories: []
+tags:
+  - ergo
+  - cgo
+  - go
+---
+
+Today was about adding some more confidence about the feasability of `ergo`. In particular
+I was interested about these two problems that I decided to play with at the same time. 
+
+ - Returning a slice of go strings to the R side. We've already seen 
+ how to [return a single string](https://purrple.cat/blog/2017/06/10/using-go-strings-in-r/)
+ and how to return a [slice of numbers](https://purrple.cat/blog/2017/07/03/go-slices/) but slices
+ of strings are a different beast. 
+ 
+ - Using the [ast](https://golang.org/pkg/go/ast/) package to manipulate go code as an 
+ abstract syntax tree (ast). 
+ 
+The motivation for the first item should be obvious, so let's talk about the motivation for the 
+second `r emo::ji("black_circle")`. We need some background first. Remember Rcpp attributes, 
+most notoriously these `// [[Rcpp::export]]` comments you add before a C++ function 
+to express that you want this function available to the R side, something like this: 
+
+```cpp
+// [[Rcpp::export]]
+double fahrenheit(double celcius){
+  return 32 + 1.8 * celcius ;
+}
+```
+
+Attributes is one of the best things that ever happened to Rcpp, this was an amazing piece 
+of engineering work by [JJ](https://twitter.com/fly_upside_down) that has changed for the better
+how we use C++ functions with Rcpp. But this was not the original plan. Initially we wanted 
+something automatic, something that would identify automatically functions that 
+could be exported, or perhaps based on some naming convention. The problem is C++ is very hard to parse. 
+
+[Go](https://golang.org) on the other hand is a simpler language, and its standard library
+comes with all the tools to analyse Go code, transform it into an ast, manipulate it, and so on. 
+There are many resources to understand how this works, e.g. I've watched this video:
+
+`r blogdown::shortcode_html("youtube", "oxc8B2fjDvY")`
+
+and played with this [blog post](https://zupzup.org/go-ast-traversal/). In short once you 
+have parsed a Go file with `parser.ParseFile` you can traverse the nodes of the ast 
+with `ast.Inspect` function. 
+
+I've used it to make a simple function that gives the names of the functions in a Go file: 
+
+```go
+package gofast
+
+import (
+	"go/ast"
+	"go/parser"
+	"go/token"
+	"log"
+)
+
+func Gofast( code string ) []string {
+  fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, "", code, parser.ParseComments)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+  functions := []string{} ;
+
+	ast.Inspect(node, func(n ast.Node) bool {
+		// Find Functions
+		fn, ok := n.(*ast.FuncDecl)
+		if ok {
+			functions = append( functions, fn.Name.Name )
+		}
+		return true
+	})
+
+  return functions
+}
+```
+
+So we have the `Gofast` function that takes some code in a string and
+return a slice of strings. 
+
+This brings us back to the first problem, we want to call this function from R, so 
+we want to be able to return a slice of strings as an R character vector. We need a few 
+tools from the R api. 
+ - `Rf_allocVector` to  create a vector of the right type, here `STRSXP`
+ - `Rf_protect` to protect that vector from the garbage collector
+ - `Rf_unprotect` to lift that protection
+ - `SET_STRING_ELT` to set an individual R string (i.e. a `CHARSXP`) in the vector
+ - `Rf_mkCharLenCE` to create an R string from a sequence of `char` and a size. 
+ 
+So following the pattern I've used in my previous go adventures, here is 
+another Go function that sits between the real pure go code we've seen before, and
+the R things. Don't worry if it looks ugly, it involves both low level stuff
+from Go and R apis. 
+
+```go
+package main
+
+/*
+  #define USE_RINTERNALS
+  #include <R.h>
+  #include <Rinternals.h>
+
+*/
+import "C"
+import "gofast"
+
+//export Gofast
+func Gofast( x string ) C.SEXP {
+  functions := gofast.Gofast(x)
+  n := len(functions)
+
+  var out C.SEXP = C.Rf_allocVector( C.STRSXP, C.long(n) )
+  C.Rf_protect(out)
+  defer C.Rf_unprotect(1)
+
+  for i, s := range functions {
+    C.SET_STRING_ELT( out, C.R_xlen_t(i), C.Rf_mkCharLenCE( C._GoStringPtr(s), C.int(len(s)), C.CE_UTF8 ) )
+  }
+
+  return out ;
+}
+
+func main() {}
+```
+
+This starts nicely by calling the other `Gofast` function to get the 
+slice of strings `functions := gofast.Gofast(x)` and then the rest of it is just 
+mitigating R and Go low level interfaces. I found out about 
+`C._GoStringPtr` by asking [this question](https://stackoverflow.com/questions/49453875/access-the-raw-bytes-of-a-string)
+on stack overflow. 
+
+The whole purpose of `ergo` is that we will not have to care about that as eventually 
+it will be generated automatically. 
+
+We also need an R api compatible C function, i.e. a function that only used `SEXP` in and out. 
+It's a bit less intimidating than the other one, although I would not want to write this one
+manually either, I did, but I'm weird. 
+
+```c
+#include "_cgo_export.h"
+
+SEXP gofast( SEXP x ){
+  if( TYPEOF(x) != STRSXP ) error("expecting an string") ;
+  SEXP sx = STRING_ELT(x, 0) ;
+  GoString gos = { (char*)CHAR(sx), SHORT_VEC_LENGTH(sx) } ;
+  return Gofast(gos) ;
+}
+```
+
+Finally, we need an R function to call `gofast`, it looks like this: 
+
+```r
+#' @useDynLib gofast
+#' @export
+gofast <- function(x) {
+  .Call("gofast", x, PACKAGE = "gofast")
+}
+```
+
+and then finally we can all it:
+
+```{r}
+code <- '
+package foo 
+
+func Test() int{ return 3 } 
+func Bla(){}
+'
+gofast::gofast(code)
+```
+
+If we take a step back from all the layers, we started from a Go 
+function that takes a single string and returns a slice of strings
+and we call that function from R. 
+
+Incidentally, that function's job is to list
+the Go functions in the Go file. This is just a first step, down the line, 
+we'll be able to get more information from the ast and use it to generate all the boiler 
+plate intermediate functions. It's been done with Rcpp from an approximate
+parser, so there's no reason why this can't be done too with exact parsing from Go. 
+
+Mission accomplished, I have some more confidence about the potential of `ergo`. 
+The code discussed here is in the [gofast](https://github.com/rstats-go/gofast)
+repo in the [rstats-go](https://github.com/rstats-go) organisation we created
+to structure the development of `ergo`. 
+
+
+
