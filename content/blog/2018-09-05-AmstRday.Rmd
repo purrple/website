@@ -1,0 +1,65 @@
+---
+title: AmstRday tweets
+author: Cécile Sauder
+date: '2018-09-05'
+slug: amstrday
+categories: []
+tags:
+  - SatRday
+  - Amsterdam
+  - AmstRday
+---
+
+```{r setup, message=FALSE}
+library(tidyverse)
+library(rtweet)
+library(knitr)
+library(kableExtra)
+library(ggiraph)
+library(magick)
+```
+
+## Scraping the tweets
+
+
+```{r tweets, message=FALSE}
+rt_AmsteRday <- search_tweets(
+  "#AmsteRday", n = 2, include_rts = FALSE
+)
+rt <- rt_AmsteRday
+
+vect <- c("#AmstRday", "#satRday", "#satRdays", "#satRdayAMS", "#satRdaysAMS")
+
+for( vec in vect){
+  
+  rt_vec <- search_tweets(
+    vec, n = 18000, include_rts = FALSE
+  )
+  rt <- bind_rows(rt, rt_vec)
+}
+
+
+rt <- rt %>% 
+  unique()
+
+kable(rt) %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "200px")
+```
+
+###161 tweets about SatRday Amsterdam.
+
+## Which hashtags ?
+
+```{r, message=FALSE}
+             
+hashtags <- rt$hashtags %>% 
+  unlist() %>% 
+  str_to_lower() %>%
+  table() %>% 
+  sort(decreasing = TRUE) %>% 
+  enframe() %>%
+  mutate_each( funs(as.numeric), value) %>%
+  mutate_each( funs(as.factor), name) 
+
+```
