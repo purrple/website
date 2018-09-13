@@ -8,6 +8,7 @@ tags:
   - SatRday
   - Amsterdam
   - AmstRday
+  - Twitter
 ---
 
 ```{r setup, message=FALSE}
@@ -17,30 +18,47 @@ library(knitr)
 library(kableExtra)
 library(ggiraph)
 library(magick)
+library(tidytext)
+library(wordcloud)
+library(widyr)
+library(igraph)
+library(ggraph)
+library(ggmap)
+library(maps)
+library(plotly)
 ```
 
 ## Scraping the tweets
 
 
 ```{r tweets, message=FALSE}
-rt_AmsteRday <- search_tweets(
-  "#AmsteRday", n = 2, include_rts = FALSE
-)
-rt <- rt_AmsteRday
+# rt_AmsteRday <- search_tweets(
+#   "#AmsteRday", n = 2, include_rts = FALSE
+# )
+# rt <- rt_AmsteRday
+# 
+# vect <- c("#AmstRday", "#satRday", "#satRdays", "#satRdayAMS", "#satRdaysAMS")
+# 
+# for( vec in vect){
+#   
+#   rt_vec <- search_tweets(
+#     vec, n = 18000, include_rts = FALSE
+#   )
+#   rt <- bind_rows(rt, rt_vec)
+# }
+# 
+# 
+# rt <- rt %>% 
+#   unique()
+# 
+# saveRDS(rt, "tweets.RDS")
 
-vect <- c("#AmstRday", "#satRday", "#satRdays", "#satRdayAMS", "#satRdaysAMS")
+rt <- readRDS(file = "tweets.RDS")
 
-for( vec in vect){
-  
-  rt_vec <- search_tweets(
-    vec, n = 18000, include_rts = FALSE
-  )
-  rt <- bind_rows(rt, rt_vec)
-}
+#problem  geocode for "nederland", find it in USA
+#solution : replace all Nederland by Nederlands in the column location from rt tibble
 
-
-rt <- rt %>% 
-  unique()
+rt$location <- str_replace_all(rt$location, "Nederland", "Nederlands")
 
 kable(rt) %>%
   kable_styling() %>%
@@ -63,3 +81,284 @@ hashtags <- rt$hashtags %>%
   mutate_each( funs(as.factor), name) 
 
 ```
+
+###Print the table for all hashtags :
+
+```{r}
+hashtags %>%
+  kable() %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "200px")
+```
+
+
+###Barplot for hashtags used 2 times and more
+
+```{r}
+gg <- hashtags %>%
+  filter(value > 1) %>%
+  ggplot(aes(x = reorder(name, value), y = value, fill = 6)) + 
+      theme_bw() +
+      geom_bar_interactive(aes(tooltip = value, data_id = name),stat="identity") +
+      coord_flip() + 
+      xlab("Hashtags") + 
+      ylab("Number") + 
+      guides(fill=FALSE)
+
+ggiraph(ggobj = gg, hover_css = "fill-opacity:.6;cursor:pointer;",
+            width = 0.8, width_svg = 6,
+            height_svg = 8, selection_type = "none")
+  
+
+```
+
+
+## Who's tweeted
+
+```{r, message=FALSE}
+
+rt %>%
+  group_by(name, screen_name, location, profile_image_url) %>%
+  summarise(n = n()) %>%
+  arrange(-n) -> names 
+
+ #names %>%
+#   mutate(image = glue('"include_graphics( {profile_image_url} )"'))
+
+#names
+#print(image_read(names$profile_image_url))
+
+kable(names) %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "200px")
+
+gg <- names %>%
+  ggplot(aes(x = reorder(name, n), y = n, fill = 6)) + 
+      theme_bw() +
+      geom_bar_interactive(aes(tooltip = n, data_id = screen_name),stat="identity") +
+      coord_flip() + 
+      xlab("Names") + 
+      ylab("Number") + 
+      guides(fill=FALSE)
+
+ggiraph(ggobj = gg, hover_css = "fill-opacity:.6;cursor:pointer;",
+            width = 0.8, width_svg = 6,
+            height_svg = 8, selection_type = "none")
+
+
+
+```
+
+## Tweets map
+
+```{r, message=FALSE, tidy = TRUE, cache= TRUE}
+# 
+# n <- length(names$location)
+# df <- tibble(lon = rep(NA, n), lat = rep(NA,n))
+# for (i in 1: n){
+#   for (counter in 1:10){
+#     if(is.na(df$lat[i])){
+#     df[i,] <- geocode(names$location[i])
+#     }
+#   }
+# }
+# 
+# df %>%
+#   summarise_all(funs(sum(is.na(.))))
+# 
+# df_map <- bind_cols(names, df) %>%
+#   select(name, location, lon, lat, n)
+# 
+# saveRDS(df_map, "df_map.RDS")
+
+
+df_map <- readRDS("df_map.RDS")
+
+# map=get_map(location = c(2.3488, 48.8534), zoom = 5)
+# 
+# ggmap1 <- ggmap(map) +
+#   geom_point(data = df_map, aes(x = lon, y = lat, color = name, size = n))
+# 
+# ggmap1
+
+
+
+tib_temp <- tibble(lon = na.omit(df_map$lon), lat = na.omit(df_map$lat)) %>%
+  mutate(country = map.where(database="world", lon, lat ))
+
+tib_temp <- unique(left_join(df_map, tib_temp, by = c("lon", "lat"))) %>%
+  select(screen_name, country)
+
+tib <- merge(rt, tib_temp, by= c("name", "location", "screen_name"))
+
+tib_map <- tib %>%
+  rename(country = country.y) %>%
+  group_by(country) %>%
+  summarise(n = n()) %>%
+  arrange(-n)
+  
+########################################""""""
+#to get the countries code
+df <- read.csv('https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv')
+
+tib_map <- left_join(tib_map, select(df, COUNTRY, CODE), by = c("country" = "COUNTRY"))
+tib_map$CODE[5] <- "GBR"
+tib_map$CODE[8] <- "USA"
+# light grey boundaries
+l <- list(color = toRGB("grey"), width = 0.5)
+
+# specify map projection/options
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  projection = list(type = 'Mercator')
+)
+
+p <- plot_geo(tib_map) %>%
+  add_trace(
+    z = ~n, color = ~n, colors = 'Blues',
+    text = ~country, locations = ~CODE, marker = list(line = l)
+  ) %>%
+  colorbar(title = 'Number of tweets') %>%
+  layout(
+    title = 'SatRday number of tweets by country',
+    geo = g
+  )
+
+p
+```
+
+
+
+```{r, message=FALSE}
+#names$profile_image_url[1]
+include_graphics(names$profile_image_url)
+```
+
+
+### Tweets the most liked
+
+```{r}
+rt %>%
+  select(name,  favorite_count, text) %>%
+  arrange(-favorite_count) -> favorite_tweets
+
+kable(favorite_tweets) %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "200px")
+
+```
+
+### Tweets the most retweeted
+
+
+```{r}
+rt %>%
+  select(screen_name,  retweet_count, text) %>%
+  arrange(-retweet_count) -> retweet_tweets
+
+kable(retweet_tweets) %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "200px")
+
+
+```
+
+
+### words frequency in the tweets
+
+```{r}
+#tokenization 
+tib_words <- rt %>%
+  select(name, status_id, text) %>%
+  unnest_tokens(output = "word",
+                input = text,
+                token = "tweets")
+
+
+#remove stop_words
+
+tib_words_signifiant <- tib_words %>%
+  anti_join(stop_words, by=c("word", "word"))
+
+
+#remove hashtags and urls
+
+tib_words_signifiant <- tib_words_signifiant %>%
+  filter(!str_detect(word, "http")) %>%
+  filter(!str_detect(word, "#"))
+
+
+#frequency
+
+freq_words <- tib_words_signifiant %>%
+  group_by(word) %>%
+  summarise(freq=n()) %>%
+  arrange(-freq) %>%
+  filter(freq > 3)
+
+freq_words %>%
+  kable() %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "200px")
+
+
+#wordcloud
+
+pal <- brewer.pal(9,"Set1")
+pal <- pal[-6]
+wordcloud(freq_words$word,
+          freq_words$freq,
+          min.freq=2, 
+          colors = pal,
+          random.order = FALSE)
+```
+
+
+
+
+### Words relation
+
+
+```{r}
+# words_cooc <- tib_words_signifiant %>%
+#   pairwise_count(word, feature = name, sort = TRUE)
+# words_cors <- tib_words_signifiant %>%
+#   pairwise_cor_(word, feature = name, sort = TRUE)
+
+#doesn't work with the pipe, I don't know why
+
+
+words_cooc <- pairwise_count(tib_words_signifiant, word, name, sort=TRUE)
+words_cors <- pairwise_cor(tib_words_signifiant, word, name, sort = TRUE)
+
+words_cooc <- left_join(words_cooc,
+                       words_cors,
+                       by=c("item1","item2")) %>%
+                filter(correlation > 0.6 ) %>%
+                filter(n > 2)
+
+
+words_graph <- graph_from_data_frame(words_cooc)
+
+my_graph <- words_graph %>%
+   ggraph(layout = "fr") +
+   geom_edge_link(edge_colour="steelblue") +
+   geom_node_point(color = "khaki1", size = 5) +
+   geom_node_text(aes(label = name), repel = TRUE) +
+   theme_void()
+
+my_graph
+```
+
+
+
+###Photos gallery of tweets
+
+
+```{r}
+photos <- na.exclude(unlist(rt$media_url))
+
+#include_graphics(photos)
+```
+
