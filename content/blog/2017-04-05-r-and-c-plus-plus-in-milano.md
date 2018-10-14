@@ -17,7 +17,7 @@ for my second time as a speaker at the [MilanoR meetup](http://www.milanor.net/b
 I gave a talk about R and C++ roughly split in two parts : where we are,
 and where I'd like to go next with the R and C++ integration.
 
-{{< speakerdeck ea8d3ae2bf5b42d28b4e966893cf33dd  >}}
+![https://speakerdeck.com/romain_francois/r-and-c-plus-plus-past-present-and-future](https://speakerd.s3.amazonaws.com/presentations/ea8d3ae2bf5b42d28b4e966893cf33dd/preview_slide_0.jpg?386190)
 
 For the occasion, I was wearing my `%>%` t-shirt and my
 dear stalker Sherlock Holmes hat.
