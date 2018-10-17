@@ -196,7 +196,7 @@ In addition to that, the `stdvec_double` class hosts:
  - `Ptr` : to get the pointer
  - `Get` : to get a reference to the `std::vector<double>`
  
- ## Construction
+## Construction
  
  The `stdvec_double::Make` function creates the altrep R object backed by the 
  `std::vector<double>: 

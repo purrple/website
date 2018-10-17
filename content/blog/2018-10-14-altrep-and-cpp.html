@@ -111,9 +111,9 @@ identical(x, y)</code></pre>
 <p>To see a difference, you have to look at the object with <code>.Internal(inspect())</code>, as ALTREP
 gives you a way to control how your ALTREP objects are inspected.</p>
 <pre class="r"><code>.Internal(inspect(x))</code></pre>
-<pre><code>## @7f8e35bb0b90 14 REALSXP g0c0 [NAM(3)] std::vector&lt;double&gt; (len=5, ptr=0x7f8e2f532820)</code></pre>
+<pre><code>## @7fca66a1f990 14 REALSXP g0c0 [NAM(3)] std::vector&lt;double&gt; (len=5, ptr=0x7fca5f46da60)</code></pre>
 <pre class="r"><code>.Internal(inspect(y))</code></pre>
-<pre><code>## @7f8e36ac83c8 14 REALSXP g0c4 [NAM(3)] (len=5, tl=0) -2,-1,0,1,2</code></pre>
+<pre><code>## @7fca654f7dc8 14 REALSXP g0c4 [NAM(3)] (len=5, tl=0) -2,-1,0,1,2</code></pre>
 </div>
 <div id="register-the-altrep-class" class="section level2">
 <h2>Register the ALTREP class</h2>
@@ -169,7 +169,9 @@ out <code>std::vector&lt;double&gt;</code>.</p>
 <li><code>Ptr</code> : to get the pointer</li>
 <li><code>Get</code> : to get a reference to the <code>std::vector&lt;double&gt;</code></li>
 </ul>
-<p>## Construction</p>
+</div>
+<div id="construction" class="section level2">
+<h2>Construction</h2>
 <p>The <code>stdvec_double::Make</code> function creates the altrep R object backed by the
 `std::vector<double>:</p>
 <pre class="cpp"><code>// Make an altrep object of class `stdvec_double::class_t`
