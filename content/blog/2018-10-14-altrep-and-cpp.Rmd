@@ -1,0 +1,371 @@
+---
+title: ALTREP and C++
+author: Romain François
+date: '2018-10-14'
+slug: altrep-and-cpp
+categories: []
+tags:
+  - R
+  - C++
+  - altrep
+---
+
+Traditionally, R vectors (numeric, ...) are formed of one header ditrectly followed by the actual 
+contiguous data. I'll spare the details about the headers because even though I have a fair understanding, 
+I don't necessarily want to propagate my misconceptions `r emo::ji("grimacing")`, 
+and also because it is mostly irrelevant to this post. 
+
+Since R 3.5.0, the implementation of vectors benefits from `ALTREP` (alternative representation), which 
+challenges this and decouples the header with the actual data. This has two main use cases: 
+
+ - when the memory comes from somewhere else (a memory mapped file, an `arrow` array or whatever), i.e.
+   some contiguous memory that comes from somewhere. `ALTREP` lets you create an R vector 
+   that *points* to that memory. 
+   
+ - when you only need part of the vector, e.g. a single value. Here `ALTREP` lets you define 
+   what is the `i`th value of the vector, without having to materialize it. The canonical 
+   example is `for(i in 1:n){}`. You never need the entire vector `1:n`, you only need 
+   one value at a time. 
+   
+As the projects I'm currently involved with (`dplyr` and `arrow`) might ultimately 
+benefit from `ALTREP`, I've `r emo::ji("person juggling")` with it in the 
+[altrepisode](https://github.com/romainfrancois/altrepisode) `r emo::ji("package")`. 
+
+In this post, I'm covering the first use case with numeric vectors, in particular
+creating an R altrep vector that borrows data from a C++ `std::vector<double>`. 
+
+## The Altrep.h header
+
+To manipulate `ALTREP` objects, create your own classes, you need to include 
+the `R_ext/Altrep.h` header file. Unfortunately in R 3.5.0, the 
+[`Altrep.h`](https://github.com/wch/r-source/blob/trunk/src/include/R_ext/Altrep.h)
+is not C++ friendly, so you need to be careful when you include it. The situation has
+been [fixed](https://github.com/wch/r-source/commit/14365e4419d08ced8e987d5d49b26843d1324297) 
+recently so if you rely on R-devel things are easier. 
+
+In the meantime, here is my workaround: 
+
+```cpp
+// to manipulate R objects, aka SEXP
+#include <R.h>
+#include <Rinternals.h>
+#include <Rversion.h>
+
+// because we need to initialize the altrep class
+#include <R_ext/Rdynload.h>
+
+#if R_VERSION < R_Version(3, 6, 0)
+
+// workaround because R's <R_ext/Altrep.h> not so conveniently uses `class`
+// as a variable name, and C++ is not happy about that
+//
+// SEXP R_new_altrep(R_altrep_class_t class, SEXP data1, SEXP data2);
+//
+#define class klass
+
+// Because functions declared in <R_ext/Altrep.h> have C linkage
+extern "C" {
+  #include <R_ext/Altrep.h>
+}
+
+// undo the workaround
+#undef class
+
+#else
+  #include <R_ext/Altrep.h>
+#endif
+```
+
+The <200 lines of (fairly documented) C++ code [stdvec_doubles.cpp](https://github.com/romainfrancois/altrepisode/blob/master/src/stdvec_double.cpp)
+contains the implementation that is discussed here. This uses `Rcpp` but only for code generation using 
+the attributes feature. This is not using any Rcpp classes (e.g. `NumericVector`), which at this point 
+would eliminate the benefits of `ALTREP`. 
+
+## Motivation
+
+Let's start by the end of the file to get some motivation. The `doubles` function below creates an 
+R altrep object backed by a `std::vector<double>`. 
+
+```cpp
+//' an altrep object that wraps a std::vector<double>
+//'
+//' @export
+// [[Rcpp::export]]
+SEXP doubles() {
+  // create a new std::vector<double>
+  //
+  // this uses `new` because we want the vector to survive
+  // it is deleted when the altrep object is garbage collected
+  auto v = new std::vector<double> {-2.0, -1.0, 0.0, 1.0, 2.0};
+
+  // The altrep object owns the std::vector<double>
+  return stdvec_double::Make(v, true);
+}
+```
+
+The details will follow, but for now, let's look at what the object look like
+when back on the R side: 
+
+```{r}
+library(altrepisode)
+x <- doubles()
+x
+mode(x)
+str(x)
+```
+
+It looks and feels like any other R numeric vector, that's the point. As far as the R
+code is concerned, this is not different than an object that would have been created
+by `c`: 
+
+```{r}
+y <- c(-2.0, -1.0, 0.0, 1.0, 2.0)
+identical(x, y)
+```
+
+To see a difference, you have to look at the object with `.Internal(inspect())`, as ALTREP
+gives you a way to control how your ALTREP objects are inspected. 
+
+```{r}
+.Internal(inspect(x))
+.Internal(inspect(y))
+```
+
+## Register the ALTREP class
+
+The `stdvec_double::Make` function from the above code chunk creates an R object
+of ALTREP class (the ALTREP class is completely orthogonal to 
+the R class, as again as far as R code is concerned, nothing has changed). 
+
+For this we need to register an `R_altrep_class_t` object with (in the case
+of an altrep `numeric` vector) the `R_make_altreal_class` function. 
+
+This is done at `r emo::ji("package")` initialisation time, thanks 
+to the new [`Rcpp::init` attribute](https://github.com/RcppCore/Rcpp/pull/903). 
+
+```cpp
+// static initialization of stdvec_double::class_t
+R_altrep_class_t stdvec_double::class_t;
+
+// Called the package is loaded (needs Rcpp 0.12.18.3)
+// [[Rcpp::init]]
+void init_stdvec_double(DllInfo* dll){
+  stdvec_double::Init(dll);
+}
+```
+
+ALTREP is a C api, relying on C functions, but because this is C++, 
+I've squashed the functions together as static functions of the `stdvec_double` C++ class, hence
+the `stdvec_double::Init` call here. `Init` looks like this: 
+
+```cpp
+static void Init(DllInfo* dll){
+  class_t = R_make_altreal_class("stdvec_double", "altrepisode", dll);
+
+  // altrep
+  R_set_altrep_Length_method(class_t, Length);
+  R_set_altrep_Inspect_method(class_t, Inspect);
+
+  // altvec
+  R_set_altvec_Dataptr_method(class_t, Dataptr);
+  R_set_altvec_Dataptr_or_null_method(class_t, Dataptr_or_null);
+
+  // altreal
+  R_set_altreal_Elt_method(class_t, real_Elt);
+  R_set_altreal_Get_region_method(class_t, Get_region);
+}
+```
+
+First, we register the class with `R_make_altreal_class` function, then 
+we replace default methods with custom functions that know how to deal with 
+out `std::vector<double>`. 
+
+ - `Length` : what is the length of the vector
+ - `Inspect` : what happens when we `.Internal(inspect())` the object
+ - `Dataptr` : where is the data (more on that later) ?
+ - `Dataptr_or_null` : where is the data (but don't look too hard)
+ - `real_Elt` : what is the `i`th element ?
+ - `Get_region` : A contiguous region of the data
+ 
+This is I believe `r emo::ji("shrug")` the bare minimum. 
+
+In addition to that, the `stdvec_double` class hosts: 
+
+ - `Make` : to construct one such objet from a *pointer to* a `std::vector`. 
+ - `Finalize`: to `delete` the object as the proper time if we own it
+ - `Ptr` : to get the pointer
+ - `Get` : to get a reference to the `std::vector<double>`
+ 
+ ## Construction
+ 
+ The `stdvec_double::Make` function creates the altrep R object backed by the 
+ `std::vector<double>: 
+ 
+```cpp
+// Make an altrep object of class `stdvec_double::class_t`
+static SEXP Make(std::vector<double>* data, bool owner){
+  // The std::vector<double> pointer is wrapped into an R external pointer
+  //
+  // `xp` needs protection because R_new_altrep allocates
+  SEXP xp = PROTECT(R_MakeExternalPtr(data, R_NilValue, R_NilValue));
+
+  // If we own the std::vector<double>*, we need to delete it
+  // when the R object is being garbage collected
+  if (owner) {
+    R_RegisterCFinalizerEx(xp, stdvec_double::Finalize, TRUE);
+  }
+
+  // make a new altrep object of class `stdvec_double::class_t`
+  SEXP res = R_new_altrep(class_t, xp, R_NilValue);
+
+  // xp no longer needs protection, as it has been adopted by `res`
+  UNPROTECT(1);
+  return res;
+}
+```
+ 
+Eventually the R object (aka SEXP) is created with the `R_new_altrep` function, 
+which takes the altrep class as first argument, and two other 
+arbitrary R objects. These two R objects can be later accessed with `R_altrep_data1`
+and `R_altrep_data2` and can be just about anything you like. 
+
+Here we use an external pointer, created with `R_MakeExternalPtr`, as `data1` and 
+we don't need anything for `data2` so we use `NULL`. If we own the C++ vector, 
+as indicated by the `owner` argument, we register a finalizer so that when the 
+external pointer (the R object) is garbage collected, the destructor of the 
+C++ object is invoked. 
+
+The `Finalize`, `Ptr` and `Get` functions are conveniences that allow us to go from 
+the altrep R object to the C++ vector: 
+
+```cpp 
+// finalizer for the external pointer
+static void Finalize(SEXP xp){
+  delete static_cast<std::vector<double>*>(R_ExternalPtrAddr(xp));
+}
+
+// get the std::vector<double>* from the altrep object `x`
+static std::vector<double>* Ptr(SEXP x) {
+  return static_cast<std::vector<double>*>(R_ExternalPtrAddr(R_altrep_data1(x)));
+}
+
+// same, but as a reference, for convenience
+static std::vector<double>& Get(SEXP vec) {
+  return *Ptr(vec) ;
+}
+```
+
+Given the altrep object `x` we need to first get to its `data1` with `R_altrep_data1` and then 
+cast that to the underlying C++ vector with `R_ExternalPtrAddr` and a `static_cast<>`. Once we have 
+this, the rest follows naturally. 
+
+## ALTREP methods
+ 
+ALTREP is divided in several layers depending on the type of object we altrep (maybe it's to soon 
+for this to be a verb). The first layer is generic and apply to all ALTREP objects. There might 
+be other methods, but for this I've implemented the `Length` and `Inspect` : 
+
+```cpp
+// The length of the object
+static R_xlen_t Length(SEXP vec){
+  return Get(vec).size();
+}
+
+// What gets printed when .Internal(inspect()) is used
+static Rboolean Inspect(SEXP x, int pre, int deep, int pvec, void (*inspect_subtree)(SEXP, int, int, int)){
+  Rprintf("std::vector<double> (len=%d, ptr=%p)\n", Length(x), Ptr(x));
+  return TRUE;
+}
+```
+ 
+In the `Length` method, we are given the altreped (still assuming this is a verb) object. From this object, 
+we extract the `std::vector<double>&` with `Get` and then simply call `size()` on it. 
+
+The `Inspect` is a bit more involved, let's just skip it `r emo::ji("see_no_evil")`. 
+
+## ALTVEC methods
+
+Then, we have methods that are only relevant to vector type R objects. In this 
+implementation, I have defined the `Dataptr` and `Dataptr_or_null` methods: 
+
+```cpp
+// The start of the data, i.e. the underlying double* array from the std::vector<double>
+//
+// This is guaranteed to never allocate (in the R sense)
+static const void* Dataptr_or_null(SEXP vec){
+  return Get(vec).data();
+}
+
+// same in this case, writeable is ignored
+static void* Dataptr(SEXP vec, Rboolean writeable){
+  return Get(vec).data();
+}
+```
+
+In this example, they are identical, but it's not necessarily the case for all altrep 
+class implementations. 
+
+The difference is that the `Dataptr_or_null` method is guaranteed to not allocate
+additional R memory. If you already have access to a contiguous chunk of memory, 
+then return that, otherwise return a null pointer, but this should never allocate. 
+
+The `Dataptr` method is the big `r emo::ji("hammer")`. Whatever your class has to do, 
+it must return a pointer to contiguous chunk of memory where the data is. We'll illustrate
+this better in another post, but in short if you already have that contiguous memory, 
+then return it, if not do whatever it takes, allocate if you have to, but eventually 
+get me that memory. 
+
+`Dataptr` is what most ALTREP unaware (e.g. the constructor of `Rcpp::NumericVector` or the
+`mean` function from base R) code will use. 
+
+## ALTREAL methods
+
+Eventually, methods specific to numeric vectors. 
+
+```cpp
+// the element at the index `i`
+//
+// this does not do bounds checking because that's expensive, so
+// the caller must take care of that
+static double real_Elt(SEXP vec, R_xlen_t i){
+  return Get(vec)[i];
+}
+
+// Get a pointer to the region of the data starting at index `i`
+// of at most `size` elements.
+//
+// The return values is the number of elements the region truly is so the caller
+// must not go beyond
+static R_xlen_t Get_region(SEXP vec, R_xlen_t start, R_xlen_t size, double* out){
+  out = Get(vec).data() + start;
+  R_xlen_t len = Get(vec).size() - start;
+  return len > size ? len : size;
+}
+```
+
+`real_Elt` gives you the element at offset `i` of the underlying object, here this 
+calls the `std::vector<double>::operator[]` but you can imagine situations
+where this is implemented differently, e.g. for `1:n` you can imagine this would just 
+return `i+1` without having to rely on anything else. 
+
+`Get_region` again is a bit more involved, so I'll skip it too. You can do what I do and guess
+what it is supposed to do based on its name. There can be situations where you can have 
+access to contiguous memory for part of the vector. 
+
+## What else to read
+
+I'll write some more about this in another post. In the meantime, here are a few pointers: 
+
+ - Luke Tierney's [presentation](http://homepage.divms.uiowa.edu/~luke/talks/uiowa-2018.pdf) about ALTREP. 
+ - The [ALTREP Examples](https://github.com/ALTREP-examples) organization on github hosts packages that 
+   showcase ALTREP. Most of what I did on [altrepisode](https://github.com/romainfrancois/altrepisode)
+   is inspired from the [simplemmap](https://github.com/ALTREP-examples/Rpkg-simplemmap) `r emo::ji("package")`. 
+   The [mutable](https://github.com/ALTREP-examples/Rpkg-mutable) `r emo::ji("package")` is newer and easier
+   to grasp. 
+ - The [altvecR](https://github.com/s-u/altvecR) `r emo::ji("package")` from Simon Urbanek, which is 
+   a *toy package that re-routes ALTREP/ALTVEC methods to R functions for experimentation*. 
+ - The actual ALTREP code, mainly lives in the [altrep.c](https://github.com/wch/r-source/blob/trunk/src/main/altrep.c)
+   and [Altrep.h](https://github.com/wch/r-source/blob/trunk/src/include/R_ext/Altrep.h) files. 
+ - My [altrepisode](https://github.com/romainfrancois/altrepisode). This contains the `stdvec_double` class
+   described here and another class that I'll discuss in a follow up post. 
+   
