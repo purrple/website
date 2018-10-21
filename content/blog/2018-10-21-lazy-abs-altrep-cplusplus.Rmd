@@ -1,0 +1,317 @@
+---
+title: lazy absolute values function with ALTREP and C++
+author: Romain François
+date: '2018-10-21'
+slug: lazy-abs-altrep-cplusplus
+categories: []
+tags:
+  - altrep
+  - c++
+  - R
+---
+
+This is a follow up [to this post about ALTREP and C++](https://purrple.cat/blog/2018/10/14/altrep-and-cpp). 
+This covers another part of the [altrepisode](https://github.com/romainfrancois/altrepisode) `r emo::ji("package")`
+to showcase another aspect of ALTREP, the `lazy_abs()` function and underlying C++ implementation.
+
+## What do we ALTREP this time
+
+In R, `abs()` is a vectorized function, i.e. given a vector `x` of `n` values it returns another vector of the same 
+size that contains absolute values of each element of `x`. 
+
+Here, we create `lazy_abs()` that does the same thing but lazily, i.e. it only creates the vector 
+if absolutely `r emo::ji("rolling_on_the_floor_laughing")` needed. 
+
+One immediate consequence, is that `lazy_abs()` is much faster, because at first it does not 
+do anything
+
+```{r}
+# devtools::install_github("romainfrancois/altrepisode")
+library(altrepisode)
+x <- rnorm(1e5)
+identical(abs(x), lazy_abs(x))
+bench::mark(abs(x), lazy_abs(x))
+```
+
+Depending on what you do with the result of `lazy_abs()` it might be materialized, i.e. 
+use its own contiguous memory, or not. 
+
+## Implementation
+
+Remember from [this previous post](https://purrple.cat/blog/2018/10/14/altrep-and-cpp) that 
+we structure an ALTREP object using two arbitrary R objects `data1` and `data2`. Our lazy 
+abs object uses both. 
+
+ - `data1` is used to keep a reference of the input. We carefully mark it as immutable so that
+   according to R's copy on modify semantics, if some other user of `data1` wants to modify it, 
+   a copy has to be generated.
+ - `data2` holds the result, once it has been materialized, but initially is set to `NULL`
+
+The `inspect` implementation can help us illustrate the lazy materialization property: 
+
+```{r}
+y <- lazy_abs(rnorm(5))
+.Internal(inspect(y))
+
+# head does not call DATAPTR
+head(y, 2)
+.Internal(inspect(y))
+
+# but mean does
+mean(y)
+.Internal(inspect(y))
+```
+
+## Construction
+
+The `lazy_abs::Make` function implements the strategy described above. We need
+the `MARK_NOT_MUTABLE` macro to (the name says it all), and the `R_new_altrep`
+function to create an instance of our `lazy_abs::class_t` class. 
+
+```cpp
+// make a new altrep object of class lazy_abs::class_t
+//
+// the object uses both altrep data
+// - data1: the original numeric vector we want to abs lazily
+// - data2: NULL if the object has not been materialized yet, the entire abs(data1) otherwise
+static SEXP Make(SEXP data){
+  // so that other holders of data know they have to make a copy
+  // when they mutate it
+  MARK_NOT_MUTABLE(data);
+
+  // data2 is originally set to NULL
+  return R_new_altrep(class_t, data, R_NilValue);
+}
+```
+
+## Methods
+
+Before we look at the details of the materialization of the object, let's review the various
+ALTREP methods. 
+
+The number of elements is simply the number of elements of the input:
+
+```cpp
+static R_xlen_t Length(SEXP vec){
+  return LENGTH(R_altrep_data1(vec));
+}
+```
+
+The `Dataptr_or_null` returns a pointer to the start of the results memory if it has already been 
+materialized, and NULL otherwise. Users of this object can take the NULL result as a signal 
+that the object might be expensive to materialize and prefers individual access if possible. 
+
+```cpp
+static const void* Dataptr_or_null(SEXP vec){
+  SEXP data2 = R_altrep_data2(vec);
+  if (data2 == R_NilValue) return nullptr;
+
+  return STDVEC_DATAPTR(data2);
+}
+```
+
+The `Dataptr` returns the pointer to the start of the memory, no matter what. Its implementation 
+delegates the work to `Materialize` which we'll review later: 
+
+```cpp
+static void* Dataptr(SEXP vec, Rboolean writeable){
+  return STDVEC_DATAPTR(Materialize(vec));
+}  
+```
+
+Accessing the `i`th element can use the lazyness, if the result has been materialized, 
+just return the `i`th element of the materialized result, otherwise return the 
+`abs`olute value of the `i`th element of the input: 
+
+```cpp
+static double real_Elt(SEXP vec, R_xlen_t i){
+  SEXP data2 = R_altrep_data2(vec);
+  if (data2 == R_NilValue) {
+    SEXP data1 = R_altrep_data1(vec);
+    return ::fabs(REAL_ELT(data1, i));
+  } else {
+    return static_cast<double*>(STDVEC_DATAPTR(data2))[i];
+  }
+}
+```
+
+There are some subtleties in this implementation of `real_Elt`: 
+
+ - in the non materialized branch, we use the `REAL_ELT` macro. This
+   is an ALTREP aware macro that will call the appropriate `real_Elt` 
+   method if `data1` is itself some ALTREP object. 
+   
+ - in the materialized branch, because we are in charge of `data2` and we 
+   know (trust me for now, we'll see that in a minute) that it is a standard 
+   R vector (i.e. not an ALTREP) we can directly use the `STDVEC_DATAPTR`
+   macro to get to the start of the memory. We don't have to pay `r emo::ji("dollar")`
+   for the "is it an ALTREP object" test. 
+   
+I'll skip the [Inspect](https://github.com/romainfrancois/altrepisode/blob/1511d14b17ab4999b48fb4be9a9e493ebbbcdd9c/src/lazy_abs.cpp#L74)
+and [Get_region](https://github.com/romainfrancois/altrepisode/blob/1511d14b17ab4999b48fb4be9a9e493ebbbcdd9c/src/lazy_abs.cpp#L127)
+methods in this post. 
+
+## Materialization
+
+The critical part is the implementation of the materialization. 
+
+```cpp
+// materialize data2 if needed and return it
+static SEXP Materialize(SEXP vec) {
+
+  SEXP data2 = R_altrep_data2(vec);
+  if (data2 == R_NilValue) {
+    // so we do have to materialize
+    SEXP data1 = R_altrep_data1(vec);
+
+    // allocate a standard numeric vector for data2
+    R_xlen_t n = LENGTH(data1);
+    data2 = PROTECT(Rf_allocVector(REALSXP, n));
+    // we know it is a standard vector, so it's
+    // fine to get its pointer
+    double* p_data2 = REAL0(data2);
+
+    // we need to treat the data differently depending
+    // on its altrep properties
+    auto p_data1 = DATAPTR_OR_NULL(data1);
+    if (p_data1){
+      // the data from data1 is contiguous, we can scan the values
+      // from data1, apply the fabs function and fill data2
+      auto p = static_cast<const double*>(p_data1);
+      std::transform(
+        p, p + n, // the input range
+        p_data2,  // the output start
+        [](double x){ return fabs(x) ; } // We can't just use fabs because there are overloads.
+      );
+    } else {
+      // the data is not contiguous, so we avoid materializing it
+      // and rather go through it element by element
+      for (R_xlen_t i=0; i<n; i++, ++p_data2) {
+        *p_data2 = ::fabs(ALTREAL_ELT(data1, i)) ;
+      }
+    }
+    
+    // keep data2 and release its protection
+    R_set_altrep_data2(vec, data2);
+    UNPROTECT(1);
+  }
+  return data2;
+}
+```
+
+There are a few cases we need to consider for an ALTREP-aware behaviour.
+
+If `data2` is already not NULL, it means it has been already materialized, so we just return it, that's the easy case. 
+
+Otherwise, we start by allocating memory for `data2` with `Rf_allocVector`, we need to protect
+this from the garbage collector (actually we don't because currently the gc is disabled during 
+ALTREP `Dataptr` calls, but there's no guarantee that this will always be the case). 
+
+```cpp
+// allocate a standard numeric vector for data2
+R_xlen_t n = LENGTH(data1);
+data2 = PROTECT(Rf_allocVector(REALSXP, n));
+```
+
+We then need to access the contigious memory of the object. since 
+we've just generated it, we know it's a standard R vector, so we can use 
+the `REAL0` macro: 
+
+```
+// we know it is a standard vector, so it's
+// fine to get its pointer
+double* p_data2 = REAL0(data2);
+```
+
+Great, we have the start of the memory `p_data2` and a size `n` so we 
+can now fill the data with absolute values of the input. But we still have two cases
+to consider because we don't know the altrep-ness or `data1`. 
+
+We call the `DATAPTR_OR_NULL` macro to either retrieve the data pointer of the input if
+already available, i.e. if it's a standard R vector or another ALTREP that can access
+its data pointer without memory allocation. 
+
+```cpp
+auto p_data1 = DATAPTR_OR_NULL(data1);
+```
+
+If we did get a non null pointer, we can reliably traverse the entire memory
+of `data1`, call `::fabs` on each element and store that into `data2`, the 
+C++ algorithm `std::transform` is perfect for the task. 
+
+```cpp
+auto p = static_cast<const double*>(p_data1);
+std::transform(
+  p, p + n, // the input range
+  p_data2,  // the output start
+  [](double x){ return fabs(x) ; } // We can't just use fabs because there are overloads.
+);
+```
+
+If we did get a null pointer, it means that `data1` is not available as a contiguous memory
+without allocation, so we go through elements of `data1` one by one using the `ALTREAL_ELT`
+macro which will dispatch to the appropriate `real_Elt` method. 
+
+```cpp
+// the data is not contiguous, so we avoid materializing it
+// and rather go through it element by element
+for (R_xlen_t i=0; i<n; i++, ++p_data2) {
+  *p_data2 = ::fabs(ALTREAL_ELT(data1, i)) ;
+}
+```
+
+Finally, once all the absolute values are in `data2`, we can set it as the `data2` of our
+ALTREP object, and remove its protection, because the altrep object now protects it. 
+
+```cpp
+R_set_altrep_data2(vec, data2);
+UNPROTECT(1);
+```
+
+## ALTREP composition
+
+Because of the way `Materialize` is implemented, the `lazy_abs()` respects the 
+ALTREP-ness of the input object, so they can be composed. For example, we can 
+take a `lazy_abs()` of the `stdvec_doubles` class we discussed in 
+[the previous post](https://purrple.cat/blog/2018/10/14/altrep-and-cpp/)
+
+```{r}
+x <- doubles()
+y <- lazy_abs(x)
+```
+
+At first `y` is a non materialized `lazy_abs` ALTREP object that keeps a reference of 
+a `stdvec_doubles` ALTREP object: 
+
+```{r}
+.Internal(inspect(y))
+```
+
+If we change one value in `x`, it does not affect `y` because we've marked it as non mutable: 
+
+```{r}
+x[1] <- 7
+.Internal(inspect(x))
+```
+
+`x` is now a standard numeric vector, but the `data1` of `y` is still the same 
+ALTREP powered `stdvec_doubles` object. 
+
+```{r}
+.Internal(inspect(y))
+```
+
+Then if we force materialization of `y` using any R function that happens to 
+need contiguous memory, then `data2` is made
+
+```{r}
+z <- sort(y)
+z
+.Internal(inspect(y))
+```
+
+## Next time
+
+We'll have a look at ALTREP vectors of strings, although I haven't written the code for it 
+yet in [altrepisode](https://github.com/romainfrancois/altrepisode) so maybe not `r emo::ji("shrug")`. 
+
