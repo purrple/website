@@ -333,3 +333,8 @@ pre.r > code.hljs {
   color: #FFFFFF88 ;
   text-align: center ;
 }
+
+.slide {
+  border: 1px solid gray;
+  width: 80%;
+}

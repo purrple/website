@@ -1,0 +1,310 @@
+---
+title: spice rap, rap splice
+author: Romain François
+date: '2018-12-22'
+slug: spice-rap-rap-splice
+categories: []
+tags:
+  - package
+  - rap
+---
+
+This is a blog post version of a presentation I gave during the first 
+meetup of the Montpellier chapter of R Ladies. The meetup was quite a success
+and planted the seed for a great local R community. 
+
+`r blogdown::shortcode_html("tweet", "1072985559608508417" )`
+
+[Criscely](https://twitter.com/CriscelyLP) started the meetup by a very 
+complete presentation of the values and importance of the global R Ladies 
+organization, and the desire to create this local community in Montpellier, 
+[Cécile](https://twitter.com/cecilesauder) then walked us through 
+many packages and functions of the tidyverse with a movie dataset, i.e. 
+comparing movies from Disney, Marvel and DC comics. Turns out, 
+*The Lion King* was a great success and *Superman Returns* did not do well ...
+
+I was invited to close the meetup with a talk about ...
+
+<img src="/img/rap-rladies/slide-1.png" class="slide"/> 
+
+`rap` is a small experimental package for iterating on rows of
+a data frame. The name stands for **r**owwise m**ap** to hint 
+at a legacy of both `dplyr::rowwise()` and `purrr::map`. It went 
+through a few different names before settling with `rap`: 
+
+ - `zip`, to echo the `zip` operator in python, but then it was 
+   too close to zip files and `utils::zip()`. 
+ - `zap` was close enough to `zip` but ended like `map`, but then 
+   `rlang::zap()` ruled it out
+
+So I let twitter decide between a few options that ended with `ap`. 
+And twitter agreed with my favourite option, so here's `rap`. 
+
+<img src="/img/rap-rladies/slide-2.png" class="slide"/> 
+
+`rap` gives a way to iterate on rows of a data frame, i.e. to 
+perform row-wise work. This is not the first attempt at the 
+problem. 
+
+The current state of the art was showcased in [Jenny](https://twitter.com/JennyBryan)'s
+webinar, [Thinking inside the box: you can do that inside a data frame?!](https://www.rstudio.com/resources/webinars/thinking-inside-the-box-you-can-do-that-inside-a-data-frame/), 
+which I'm sampling here. I would advise however to check it out, and its 
+associated [github repo](https://github.com/jennybc/row-oriented-workflows)
+
+<div class="row">
+<div class="col-md-6">
+<img src="/img/rap-rladies/slide-3.png" class="slide" style="width:100%"/> 
+</div>
+<div class="col-md-6">
+<img src="/img/rap-rladies/slide-4.png" class="slide" style="width:100%"/> 
+</div>
+</div>
+
+We have great tools now, in the tidyverse or elsewhere to work with columns, but working 
+with rows is not that easy, and the reason why there are so many different ways to 
+approach it, is essentially because we have not figured out "the way". 
+
+<div class="row">
+<div class="col-md-6">
+<img src="/img/rap-rladies/slide-5.png" class="slide" style="width:100%"/> 
+</div>
+<div class="col-md-6">
+<img src="/img/rap-rladies/slide-6.png" class="slide" style="width:100%"/> 
+</div>
+</div>
+
+But working with rows becomes a very valuable tool when you realize that 
+a column might be more interesting than just a vector of numbers or strings. We now
+have tools to routinely produce so-called list columns. 
+
+A list column is just a list, but it sits in a column of a data frame, which 
+makes it easy to pair with other columns and to think jointly about a set of 
+things. 
+
+So one of the take home messages from Jenny's talk was to embrace the list 
+column philosophy and the `map` family of functions from `purrr`. 
+We'll come back to that. 
+
+<img src="/img/rap-rladies/slide-7.png" class="slide"/> 
+
+The other thing I'm sampling here is the `gapminder` data, available in the 
+... `gapminder` package. If you have not yet seen 
+[Hans Rosling](https://www.youtube.com/watch?v=hVimVzgtD6w) video, do it now, it 
+is an amazing presentation of socio-demographic data for all countries through time, 
+highlighting with data and graphics the development of countries. Serioulsy, watch it now. 
+
+<img src="/img/rap-rladies/slide-8.png" class="slide"/> 
+
+In the `gapminder` package, the data looks like this, it's a simple enough tibble 
+with 6 columns. We have continent and country as factors, the year, life expectancy, 
+population and gdp per capita. 
+
+<img src="/img/rap-rladies/slide-9.png" class="slide"/> 
+
+In the original shape, it would not really illustrate the point, 
+so we restructure the data to have one row per asian country. 
+
+The resulting `gap_nested` data frame now has only two columns: `country` and 
+`data`, which is a list of data frames of all other variables, in other words
+the other columns are nested. The `yr1952` variable is created with a 
+`mutate()` for modeling purposes. 
+
+<img src="/img/rap-rladies/slide-10.png" class="slide"/> 
+
+In this shape, we can do some row wised thinking. For each country, we
+want a linear model of life expectancy by the number of years since 1952
+(the yr1952 column). 
+
+Then we want to extract intercept and slope coefficients for each of these models. 
+
+So we have one model per country, one intercept per country, one slope per country, 
+in other words `model`, `intercept` and `slope` have the same length and order as the number
+of rows of our `gap_nested` tibble. A tibble is the perfect host for such information, we 
+would want to make a list column for the models and numeric columns for the coefficients. 
+
+<img src="/img/rap-rladies/slide-11.png" class="slide"/> 
+
+This is something that is typically done with the combination of `dplyr::mutate()` and
+one sibling of the big `purrr::map()`. To use them we first have to identify a recipee
+for one country, and then we let `map()` do the iteration work. 
+
+The `map()` family uses explicit mapping, you have to explcitely say which 
+columns you iterate one. 
+
+ - The `map()` calls iterate on the `data` list column, and applies the recipee
+   `lm(lifeExp ~ yr1952, data = .x)` to each tibble from the list column. In the recipee, 
+   `.x` stands for the current column. 
+ - The subsequent `map_dbl()` calls iterate on the `fit` column we just created, so this time
+   `.x` stands for one of the models. 
+   
+The suffix guides the type that is created. Without a suffix, we get a list column. With the 
+`_dbl` suffix we get a double (aka numeric) column. 
+
+<img src="/img/rap-rladies/slide-12.png" class="slide"/> 
+
+We get the results we want and expected. When Jenny gave her talk in the tidyverse 
+team meeting and later as an rstudio webinar, I could not quite understand why, but 
+I was not fully satisfied with this syntax. 
+
+I think I understand it better now, and I guess it is because I'm lazy and this
+is too much work to: 
+ 
+ - have to call a version of `map()` for each column
+ - explicitely express what you iterate on
+ - remember it and internalize what `.x`, `.y` etc ... stand for in each line
+
+<div class="row">
+<div class="col-md-6">
+<img src="/img/rap-rladies/slide-13.png" class="slide" style="width:100%"/> 
+</div>
+<div class="col-md-6">
+<img src="/img/rap-rladies/slide-14.png" class="slide" style="width:100%"/> 
+</div>
+</div>
+
+Furthermore, the syntax evolves depending on the number of things you iterate on. 
+
+If you iterate on one thing with `map()`, `map_dbl()`, `map_chr()`, ... 
+you refer to the current value of the thing with `.x`. 
+
+If you iterate on two things with `map2()`, `map2_int()`, `map2_lgl()` etc ... 
+you refer to the current value of the first thing with `.x` and the 
+current value of the second thing with `.y`. 
+
+But then, there's no `map3()`, `map4()` etc ... when you iterate on more than 
+two things, you have to switch to `pmap()`, put your things in a list and make a function 
+that carefully aligns its argument to the order of the things in the list, and then 
+eventually do something with the things. 
+
+What (in my perhaps very biased opinion) the `map()` family fails to capture 
+is that columns of a data frame are related. `map()` actually has no notion 
+that the things come from a data frame, it just operates on vectors. 
+
+<div class="row">
+<div class="col-md-6">
+<img src="/img/rap-rladies/slide-15.png" class="slide" style="width:100%"/> 
+</div>
+<div class="col-md-6">
+<img src="/img/rap-rladies/slide-16.png" class="slide" style="width:100%"/> 
+</div>
+</div>
+
+The perspective is different in `rap`, and the mapping is implicit about the
+columns. What you iterate on is **the rows of the tibble**. 
+
+<img src="/img/rap-rladies/slide-17.png" class="slide"/> 
+
+With the concept of implicit mapping, the previous example becomes this. We start from
+the `gap_nested` data frame and we iterate on its rows implicitely. 
+
+As with the `mutate()` + `map()` example, we can identify 3 components : `who = what ~ how`
+ 
+  - `who`: the name of the column we wish to create
+  - `what`: the type of column we create, on the left hand sied of the formula, 
+    when it's empty it means you want a list column. 
+  - `how`: the recipe. 
+
+<img src="/img/rap-rladies/slide-18.png" class="slide"/> 
+
+It's just one call to `rap()` to express the idea of iterating on rows of the 
+data frame simultaneously. 
+
+Instead of using a function suffix, the type is expressed, in the `vctrs` sense 
+in the left hand side of a formula. 
+
+Finally, the recipe directly uses the names of the columns, each name stands for 
+the current observation of the column. In the first line `data` is one of the 
+tibbles from the `data` column. In the following lines, `fit` stands for one of the 
+linear models. 
+
+That's it really. 
+
+<img src="/img/rap-rladies/slide-19.png" class="slide"/> 
+
+Before jumping to other examples, we need to briefly talk about splicing and 
+the splice operator `!!!`. 
+
+<img src="/img/rap-rladies/slide-20.png" class="slide"/> 
+
+To do that, we need to step back and work with a single model, for e.g. 
+the first country. `fit1` is this linear model, we can get its coefficients
+by calling the `coef()` function on it, we get a named numeric vector. 
+
+If we want to convert to a tibble, we could laboriously extract each and 
+create a tibble. But instead of that we can directly do `tibble(!!!coef(fit1))`
+to splice `coef(fit1)`. 
+
+<img src="/img/rap-rladies/slide-21.png" class="slide"/> 
+
+With that new `!!!` super power, we cna revise the previous example and instead
+of making separate columns for intercept and slope we can create
+a "data frame column" to host both. Data frame columns are a relatively 
+new concept, in that we currently lack proper tools to deal with them. They have been 
+there all along, but we don't really have convenient ways to deal with them. 
+
+To do that with `rap()` you need to specify that you are making a data frame
+column on the lhs, and then give the recipe to make of one those. `rap()` applies
+the recipe to each row, checks that the data frame you created has exactly one 
+observation, and finally binds all the data frames together into a single 
+data frame column. `r emo::ji("tada")`
+
+Splicing is not a feature of R, so you can't splice anywhere, functions 
+have to be programmed in a certain way so that they undestand splicing. This is
+the case for `tibble()` and many other functions from the tidyverse. 
+
+`r blogdown::shortcode_html("youtube", "gJLIiF15wjQ")`
+
+To come back to the title of this blog post, we knew since 1995 that spice rap ... but 
+also `rap()` sp*l*ice. 
+
+<img src="/img/rap-rladies/slide-22.png" class="slide"/> 
+
+Last example, illustrating that `rap()` can splice, even `rnorm()` and `runif()` are 
+base functions, when we call them in a `rap()` line, splicing magically happens. 
+
+Here we have a tibble that expresses a simulation plan. 
+
+ - The first column `fun` is the function that effectively simulates
+ - `n` is the number of observations
+ - `params` is a list of function specific parameters to control the simulation. 
+
+So we'd like to call : 
+
+  - `rnorm(5, mean = 10, sd = 2)` on the first row
+  - `runif(3, min = 0, max = 2)` on the second
+  
+and store the results of both in a list column. This is what the `fun(n, !!!params)` says, 
+in particular: 
+ 
+  - `fun` is one element of the `fun` column
+  - `n` is one number from the `n` column
+  - `params` is one of the lists from the list column `params`. 
+
+Finally, there is also the `wap()` function to retrieve the result instead of 
+adding it as a column of the data frame. `wap()` is similar to `pmap()` but with 
+implicit mapping. I've chosen the name `wap` because it's like `map` but with the `m` 
+upside down. 
+
+<img src="/img/rap-rladies/slide-23.png" class="slide"/> 
+
+Once again, `rap` is an experiment, aka a weekend `r emo::ji("package")`. I believe the 
+notion of implicit mapping makes a lot of sense, that specifying the desired type 
+on the lhs of the formula is not too big of a jump. 
+
+It was cool to present it for the first time in an RLadies meetup, [Faustine](https://twitter.com/Faustine_Bsqt)
+even took one of the hex stickers I brought with me. 
+
+`r blogdown::shortcode_html("tweet", "1073192498548355072")` 
+
+I also sent some to people who supported me on [patreon](https://www.patreon.com/romainfrancois) for whom I 
+have the address. I'll bring some to [rstudio::conf](https://www.rstudio.com/conference/), feel free to ask for some. 
+
+`r blogdown::shortcode_html("tweet", "1074425287473942528")` 
+
+This is my hand on the logo, and one of my favourite [scratch record](https://www.discogs.com/Crazy-B-Faster-Jay-Genius-Touch-2/release/764071). Thanks again to 
+[Thomas](https://twitter.com/thomasp85) for making it an hex logo. I think it's pretty cool 
+and would love to see it on your laptops. 
+
+
+
+
